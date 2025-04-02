@@ -10,31 +10,94 @@
 {% block content %}
 <div class="main-content">
     <div class="content-container">
-        <!-- Блок приветствия -->
-        <div class="text-block content-animation">
-            <h1 class="main-title">{{ welcome_message }}</h1>
-            <div class="main-text">
-                <p>Здесь вы можете управлять всеми системами вашей фермы, отслеживать показания датчиков и контролировать состояние растений.</p>
+        <!-- Левая колонка - Возможности -->
+        <div class="left-column">
+            <div class="text-block content-animation">
+                <h2 class="section-title"><i class="fas fa-lightbulb"></i> Возможности системы</h2>
+                <div class="main-text">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="feature-content">
+                            <h3>Мониторинг в реальном времени</h3>
+                            <p>Круглосуточный контроль температуры, влажности, освещения и других параметров</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-robot"></i>
+                        <div class="feature-content">
+                            <h3>Автоматическое управление</h3>
+                            <p>Умное регулирование полива, вентиляции и освещения без вашего участия</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-bell"></i>
+                        <div class="feature-content">
+                            <h3>Умные уведомления</h3>
+                            <p>Мгновенные оповещения о критических изменениях параметров</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="feature-content">
+                            <h3>Удалённый доступ</h3>
+                            <p>Полный контроль с любого устройства через мобильное приложение или веб-интерфейс</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-chart-pie"></i>
+                        <div class="feature-content">
+                            <h3>Детальная аналитика</h3>
+                            <p>Наглядные графики и отчёты для анализа эффективности</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Блок возможностей -->
-        <div class="text-block content-animation">
-            <h2 class="section-title"><i class="fas fa-star"></i> Возможности системы</h2>
-            <div class="main-text">
-                <p>Мониторинг параметров среды в реальном времени</p>
-                <p>Автоматическое управление климатом и поливом</p>
-                <p>Детальная аналитика и автоматические отчеты</p>
+        <!-- Правая колонка -->
+        <div class="right-column">
+            <!-- Блок приветствия -->
+            <div class="text-block content-animation">
+                <h1 class="main-title">Добро пожаловать</h1>
+                <div class="main-text">
+                    <p>Умная ферма 4.0 - это инновационная платформа для автоматизации сельского хозяйства.</p>
+                    <p>Наши технологии помогут вам увеличить урожайность и снизить затраты благодаря интеллектуальному мониторингу и управлению.</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Дополнительный информационный блок -->
-        <div class="text-block content-animation">
-            <h2 class="section-title"><i class="fas fa-info-circle"></i> Как начать работу</h2>
-            <div class="main-text">
-                <p>1. Перейдите в раздел "Панель управления" для настройки параметров</p>
-                <p>2. В разделе "Датчики" вы можете просматривать текущие показания</p>
-                <p>3. Используйте "Аналитику" для просмотра истории изменений</p>
+            <!-- Блок регистрации -->
+            <div class="text-block content-animation">
+                <h2 class="section-title"><i class="fas fa-rocket"></i> Начать работу</h2>
+                <div class="main-text">
+                    <div class="step">
+                        <i class="fas fa-user-check"></i>
+                        <div class="step-content">
+                            <h3>Авторизация</h3>
+                            <p>Войдите в систему, если у вас уже есть аккаунт</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <i class="fas fa-user-plus"></i>
+                        <div class="step-content">
+                            <h3>Быстрая регистрация</h3>
+                            <p>Создайте аккаунт за 1 минуту с помощью email или телефона</p>
+                        </div>
+                    </div>
+
+                    <div class="auth-buttons">
+                        <a href="{% url 'main' %}" class="auth-btn login-btn">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </a>
+                        <a href="{% url 'main' %}" class="auth-btn register-btn">
+                            <i class="fas fa-user-plus"></i> Зарегистрироваться
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

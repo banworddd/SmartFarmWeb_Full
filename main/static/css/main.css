@@ -1,19 +1,22 @@
 /* ==================== Базовые стили ==================== */
 body {
-    overflow: hidden; /* Дублируем отключение прокрутки */
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
 }
 
 .main-content {
   position: relative;
   min-height: calc(100vh - 40px);
-  padding: 30px;
+  padding: 20px;
   overflow: hidden;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('../images/farm-background.jpg');
+  background-image: url('../images/farm-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -35,95 +38,186 @@ body {
 /* ==================== Основной контейнер ==================== */
 .content-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+/* Колонки */
+.left-column, .right-column {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
+}
+
+.left-column {
+  justify-content: stretch;
+}
+
+.right-column {
+  justify-content: space-between;
+  gap: 20px;
 }
 
 /* ==================== Текстовые блоки ==================== */
 .text-block {
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 25px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  margin-bottom: 25px;
   transition: opacity 0.3s ease;
   backdrop-filter: blur(5px);
   width: 100%;
-  max-width: 800px;
   text-align: center;
   animation: fadeInUp 0.6s ease-out forwards;
-  will-change: transform;
+  box-sizing: border-box;
 }
 
-.text-block:last-child {
-  margin-bottom: 0;
-}
-
-/* Убрал полностью hover-эффект с transform */
-.text-block:hover {
-  opacity: 0.9; /* Можно оставить небольшое изменение прозрачности */
+/* Левый блок занимает всю высоту двух правых */
+.left-column .text-block {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ==================== Типографика ==================== */
 .main-title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 15px;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
+.main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .main-text {
-  font-size: 1.1rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.6;
   margin-bottom: 0;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: inherit;
 }
 
 .section-title i {
-  margin-right: 10px;
-  font-size: 1.3rem;
+  margin-right: 8px;
+  font-size: 1.2rem;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-/* ==================== Список особенностей ==================== */
-.feature-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  max-width: 600px;
-}
-
-.feature-item {
-  padding: 12px 0;
+/* ==================== Стили для возможностей и шагов ==================== */
+.feature, .step {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: left;
 }
 
-.feature-item:last-child {
-  border-bottom: none;
+.feature:last-child, .step:last-child {
+  margin-bottom: 0;
 }
 
-.feature-item i {
-  margin-right: 12px;
-  font-size: 1.1rem;
-  width: 24px;
+.feature:hover, .step:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+.feature i, .step i {
+  font-size: 1.2rem;
+  margin-right: 15px;
+  color: #2ecc71;
+  width: 25px;
   text-align: center;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.feature-content, .step-content {
+  flex: 1;
+}
+
+.feature-content h3, .step-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.feature-content p, .step-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ==================== Кнопки авторизации ==================== */
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.auth-btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.auth-btn i {
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  color: #2c3e50;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+}
+
+.register-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
 }
 
 /* ==================== Анимации ==================== */
@@ -141,45 +235,53 @@ body {
 /* ==================== Адаптация для мобильных ==================== */
 @media (max-width: 768px) {
   .main-content {
-    padding: 20px 15px;
+    padding: 15px;
   }
 
   .content-container {
-    width: 95%;
-    padding: 10px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .left-column, .right-column {
+    width: 100%;
+  }
+
+  .right-column {
+    gap: 15px;
   }
 
   .text-block {
     padding: 20px;
-    max-width: 100%;
   }
 
   .main-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .section-title {
-    font-size: 1.3rem;
-    flex-direction: column;
+    font-size: 1.2rem;
   }
 
-  .section-title i {
-    margin-right: 0;
-    margin-bottom: 8px;
-  }
-
-  .feature-item {
+  .feature, .step {
     flex-direction: column;
     text-align: center;
+    padding: 10px;
   }
 
-  .feature-item i {
+  .feature i, .step i {
     margin-right: 0;
     margin-bottom: 8px;
   }
 
-  /* Убрал transform для мобильной версии */
-  .text-block:hover {
-    opacity: 0.9;
+  .auth-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .auth-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
   }
 }
