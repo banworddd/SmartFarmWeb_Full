@@ -1,4 +1,5 @@
-/* ==================== Базовые стили ==================== */
+/* ==================== BASE STYLES ==================== */
+/* Основные стили документа */
 body {
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
     margin: 0;
@@ -6,6 +7,8 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+/* ==================== LAYOUT ==================== */
+/* Главный контейнер контента */
 .main-content {
   position: relative;
   min-height: calc(100vh - 40px);
@@ -23,6 +26,7 @@ body {
   background-attachment: fixed;
 }
 
+/* Затемнение фона */
 .main-content::before {
   content: '';
   position: absolute;
@@ -35,7 +39,7 @@ body {
   background: rgba(0, 0, 0, 0.4);
 }
 
-/* ==================== Основной контейнер ==================== */
+/* Основной контейнер для колонок */
 .content-container {
   width: 100%;
   max-width: 1200px;
@@ -48,7 +52,8 @@ body {
   box-sizing: border-box;
 }
 
-/* Колонки */
+/* ==================== COLUMNS ==================== */
+/* Общие стили для колонок */
 .left-column, .right-column {
   flex: 1;
   min-width: 0;
@@ -56,16 +61,19 @@ body {
   flex-direction: column;
 }
 
+/* Левая колонка (возможности) */
 .left-column {
   justify-content: stretch;
 }
 
+/* Правая колонка (приветствие + регистрация) */
 .right-column {
   justify-content: space-between;
   gap: 20px;
 }
 
-/* ==================== Текстовые блоки ==================== */
+/* ==================== CONTENT BLOCKS ==================== */
+/* Текстовые блоки (карточки) */
 .text-block {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
@@ -79,14 +87,15 @@ body {
   box-sizing: border-box;
 }
 
-/* Левый блок занимает всю высоту двух правых */
+/* Особый стиль для левого блока (возможности) */
 .left-column .text-block {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* ==================== Типографика ==================== */
+/* ==================== TYPOGRAPHY ==================== */
+/* Основной заголовок */
 .main-title {
   font-size: 2rem;
   margin-bottom: 15px;
@@ -95,6 +104,7 @@ body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
+/* Подчеркивание заголовка */
 .main-title::after {
   content: '';
   position: absolute;
@@ -106,12 +116,14 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* Основной текст */
 .main-text {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 0;
 }
 
+/* Заголовки секций */
 .section-title {
   font-size: 1.4rem;
   margin-bottom: 15px;
@@ -121,13 +133,15 @@ body {
   text-shadow: inherit;
 }
 
+/* Иконки в заголовках */
 .section-title i {
   margin-right: 8px;
   font-size: 1.2rem;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-/* ==================== Стили для возможностей и шагов ==================== */
+/* ==================== FEATURE & STEP ITEMS ==================== */
+/* Элементы возможностей и шагов */
 .feature, .step {
   display: flex;
   align-items: center;
@@ -139,15 +153,18 @@ body {
   text-align: left;
 }
 
+/* Убираем отступ у последнего элемента */
 .feature:last-child, .step:last-child {
   margin-bottom: 0;
 }
 
+/* Эффект при наведении */
 .feature:hover, .step:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateX(5px);
 }
 
+/* Иконки в элементах */
 .feature i, .step i {
   font-size: 1.2rem;
   margin-right: 15px;
@@ -156,22 +173,26 @@ body {
   text-align: center;
 }
 
+/* Контент элементов */
 .feature-content, .step-content {
   flex: 1;
 }
 
+/* Заголовки элементов */
 .feature-content h3, .step-content h3 {
   margin: 0 0 5px 0;
   font-size: 1.1rem;
 }
 
+/* Текст элементов */
 .feature-content p, .step-content p {
   margin: 0;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* ==================== Кнопки авторизации ==================== */
+/* ==================== BUTTONS ==================== */
+/* Контейнер кнопок */
 .auth-buttons {
   display: flex;
   justify-content: center;
@@ -180,6 +201,7 @@ body {
   flex-wrap: wrap;
 }
 
+/* Общие стили кнопок */
 .auth-btn {
   padding: 12px 25px;
   border-radius: 8px;
@@ -194,11 +216,13 @@ body {
   cursor: pointer;
 }
 
+/* Иконки в кнопках */
 .auth-btn i {
   margin-right: 10px;
   font-size: 1rem;
 }
 
+/* Кнопка входа */
 .login-btn {
   background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
   color: #2c3e50;
@@ -209,6 +233,7 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Кнопка регистрации */
 .register-btn {
   background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   color: white;
@@ -220,7 +245,8 @@ body {
   background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
 }
 
-/* ==================== Анимации ==================== */
+/* ==================== ANIMATIONS ==================== */
+/* Анимация появления блоков */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -232,29 +258,44 @@ body {
   }
 }
 
-/* ==================== Адаптация для мобильных ==================== */
+/* ==================== MOBILE VERSION ==================== */
 @media (max-width: 768px) {
+  /* Основные настройки */
   .main-content {
-    padding: 15px;
+    padding: 10px;
   }
 
   .content-container {
     flex-direction: column;
-    gap: 15px;
+    gap: 20px; /* Увеличенный отступ между блоками */
+    width: 100%;
+    padding: 10px;
   }
 
-  .left-column, .right-column {
+  /* Скрытие десктопных элементов */
+  .desktop-only {
+    display: none;
+  }
+
+  /* Отображение мобильных элементов */
+  .mobile-only {
+    display: block;
     width: 100%;
   }
 
-  .right-column {
-    gap: 15px;
-  }
-
+  /* Текстовые блоки */
   .text-block {
-    padding: 20px;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Отступ между блоками */
   }
 
+  .mobile-only .text-block:last-child {
+    margin-bottom: 0; /* Убираем отступ у последнего блока */
+  }
+
+  /* Типографика */
   .main-title {
     font-size: 1.6rem;
   }
@@ -263,10 +304,12 @@ body {
     font-size: 1.2rem;
   }
 
+  /* Элементы возможностей и шагов */
   .feature, .step {
     flex-direction: column;
     text-align: center;
     padding: 10px;
+    margin-bottom: 10px;
   }
 
   .feature i, .step i {
@@ -274,14 +317,28 @@ body {
     margin-bottom: 8px;
   }
 
+  /* Кнопки */
   .auth-buttons {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
   }
 
   .auth-btn {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     justify-content: center;
-    padding: 12px 20px;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ==================== DESKTOP ONLY ==================== */
+@media (min-width: 769px) {
+  /* Скрытие мобильных элементов */
+  .mobile-only {
+    display: none;
   }
 }
