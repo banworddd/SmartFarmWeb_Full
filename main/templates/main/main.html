@@ -1,0 +1,42 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block title %}Домашняя страница{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="content-container">
+        <!-- Блок приветствия -->
+        <div class="text-block content-animation">
+            <h1 class="main-title">{{ welcome_message }}</h1>
+            <div class="main-text">
+                <p>Здесь вы можете управлять всеми системами вашей фермы, отслеживать показания датчиков и контролировать состояние растений.</p>
+            </div>
+        </div>
+
+        <!-- Блок возможностей -->
+        <div class="text-block content-animation">
+            <h2 class="section-title"><i class="fas fa-star"></i> Возможности системы</h2>
+            <div class="main-text">
+                <p>Мониторинг параметров среды в реальном времени</p>
+                <p>Автоматическое управление климатом и поливом</p>
+                <p>Детальная аналитика и автоматические отчеты</p>
+            </div>
+        </div>
+
+        <!-- Дополнительный информационный блок -->
+        <div class="text-block content-animation">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> Как начать работу</h2>
+            <div class="main-text">
+                <p>1. Перейдите в раздел "Панель управления" для настройки параметров</p>
+                <p>2. В разделе "Датчики" вы можете просматривать текущие показания</p>
+                <p>3. Используйте "Аналитику" для просмотра истории изменений</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

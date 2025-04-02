@@ -1,0 +1,185 @@
+/* ==================== Базовые стили ==================== */
+body {
+    overflow: hidden; /* Дублируем отключение прокрутки */
+}
+
+.main-content {
+  position: relative;
+  min-height: calc(100vh - 40px);
+  padding: 30px;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../images/farm-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(5px);
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== Основной контейнер ==================== */
+.content-container {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* ==================== Текстовые блоки ==================== */
+.text-block {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 25px;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(5px);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  animation: fadeInUp 0.6s ease-out forwards;
+  will-change: transform;
+}
+
+.text-block:last-child {
+  margin-bottom: 0;
+}
+
+/* Убрал полностью hover-эффект с transform */
+.text-block:hover {
+  opacity: 0.9; /* Можно оставить небольшое изменение прозрачности */
+}
+
+/* ==================== Типографика ==================== */
+.main-title {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.main-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.section-title i {
+  margin-right: 10px;
+  font-size: 1.3rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* ==================== Список особенностей ==================== */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.feature-item {
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.feature-item i {
+  margin-right: 12px;
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* ==================== Анимации ==================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== Адаптация для мобильных ==================== */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px 15px;
+  }
+
+  .content-container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .text-block {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    flex-direction: column;
+  }
+
+  .section-title i {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .feature-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .feature-item i {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  /* Убрал transform для мобильной версии */
+  .text-block:hover {
+    opacity: 0.9;
+  }
+}

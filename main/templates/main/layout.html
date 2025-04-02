@@ -1,0 +1,40 @@
+    {% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Умная Ферма{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        {% block extra_css %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="{% url 'main' %}"><i class="fas fa-home"></i><span> Главная</span></a></li>
+                    <li><a href="{% url 'main' %}"><i class="fas fa-tachometer-alt"></i><span> Панель управления</span></a></li>
+                    <li><a href="{% url 'main' %}"><i class="fas fa-thermometer-half"></i><span> Датчики</span></a></li>
+                    <li><a href="{% url 'main' %}"><i class="fas fa-seedling"></i><span> Растения</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            {% block content %}
+
+            {% endblock %}
+        </main>
+    </div>
+
+    <!-- Подключаем JavaScript в конце body -->
+    <script src="{% static 'js/layout.js' %}"></script>
+</body>
+</html>
