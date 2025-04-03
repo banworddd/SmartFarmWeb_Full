@@ -1,10 +1,8 @@
 /* ==================== BASE STYLES ==================== */
 /* Основные стили документа */
 body {
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
 }
 
 /* ==================== LAYOUT ==================== */
@@ -28,15 +26,15 @@ body {
 
 /* Затемнение фона */
 .main-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  backdrop-filter: blur(5px);
-  z-index: -1;
-  background: rgba(0, 0, 0, 0.4);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(5px);
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.4);
 }
 
 /* Основной контейнер для колонок */
@@ -101,7 +99,6 @@ body {
   margin-bottom: 15px;
   position: relative;
   padding-bottom: 8px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* Подчеркивание заголовка */
@@ -130,14 +127,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-shadow: inherit;
 }
 
 /* Иконки в заголовках */
 .section-title i {
   margin-right: 8px;
   font-size: 1.2rem;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 /* ==================== FEATURE & STEP ITEMS ==================== */
@@ -224,8 +219,8 @@ body {
 
 /* Кнопка входа */
 .login-btn {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-  color: #2c3e50;
+  background: linear-gradient(135deg, #273dad 0%, #2e52ca 100%);
+  color: #ffffff;
 }
 
 .login-btn:hover {

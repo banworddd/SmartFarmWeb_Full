@@ -1,0 +1,150 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<!-- Подключение основного CSS-файла для регистрации -->
+<link rel="stylesheet" href="{% static 'css/reg.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<!-- Подключение JavaScript-файла для регистрации -->
+<script src="{% static 'js/reg.js' %}"></script>
+{% endblock %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<!-- Основной контейнер для формы регистрации -->
+<div class="registration-container">
+    <!-- Карточка формы регистрации -->
+    <div class="registration-form">
+        <!-- Заголовок формы регистрации -->
+        <h1 class="form-title">
+            <i class="fas fa-user-plus"></i> Регистрация
+        </h1>
+
+        <!-- Блок для отображения общих ошибок формы -->
+        {% if form.non_field_errors %}
+        <div class="top-form-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <div>
+                {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Форма регистрации -->
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Поле имени -->
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}">
+                    <i class="fas fa-user"></i> Имя
+                </label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.first_name.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Поле фамилии -->
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}">
+                    <i class="fas fa-user"></i> Фамилия
+                </label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.last_name.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Поле телефона -->
+            <div class="form-group">
+                <label for="{{ form.phone_number.id_for_label }}">
+                    <i class="fas fa-phone"></i> Номер телефона
+                </label>
+                {{ form.phone_number }}
+                <div class="input-hint">Формат: 9876543210 (10 цифр)</div>
+                {% if form.phone_number.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.phone_number.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Поле email -->
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">
+                    <i class="fas fa-envelope"></i> Email (необязательно)
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.email.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Поле пароля -->
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">
+                    <i class="fas fa-lock"></i> Пароль
+                </label>
+                <div class="password-wrapper">
+                    {{ form.password }}
+                    <button type="button" class="toggle-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="password-strength">
+                    <div class="strength-bar"></div>
+                </div>
+                <div class="input-hint">
+                    Минимум 8 символов, цифры и буквы в разных регистрах
+                </div>
+                {% if form.password.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.password.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Подтверждение пароля -->
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">
+                    <i class="fas fa-lock"></i> Подтвердите пароль
+                </label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.password2.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Кнопка отправки формы -->
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-user-edit"></i> Зарегистрироваться
+            </button>
+
+            <!-- Ссылка на страницу авторизации -->
+            <div class="auth-link">
+                Уже есть аккаунт? <a href="{% url 'main' %}">Войти</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
