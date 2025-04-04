@@ -294,9 +294,6 @@ input.error {
 /* ==================== MOBILE VERSION ==================== */
 /* Стили для мобильной версии формы */
 @media (max-width: 768px) {
-    .registration-container {
-        padding: 15px;
-    }
 
     .registration-form {
         padding: 20px;

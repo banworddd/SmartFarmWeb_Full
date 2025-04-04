@@ -1,47 +1,47 @@
-{% extends 'main/layout.html' %}
-{% load static %}
+    {% extends 'main/layout.html' %}
+    {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/confirm.css' %}">
-{% endblock %}
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/confirm.js' %}"></script>
-{% endblock %}
+    {% block extra_js %}
+    <script src="{% static 'js/confirm.js' %}"></script>
+    {% endblock %}
 
-{% block content %}
-<div class="confirmation-container">
-    <div class="confirmation-form">
-        <h2 class="form-title">Подтверждение кода</h2>
-        <p class="main-text">Введите код подтверждения, который мы отправили вам на телефон:</p>
+    {% block content %}
+    <div class="confirmation-container">
+        <div class="confirmation-form">
+            <h2 class="form-title">Подтверждение кода</h2>
+            <p class="main-text">Введите код подтверждения, который мы отправили вам на телефон:</p>
 
-        <form method="POST" id="confirmation-form" novalidate>
-            {% csrf_token %}
+            <form method="POST" id="confirmation-form" novalidate>
+                {% csrf_token %}
 
-            <!-- Скрытое поле для полного кода (нужно для Django формы) -->
-            <input type="hidden" name="confirmation_code" id="full-code-input">
+                <!-- Скрытое поле для полного кода (нужно для Django формы) -->
+                <input type="hidden" name="confirmation_code" id="full-code-input">
 
-            <!-- Контейнер для ошибок (и Django и наших кастомных) -->
-            <div class="form-errors">
-                {% if form.errors %}
-                    {% for error in form.non_field_errors %}
-                        <div class="error-message">{{ error }}</div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                <!-- Контейнер для ошибок (и Django и наших кастомных) -->
+                <div class="form-errors">
+                    {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
 
-            <!-- 6 отдельных полей ввода -->
-            <div class="code-input-container">
-                <input type="text" name="code1" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-                <input type="text" name="code2" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-                <input type="text" name="code3" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-                <input type="text" name="code4" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-                <input type="text" name="code5" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-                <input type="text" name="code6" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
-            </div>
+                <!-- 6 отдельных полей ввода -->
+                <div class="code-input-container">
+                    <input type="text" name="code1" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" name="code2" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" name="code3" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" name="code4" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" name="code5" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                    <input type="text" name="code6" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+                </div>
 
-            <button type="submit" class="submit-btn">Подтвердить</button>
-        </form>
+                <button type="submit" class="submit-btn">Подтвердить</button>
+            </form>
+        </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

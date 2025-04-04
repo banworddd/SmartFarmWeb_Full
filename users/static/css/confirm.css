@@ -171,9 +171,6 @@ input:invalid {
 /* ==================== MOBILE VERSION ==================== */
 /* Стили для мобильной версии формы */
 @media (max-width: 768px) {
-    .confirmation-container {
-        padding: 15px;
-    }
 
     .confirmation-form {
         padding: 20px;

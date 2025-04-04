@@ -230,7 +230,7 @@
 /* Подсветка невалидных полей */
 input.error {
     border-color: #e74c3c !important;
-    background: rgba(231, 76, 60, 0.1) !important;
+    background: rgba(231, 76, 60, 0.1) !importan    t;
 }
 
 /* Стили для кнопки сброса пароля */
@@ -282,9 +282,6 @@ input.error {
 /* ==================== MOBILE VERSION ==================== */
 /* Стили для мобильной версии формы */
 @media (max-width: 768px) {
-    .login-container {
-        padding: 15px;
-    }
 
     .login-form {
         padding: 20px;
