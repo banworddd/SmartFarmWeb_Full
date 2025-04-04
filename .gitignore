@@ -296,4 +296,8 @@ fabric.properties
 pyvenv.cfg
 pip-selfcheck.json
 
+#logs_and_other
+login_logs.txt
+messages.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,django,venv

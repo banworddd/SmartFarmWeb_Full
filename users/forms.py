@@ -25,9 +25,9 @@ class CustomUserRegistrationForm(forms.ModelForm):
         label='Номер телефона',
         widget=forms.TextInput(attrs={
             'class': 'phone-input',
-            'placeholder': '+7 (XXX) XXX-XX-XX'
+            'placeholder': 'XXX-XXX-XX-XX'
         }),
-        max_length=18
+        max_length=10
     )
 
     class Meta:
@@ -218,3 +218,107 @@ class CustomUserConfirmationForm(forms.Form):
             raise forms.ValidationError('Неверный код подтверждения')
 
         return cleaned_data
+
+class CustomUserLoginForm(forms.Form):
+    """
+    Форма входа пользователя.
+
+    Атрибуты:
+        phone_number (CharField): Поле для ввода номера телефона.
+        password (CharField): Поле для ввода пароля.
+    """
+
+    phone_number = forms.CharField(
+        label='Номер телефона',
+        widget=forms.TextInput(attrs={
+            'class': 'phone-input',
+            'placeholder': 'XXX-XXX-XX-XX'
+        }),
+        max_length=10
+    )
+
+    password = forms.CharField(
+        label='Введите пароль',
+        widget=forms.PasswordInput
+    )
+
+    def __init__(self, *args, **kwargs):
+        """
+        Инициализация формы с установкой пользователя в None.
+
+        Аргументы:
+            *args: Позиционные аргументы.
+            **kwargs: Именованные аргументы.
+        """
+        super().__init__(*args, **kwargs)
+        self.user = None
+
+    def clean_phone_number(self):
+        """
+        Очистка и валидация номера телефона.
+
+        Возвращает:
+            str: Очищенный номер телефона.
+
+        Исключения:
+            ValidationError: Если номер пуст, некорректен или пользователь не найден.
+        """
+        phone_number = re.sub(r'\D', '', self.cleaned_data.get('phone_number'))
+
+        if not phone_number:
+            raise forms.ValidationError('Номер телефона обязателен')
+
+        if len(phone_number) != 10:
+            raise forms.ValidationError('Номер телефона должен содержать 10 цифр')
+
+        try:
+            self.user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            raise forms.ValidationError('Пользователь с таким номером телефона не существует')
+
+        return phone_number
+
+    def clean_password(self):
+        """
+        Валидация пароля пользователя.
+
+        Возвращает:
+            str: Введённый пароль.
+
+        Исключения:
+            ValidationError: Если пароль пуст или не совпадает с паролем пользователя.
+        """
+        password = self.cleaned_data.get('password')
+        if not password:
+            raise forms.ValidationError('Пароль обязателен')
+
+        phone_number = self.cleaned_data.get('phone_number')
+        if phone_number and not self.user.check_password(password):
+            raise forms.ValidationError('Неправильный пароль, попробуйте еще раз')
+
+        return password
+
+    def clean(self):
+        """
+        Финальная проверка формы и логгирование данных.
+
+        Возвращает:
+            dict: Очищенные данные формы.
+        """
+        cleaned_data = super().clean()
+
+        with open('login_logs.txt', 'a') as file:
+            file.write(str(cleaned_data) + '\n')
+
+        return cleaned_data
+
+
+
+
+
+
+
+
+
+
+

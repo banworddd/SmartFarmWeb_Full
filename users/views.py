@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, FormView
 from django.contrib.auth import login
 
-from .forms import CustomUserRegistrationForm, CustomUserConfirmationForm
+from .forms import CustomUserRegistrationForm, CustomUserConfirmationForm, CustomUserLoginForm
 from .utils import generate_and_send_confirmation_code
 from users.models import CustomUser
 
@@ -39,6 +39,7 @@ class CustomUserRegisterView(CreateView):
         self.request.session['phone_number'] = form.cleaned_data['phone_number']
         print(generate_and_send_confirmation_code(self.request))
         return redirect(self.success_url)
+
 
 class CustomUserConfirmView(FormView):
     """
@@ -87,4 +88,19 @@ class CustomUserConfirmView(FormView):
             del self.request.session['confirmation_code']
 
         return redirect(self.success_url)
+
+
+class CustomUserLoginView(FormView):
+    model = CustomUser
+    form_class = CustomUserLoginForm
+    template_name = 'users/login.html'
+    success_url = '/'
+
+    def form_valid(self, form: CustomUserLoginForm) -> redirect:
+        user = CustomUser.objects.get(phone_number=form.cleaned_data.get('phone_number'))
+        if not user.is_active:
+            return redirect('confirm')
+        login(self.request, user)
+        return redirect(self.success_url)
+
 
