@@ -21,7 +21,6 @@ class CustomUserRegisterView(CreateView):
         template_name (str): Шаблон, используемый для отображения страницы регистрации.
         success_url (str): URL для перенаправления после успешной регистрации.
     """
-
     model = CustomUser
     form_class = CustomUserRegistrationForm
     template_name = 'users/reg.html'
