@@ -230,7 +230,7 @@
 /* Подсветка невалидных полей */
 input.error {
     border-color: #e74c3c !important;
-    background: rgba(231, 76, 60, 0.1) !importan    t;
+    background: rgba(231, 76, 60, 0.1) !important;
 }
 
 /* Стили для кнопки сброса пароля */

@@ -1,15 +1,19 @@
-    {% extends 'main/layout.html' %}
-    {% load static %}
+{% extends 'main/layout.html' %}
+{% load static %}
 
-    {% block extra_css %}
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
-    {% endblock %}
+{% endblock %}
 
-    {% block extra_js %}
+{% block extra_js %}
+    <script>
+        // Передаем оставшееся время из Django в JavaScript
+        const INITIAL_TIME = {{ remaining_time }};
+    </script>
     <script src="{% static 'js/confirm.js' %}"></script>
-    {% endblock %}
+{% endblock %}
 
-    {% block content %}
+{% block content %}
     <div class="confirmation-container">
         <div class="confirmation-form">
             <h2 class="form-title">Подтверждение кода</h2>
@@ -17,11 +21,9 @@
 
             <form method="POST" id="confirmation-form" novalidate>
                 {% csrf_token %}
-
-                <!-- Скрытое поле для полного кода (нужно для Django формы) -->
                 <input type="hidden" name="confirmation_code" id="full-code-input">
 
-                <!-- Контейнер для ошибок (и Django и наших кастомных) -->
+                <!-- Блок ошибок -->
                 <div class="form-errors">
                     {% if form.errors %}
                         {% for error in form.non_field_errors %}
@@ -30,7 +32,7 @@
                     {% endif %}
                 </div>
 
-                <!-- 6 отдельных полей ввода -->
+                <!-- Поля ввода кода -->
                 <div class="code-input-container">
                     <input type="text" name="code1" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
                     <input type="text" name="code2" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
@@ -40,8 +42,22 @@
                     <input type="text" name="code6" class="code-input" maxlength="1" inputmode="numeric" pattern="[0-9]*">
                 </div>
 
+                <!-- Таймер (изменённая версия) -->
+                {% if remaining_time is not None %}
+                <div class="timer-container" id="timer-container">
+                    <p class="timer-text">Код действителен: <span id="countdown">05:00</span></p>
+                </div>
+                {% endif %}
+
+
+                <!-- Ссылка на новый код -->
+                <div class="new-code-link">
+                    <a href="{% url 'new_code' %}" id="new-code-btn">Запросить новый код</a>
+                </div>
+
+                <!-- Кнопка подтверждения -->
                 <button type="submit" class="submit-btn">Подтвердить</button>
             </form>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}

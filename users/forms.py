@@ -1,6 +1,8 @@
+import re
+import time
+
 from django import forms
 from .models import CustomUser
-import re
 
 class CustomUserRegistrationForm(forms.ModelForm):
     """
@@ -210,9 +212,15 @@ class CustomUserConfirmationForm(forms.Form):
         user_input_code = cleaned_data.get('confirmation_code')
 
         session_code = self.request.session.get('confirmation_code')
+        session_code_time = self.request.session.get('confirmation_code_time')
 
         if not session_code:
-            raise forms.ValidationError('Сессия истекла, запросите код повторно')
+            raise forms.ValidationError('Срок действия кода истёк, запросите новый')
+
+        if (time.time() - session_code_time > 300) and session_code:
+            self.request.session.pop('confirmation_code', None)
+            self.request.session.pop('confirmation_code_time', None)
+            raise forms.ValidationError('Срок действия кода истёк, запросите новый')
 
         if session_code != user_input_code:
             raise forms.ValidationError('Неверный код подтверждения')

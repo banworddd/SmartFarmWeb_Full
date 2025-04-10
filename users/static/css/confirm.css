@@ -73,20 +73,28 @@ body {
 .code-input-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 2%; /* Используем проценты вместо фиксированных пикселей */
     margin-bottom: 20px;
+    width: 100%;
+    padding: 0 5%; /* Добавляем отступы по бокам */
+    box-sizing: border-box;
 }
 
 .code-input {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
+    /* Динамический размер на основе ширины viewport */
+    width: calc((100% / 6) - 2%);
+    max-width: 50px; /* Максимальный размер */
+    min-width: 30px; /* Минимальный размер */
+    aspect-ratio: 1/1; /* Сохраняем квадратную форму */
+
+    font-size: min(1.5rem, 5vw); /* Адаптивный размер шрифта */
     text-align: center;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.1);
     color: white;
     outline: none;
+    box-sizing: border-box;
 }
 
 .code-input::placeholder {
@@ -144,6 +152,43 @@ input:invalid {
     animation: shake 0.5s;
 }
 
+/* Таймер */
+.timer-container {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.timer-text {
+    color: white;
+    font-size: 0.9rem;
+}
+
+#countdown {
+    color: #2ecc71; /* Зелёный цвет для таймера */
+    font-weight: bold;
+}
+
+/* Стили для кнопки сброса пароля */
+.new-code-link {
+    text-align: center;
+    margin-top: 15px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Стили для ссылки в блоке сброса пароля */
+.new-code-link a {
+    color: #2ecc71;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Эффект при наведении на ссылку сброса пароля */
+.new-code-link a:hover {
+    text-decoration: underline;
+    color: #27ae60;
+}
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20%, 60% { transform: translateX(-5px); }
@@ -185,10 +230,16 @@ input:invalid {
         font-size: 0.9rem;
     }
 
+    .code-input-container {
+        gap: 1.5%;
+        padding: 0 3%;
+    }
+
     .code-input {
-        width: 35px;
-        height: 35px;
-        font-size: 1.2rem;
+        width: calc((100% / 6) - 1.5%);
+        max-width: 40px;
+        min-width: 25px;
+        font-size: min(1.2rem, 4.5vw);
     }
 
     .submit-btn {
@@ -203,5 +254,19 @@ input:invalid {
     .error-message {
         padding: 10px;
         font-size: 0.85rem;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .code-input-container {
+        gap: 1%;
+    }
+
+    .code-input {
+        width: calc((100% / 6) - 1%);
+        max-width: 35px;
+        min-width: 20px;
+        font-size: min(1rem, 4vw);
     }
 }

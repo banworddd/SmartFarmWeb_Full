@@ -3,10 +3,12 @@ from typing import Any, Dict
 from django.shortcuts import redirect
 from django.views.generic import CreateView, FormView, RedirectView
 from django.contrib.auth import login, logout
+from django.http import HttpRequest, HttpResponse
 
 from .forms import CustomUserRegistrationForm, CustomUserConfirmationForm, CustomUserLoginForm
 from .utils import generate_and_send_confirmation_code
 from users.models import CustomUser
+import time
 
 
 class CustomUserRegisterView(CreateView):
@@ -37,7 +39,7 @@ class CustomUserRegisterView(CreateView):
         """
         form.save()
         self.request.session['phone_number'] = form.cleaned_data['phone_number']
-        print(generate_and_send_confirmation_code(self.request))
+        generate_and_send_confirmation_code(self.request)
         return redirect(self.success_url)
 
 
@@ -57,12 +59,64 @@ class CustomUserConfirmView(FormView):
     template_name = 'users/confirm.html'
     success_url = '/'
 
+    def dispatch(self, request, *args, **kwargs) -> Any:
+        """
+        Проверяет наличие номера телефона в сессии.
+        Если номера нет - перенаправляет на страницу логина.
+
+        Аргументы:
+            request (HttpRequest): Объект HTTP-запроса.
+            *args: Дополнительные позиционные аргументы.
+            **kwargs: Дополнительные именованные аргументы.
+
+        Возвращает:
+            Any: Результат выполнения родительского метода dispatch или редирект на страницу логина.
+
+        Исключения:
+            None
+        """
+        if 'phone_number' not in request.session:
+            return redirect('login')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """
+        Добавляет в контекст шаблона информацию о времени валидности кода подтверждения.
+
+        Аргументы:
+            **kwargs: Дополнительные именованные аргументы контекста.
+
+        Возвращает:
+            Dict[str, Any]: Контекст данных для шаблона, содержащий:
+                - remaining_time (int|None): Оставшееся время действия кода в секундах
+                  или None, если время не было установлено.
+
+        Исключения:
+            None
+        """
+        context = super().get_context_data(**kwargs)
+        code_time = self.request.session.get('confirmation_code_time')
+
+        if code_time is None:
+            context['remaining_time'] = None
+        else:
+            remaining_time = max(0, 300 - (time.time() - code_time))
+            context['remaining_time'] = int(remaining_time)
+
+
+        return context
+
     def get_form_kwargs(self) -> Dict[str, Any]:
         """
         Добавляет объект запроса в аргументы формы.
 
         Возвращает:
-            Dict[str, Any]: Аргументы для формы.
+            Dict[str, Any]: Аргументы для формы, включая:
+                - request (HttpRequest): Объект HTTP-запроса.
+
+        Исключения:
+            None
         """
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
@@ -77,6 +131,9 @@ class CustomUserConfirmView(FormView):
 
         Возвращает:
             redirect: Перенаправление на URL успеха после обработки формы.
+
+        Исключения:
+            None
         """
         phone_number = self.request.session.get('phone_number')
         user = CustomUser.objects.get(phone_number=phone_number)
@@ -122,6 +179,7 @@ class CustomUserLoginView(FormView):
         """
         # Получаем пользователя по номеру телефона
         user = CustomUser.objects.get(phone_number=form.cleaned_data.get('phone_number'))
+        self.request.session['phone_number'] = form.cleaned_data['phone_number']
 
         # Если пользователь не активен — отправляем на страницу подтверждения
         if not user.is_active:
@@ -135,10 +193,50 @@ class CustomUserLoginView(FormView):
 
 
 class CustomUserLogoutView(RedirectView):
+    """
+    Представление для выхода пользователя из системы.
+
+    Атрибуты:
+        url (str): URL, на который будет выполнено перенаправление после выхода.
+    """
+
     url = '/'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        """
+        Обработка GET-запроса для выхода пользователя.
+
+        Выполняет завершение пользовательской сессии и перенаправляет
+        на заданный URL.
+
+        Аргументы:
+            request (HttpRequest): Объект запроса.
+            *args: Дополнительные позиционные аргументы.
+            **kwargs: Дополнительные именованные аргументы.
+
+        Возвращает:
+            HttpResponse: Перенаправление на заданный URL.
+        """
         logout(request)
         return super().get(request, *args, **kwargs)
 
+
+class CustomUserConfirmNewCodeView(RedirectView):
+    url = 'confirm'
+
+    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        """
+        Проверяет наличие номера телефона в сессии перед обработкой запроса.
+        Если номера нет - перенаправляет на страницу логина.
+        """
+        if 'phone_number' not in request.session:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        """
+        Обрабатывает GET-запрос: генерирует и отправляет новый код подтверждения.
+        """
+        generate_and_send_confirmation_code(self.request)
+        return super().get(request, *args, **kwargs)
 

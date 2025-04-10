@@ -1,4 +1,5 @@
 import random
+import time
 
 def generate_and_send_confirmation_code(request):
     """
@@ -12,6 +13,7 @@ def generate_and_send_confirmation_code(request):
     """
     confirmation_code = str(random.randint(100000, 999999))
     request.session['confirmation_code'] = confirmation_code
+    request.session['confirmation_code_time'] = time.time()
 
     # Формирование сообщения для пользователя
     message = f"Спасибо за регистрацию, ваш код отправлен на телефон: {confirmation_code}"
