@@ -70,6 +70,7 @@ class DeviceCommandAdmin(admin.ModelAdmin):
         queryset.filter(status='failed').update(status='pending')
     retry_failed_commands.short_description = "Retry failed commands"
 
+
 # Регистрация моделей
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(DeviceModel, DeviceModelAdmin)

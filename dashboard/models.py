@@ -248,8 +248,19 @@ class Device(models.Model):
         blank=True,
         null=True
     )
-    created_at = models.DateTimeField(_("Дата создания"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Дата обновления"), auto_now=True)
+    created_at = models.DateTimeField(
+        _("Дата создания"),
+        auto_now_add=True)
+    updated_at = models.DateTimeField(
+        _("Дата обновления"),
+        auto_now=True)
+
+    gateway_device = models.ForeignKey(
+        'self', on_delete=models.SET_NULL,
+        null=True,
+        related_name='gateway_devices',
+    )
+
 
     class Meta:
         verbose_name = _("Устройство")
