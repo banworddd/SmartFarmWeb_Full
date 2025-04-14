@@ -1,0 +1,339 @@
+/* ==================== BASE STYLES ==================== */
+/* Основные стили документа */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== LAYOUT ==================== */
+/* Главный контейнер контента */
+.main-content {
+  position: relative;
+  min-height: calc(100vh - 40px);
+  padding: 20px;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../images/farm-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Затемнение фона */
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(5px);
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Основной контейнер для колонок */
+.content-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+/* ==================== COLUMNS ==================== */
+/* Общие стили для колонок */
+.left-column, .right-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Левая колонка (возможности) */
+.left-column {
+  justify-content: stretch;
+}
+
+/* Правая колонка (приветствие + регистрация) */
+.right-column {
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* ==================== CONTENT BLOCKS ==================== */
+/* Текстовые блоки (карточки) */
+.text-block {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(5px);
+  width: 100%;
+  text-align: center;
+  animation: fadeInUp 0.6s ease-out forwards;
+  box-sizing: border-box;
+}
+
+/* Особый стиль для левого блока (возможности) */
+.left-column .text-block {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+/* Основной заголовок */
+.main-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+/* Подчеркивание заголовка */
+.main-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Основной текст */
+.main-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* Заголовки секций */
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Иконки в заголовках */
+.section-title i {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+/* ==================== FEATURE & STEP ITEMS ==================== */
+/* Элементы возможностей и шагов */
+.feature, .step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+/* Убираем отступ у последнего элемента */
+.feature:last-child, .step:last-child {
+  margin-bottom: 0;
+}
+
+/* Эффект при наведении */
+.feature:hover, .step:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* Иконки в элементах */
+.feature i, .step i {
+  font-size: 1.2rem;
+  margin-right: 15px;
+  color: #2ecc71;
+  width: 25px;
+  text-align: center;
+}
+
+/* Контент элементов */
+.feature-content, .step-content {
+  flex: 1;
+}
+
+/* Заголовки элементов */
+.feature-content h3, .step-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+/* Текст элементов */
+.feature-content p, .step-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ==================== BUTTONS ==================== */
+/* Контейнер кнопок */
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Общие стили кнопок */
+.auth-btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* Иконки в кнопках */
+.auth-btn i {
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
+/* Кнопка входа */
+.login-btn {
+  background: linear-gradient(135deg, #273dad 0%, #2e52ca 100%);
+  color: #ffffff;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка регистрации */
+.register-btn {
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: white;
+}
+
+.register-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+/* ==================== ANIMATIONS ==================== */
+/* Анимация появления блоков */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== MOBILE VERSION ==================== */
+@media (max-width: 768px) {
+  /* Основные настройки */
+  .main-content {
+    padding: 10px;
+  }
+
+  .content-container {
+    flex-direction: column;
+    gap: 20px; /* Увеличенный отступ между блоками */
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Скрытие десктопных элементов */
+  .desktop-only {
+    display: none;
+  }
+
+  /* Отображение мобильных элементов */
+  .mobile-only {
+    display: block;
+    width: 100%;
+  }
+
+  /* Текстовые блоки */
+  .text-block {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Отступ между блоками */
+  }
+
+  .mobile-only .text-block:last-child {
+    margin-bottom: 0; /* Убираем отступ у последнего блока */
+  }
+
+  /* Типографика */
+  .main-title {
+    font-size: 1.6rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  /* Элементы возможностей и шагов */
+  .feature, .step {
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .feature i, .step i {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  /* Кнопки */
+  .auth-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .auth-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ==================== DESKTOP ONLY ==================== */
+@media (min-width: 769px) {
+  /* Скрытие мобильных элементов */
+  .mobile-only {
+    display: none;
+  }
+}
