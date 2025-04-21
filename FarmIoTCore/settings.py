@@ -46,8 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'channels',
+    'users.apps.UsersConfig',
+    'DashboardAPI',
     'main',
-    'users',
     'dashboard',
 ]
 
