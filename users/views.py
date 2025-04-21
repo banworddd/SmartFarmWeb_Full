@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import CreateView, FormView, RedirectView
 from django.contrib.auth import login, logout
