@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         if (roleFilter.value) params.append('role', roleFilter.value);
         if (nameFilter.value) params.append('farm_name', nameFilter.value);
-        if (orgFilter.value) params.append('organization', orgFilter.value);
+        if (orgFilter.value) params.append('organization_name', orgFilter.value);
 
         const url = `/api/v1/user_farms/?${params.toString()}`;
+        console.log('Отправляем запрос:', url);
 
         fetch(url, {
             headers: {
@@ -33,13 +34,20 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log('Получены данные:', data);
             const noFarmsMessage = document.querySelector('.no-farms');
             
-            if (data.length === 0) {
+            // Фильтруем фермы по организации на клиенте, если выбрана организация
+            let filteredData = data;
+            if (orgFilter.value) {
+                filteredData = data.filter(farm => farm.farm.organization_name === orgFilter.value);
+            }
+            
+            if (filteredData.length === 0) {
                 farmsList.innerHTML = '';
                 noFarmsMessage.style.display = 'flex';
             } else {
-                // Собираем уникальные организации
+                // Собираем уникальные организации из всех данных, а не только отфильтрованных
                 const organizations = new Set();
                 data.forEach(farm => {
                     if (farm.farm.organization_name) {
@@ -47,11 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
 
+                console.log('Уникальные организации:', organizations);
+                console.log('Выбранная организация:', orgFilter.value);
+
                 // Обновляем выпадающий список организаций
                 updateOrganizationFilter(organizations);
 
                 farmsList.innerHTML = '';
-                data.forEach(farm => {
+                filteredData.forEach(farm => {
                     farmsList.innerHTML += createFarmCard(farm);
                 });
                 noFarmsMessage.style.display = 'none';
@@ -76,8 +87,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция обновления фильтра организаций
     function updateOrganizationFilter(organizations) {
         const currentValue = orgFilter.value;
-        orgFilter.innerHTML = '<option value="">Все организации</option>';
         
+        // Если список организаций пуст, не обновляем выпадающий список
+        if (organizations.size === 0) return;
+        
+        // Сохраняем текущее значение
+        const selectedOrg = currentValue;
+        
+        // Обновляем список организаций
+        orgFilter.innerHTML = '<option value="">Все организации</option>';
         organizations.forEach(org => {
             const option = document.createElement('option');
             option.value = org;
@@ -85,9 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
             orgFilter.appendChild(option);
         });
 
-        // Восстанавливаем выбранное значение, если оно все еще существует
-        if (currentValue && Array.from(organizations).includes(currentValue)) {
-            orgFilter.value = currentValue;
+        // Восстанавливаем выбранное значение, если оно существует
+        if (selectedOrg && Array.from(organizations).includes(selectedOrg)) {
+            orgFilter.value = selectedOrg;
         }
     }
 
@@ -192,11 +210,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3 class="farm-name">${farm.farm.name}</h3>
                     <div class="farm-badges">
                         <span class="farm-role role-${farm.role}">${farm.role}</span>
-                        ${farm.farm.organization_name ? `<span class="farm-organization">${farm.farm.organization_name}</span>` : ''}
                     </div>
                 </div>
                 <p class="farm-description">${farm.farm.description || 'Нет описания'}</p>
                 <div class="farm-meta">
+                    <span><i class="fas fa-building"></i> ${farm.farm.organization_name || 'Без организации'}</span>
                     <span><i class="fas fa-user-shield"></i> ${farm.farm.owner_full_name}</span>
                     <span><i class="fas fa-calendar-alt"></i> ${formatDate(farm.joined_at)}</span>
                 </div>
