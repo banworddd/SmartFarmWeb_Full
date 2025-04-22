@@ -9,59 +9,50 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser):
     """
     Расширенная модель пользователя для использования в приложении.
-    Модель добавляет поле для телефона, email, и переопределяет логику работы с username.
 
     Атрибуты:
         phone_number (CharField): Уникальный номер телефона пользователя.
-        email (EmailField): Уникальный email пользователя (может быть пустым).
+        email (EmailField): Уникальный email пользователя.
         first_name (CharField): Имя пользователя.
         last_name (CharField): Фамилия пользователя.
-        username (CharField): Имя пользователя (не обязательно).
+        username (CharField): Имя пользователя.
         is_active (BooleanField): Флаг активности пользователя.
-        farms (ManyToManyField): Связь с фермерскими хозяйствами пользователя.
-        groups (ManyToManyField): Группы, к которым принадлежит пользователь.
-        user_permissions (ManyToManyField): Права доступа пользователя.
+        farms (ManyToManyField): Фермы через FarmMembership.
+        organizations (ManyToManyField): Внешние организации.
     """
 
-    # Поле для хранения уникального номера телефона пользователя
     phone_number = models.CharField(
         max_length=10,
         unique=True,
-        help_text="Номер телефона пользователя",
+        help_text=_("Номер телефона пользователя"),
     )
 
-    # Поле для хранения уникального email пользователя
     email = models.EmailField(
         unique=True,
-        help_text="Email пользователя"
+        help_text=_("Email пользователя")
     )
 
-    # Имя пользователя
     first_name = models.CharField(
         max_length=30,
-        help_text="Имя пользователя"
+        help_text=_("Имя пользователя")
     )
 
-    # Фамилия пользователя
     last_name = models.CharField(
         max_length=30,
-        help_text="Фамилия пользователя"
+        help_text=_("Фамилия пользователя")
     )
 
-    # Имя пользователя в системе
     username = models.CharField(
         max_length=10,
-        blank=True,  # Имя пользователя не обязательно
-        help_text="Имя пользователя в системе"
+        blank=True,
+        help_text=_("Имя пользователя в системе")
     )
 
-    # Статус активности пользователя
     is_active = models.BooleanField(
         default=False,
-        help_text="Флаг активности пользователя"
+        help_text=_("Флаг активности пользователя")
     )
 
-    # Связь с моделями фермерских хозяйств через промежуточную модель FarmMembership
     farms = models.ManyToManyField(
         'Farm',
         through='FarmMembership',
@@ -69,48 +60,92 @@ class CustomUser(AbstractUser):
         verbose_name=_('Фермы')
     )
 
-    # Для аутентификации используется поле phone_number, а не username
+    organizations = models.ManyToManyField(
+        'ExternalOrganization',
+        related_name='members',
+        verbose_name=_('Организации'),
+        blank=True,
+        help_text=_('Организации, в которых состоит пользователь')
+    )
+
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username', 'email']
 
-    # Группы, к которым принадлежит пользователь
-    groups = models.ManyToManyField(
-        "auth.Group",
-        related_name="customuser_set",
-        blank=True,
-        help_text="Группы, к которым принадлежит пользователь"
-    )
-
-    # Права доступа пользователя
-    user_permissions = models.ManyToManyField(
-        "auth.Permission",
-        related_name="customuser_permissions",
-        blank=True,
-        help_text="Права доступа пользователя"
-    )
-
-    # Использование кастомного менеджера для создания суперпользователей
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
-        """
-        Переопределяет метод save для того, чтобы при сохранении автоматически
-        присваивался номер телефона как username.
-
-        Это гарантирует, что поле username будет заполнено значением phone_number,
-        если оно не было указано при создании пользователя.
-        """
         self.username = self.phone_number
         super().save(*args, **kwargs)
 
     def __str__(self):
-        """
-        Возвращает строковое представление пользователя.
-
-        Возвращает:
-            str: Имя пользователя, если оно указано, или телефонный номер, если имя отсутствует.
-        """
         return self.first_name or self.phone_number
+
+
+class ExternalOrganization(models.Model):
+    """
+    Модель внешней организации, сотрудничающей с фермерскими хозяйствами.
+
+    Атрибуты:
+        name (CharField): Название организации (уникальное)
+        type (CharField): Тип организации
+        description (TextField): Описание организации
+        admins (ManyToManyField): Администраторы организации
+        created_at (DateTimeField): Дата создания
+        updated_at (DateTimeField): Дата последнего обновления
+        farms (ManyToManyField): Фермы, связанные с организацией
+    """
+
+    class OrganizationType(models.TextChoices):
+        """Типы организаций"""
+        SUPPLIER = 'supplier', _('Поставщик')
+        PARTNER = 'partner', _('Партнер')
+        GOVERNMENT = 'government', _('Госорганизация')
+        OTHER = 'other', _('Другое')
+
+    name = models.CharField(
+        _('Название организации'),
+        max_length=100,
+        unique=True,
+        help_text=_('Полное официальное название организации')
+    )
+
+    type = models.CharField(
+        _('Тип организации'),
+        max_length=20,
+        choices=OrganizationType.choices,
+        default=OrganizationType.OTHER
+    )
+
+    description = models.TextField(
+        _('Описание'),
+        blank=True,
+        help_text=_('Подробное описание деятельности организации')
+    )
+
+    admins = models.ManyToManyField(
+        CustomUser,
+        related_name='admin_of_organizations',
+        verbose_name=_('Администраторы'),
+        help_text=_('Пользователи с правами администрирования организации')
+    )
+
+    created_at = models.DateTimeField(
+        _('Дата создания'),
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        _('Дата обновления'),
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = _('Внешняя организация')
+        verbose_name_plural = _('Внешние организации')
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.name} ({self.get_type_display()})"
 
 
 class Farm(models.Model):
@@ -120,19 +155,18 @@ class Farm(models.Model):
     Атрибуты:
         name (CharField): Название фермы (уникальное).
         owner (ForeignKey): Владелец фермы, который является пользователем.
+        organization (ForeignKey): Внешняя организация, связанная с фермой.
         created_at (DateTimeField): Дата и время создания фермы.
         updated_at (DateTimeField): Дата и время последнего обновления фермы.
         description (TextField): Описание фермы.
     """
 
-    # Название фермы (уникальное)
     name = models.CharField(
         _('Название'),
         max_length=100,
         unique=True
     )
 
-    # Владелец фермы (пользователь, связанный с фермером)
     owner = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
@@ -140,19 +174,26 @@ class Farm(models.Model):
         verbose_name=_('Владелец')
     )
 
-    # Дата создания фермы
+    organization = models.ForeignKey(
+        'ExternalOrganization',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='farms',
+        verbose_name=_('Организация'),
+        help_text=_('Связанная внешняя организация')
+    )
+
     created_at = models.DateTimeField(
         _('Дата создания'),
         auto_now_add=True
     )
 
-    # Дата последнего обновления фермы
     updated_at = models.DateTimeField(
         _('Дата обновления'),
         auto_now=True
     )
 
-    # Описание фермы (необязательно)
     description = models.TextField(
         _('Описание'),
         blank=True
@@ -170,12 +211,6 @@ class Farm(models.Model):
         ]
 
     def __str__(self):
-        """
-        Возвращает строковое представление фермы (её название).
-
-        Возвращает:
-            str: Название фермы.
-        """
         return self.name
 
 
