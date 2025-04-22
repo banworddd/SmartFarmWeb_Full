@@ -137,6 +137,7 @@ body, html {
   /* Адаптация контейнера */
   .container {
     flex-direction: column;
+    pointer-events: none; /* Disable pointer events for the layout container */
   }
 
   /* Мобильный сайдбар */
@@ -149,6 +150,7 @@ body, html {
     display: flex;
     align-items: center;
     overflow-x: auto;
+    pointer-events: auto; /* Enable pointer events for the sidebar */
   }
 
   /* Навигация в мобильном виде */
@@ -184,6 +186,7 @@ body, html {
   /* Контент в мобильном виде */
   .content {
     margin-left: 0;
+    pointer-events: auto; /* Enable pointer events for the content */
   }
 
   /* Отключение анимаций на мобильных */

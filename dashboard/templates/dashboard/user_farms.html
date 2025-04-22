@@ -1,0 +1,56 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/user_farms.js' %}"></script>
+{% endblock %}
+
+{% block title %}Мои фермы{% endblock %}
+
+{% block content %}
+<div class="farms-page">
+    <!-- Общий контейнер для заголовка и карточек ферм -->
+    <div class="content-wrapper">
+        <!-- Заголовок и кнопка добавления -->
+        <div class="header-card">
+            <div class="farms-header">
+                <h1 class="farms-title">Мои фермы</h1>
+                <button id="addFarmBtn" class="farm-action-btn">
+                    <i class="fas fa-plus"></i> Добавить ферму
+                </button>
+            </div>
+        </div>
+
+        <!-- Контейнер для списка ферм -->
+        <div id="farmsList" class="farms-grid">
+            <!-- Фермы будут загружены через JS -->
+            <div class="loading-state"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления фермы -->
+    <div id="addFarmModal" class="farm-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Добавить новую ферму</h2>
+            <form id="addFarmForm" class="farm-form">
+                <div class="form-group">
+                    <label for="farmName">Название фермы</label>
+                    <input type="text" id="farmName" required>
+                </div>
+                <div class="form-group">
+                    <label for="farmDescription">Описание</label>
+                    <textarea id="farmDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Создать ферму
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

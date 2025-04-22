@@ -1,0 +1,419 @@
+/* ==================== BASE STYLES ==================== */
+/* Анимация появления элементов */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация исчезновения элементов */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+/* Основной контейнер страницы */
+.farms-page {
+    padding: 20px;
+    min-height: calc(100vh - 40px);
+    transition: margin-left 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Фоновое изображение страницы */
+.farms-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -2;
+}
+
+/* Затемнение фона */
+.farms-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ==================== CONTENT WRAPPER ==================== */
+/* Основной контейнер контента */
+.content-wrapper {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    width: calc(100% - 120px);
+    max-width: 900px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-left: 60px;
+    padding-right: 60px;
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+/* Состояние исчезновения контента */
+.content-wrapper.fade-out {
+    animation: fadeOut 0.5s ease-in forwards;
+}
+
+/* ==================== HEADER STYLES ==================== */
+/* Контейнер заголовка */
+.header-card {
+    background: transparent;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Внутренний контейнер заголовка */
+.farms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+/* Заголовок страницы */
+.farms-title {
+    font-size: 2rem;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== BUTTONS ==================== */
+/* Кнопка добавления фермы */
+.farm-action-btn {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    margin: 0;
+}
+
+/* Эффект при наведении на кнопку */
+.farm-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+/* ==================== FARMS GRID ==================== */
+/* Сетка карточек ферм */
+.farms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* ==================== FARM CARD ==================== */
+/* Карточка фермы */
+.farm-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Эффект при наведении на карточку */
+.farm-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+/* Заголовок карточки */
+.farm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    min-height: 30px;
+}
+
+/* Название фермы */
+.farm-name {
+    font-size: 1.3rem;
+    margin: 0;
+    color: #ffffff;
+    line-height: 1.4;
+    max-height: 2.8rem;
+    overflow: hidden;
+}
+
+/* Стиль иконки владельца */
+.role-owner .farm-header i.fas,
+.role-owner .farm-header i {
+    color: #2ecc71 !important;
+}
+
+/* Бейдж роли пользователя */
+.farm-role {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+/* Цвета бейджей для разных ролей */
+.role-owner { background: #e67e22; }
+.role-admin { background: #3498db; }
+.role-manager { background: #2ecc71; }
+.role-technician { background: #9b59b6; }
+.role-viewer { background: #7f8c8d; }
+
+/* Описание фермы */
+.farm-description {
+    color: #ffffff;
+    margin: 0 0 12px 0;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    max-height: 4.2rem;
+}
+
+/* Мета-информация карточки */
+.farm-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: #ffffff;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Стиль иконки владельца в мета-информации */
+.farm-meta i.fa-user-shield,
+.farm-meta i.fa-calendar-alt {
+    color: #2ecc71;
+    font-size: 1.1rem;
+    margin-right: 8px;
+}
+
+/* Стиль иконки владельца */
+.role-owner .farm-header i.fas,
+.role-owner .farm-header i {
+    color: #2ecc71 !important;
+    font-size: 1.2rem;
+}
+
+/* ==================== MODAL STYLES ==================== */
+/* Модальное окно */
+.farm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding-left: 60px;
+}
+
+/* Активное состояние модального окна */
+.farm-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Контент модального окна */
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Кнопка закрытия модального окна */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* ==================== FORM STYLES ==================== */
+/* Форма создания/редактирования фермы */
+.farm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Группа полей формы */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Поля ввода формы */
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Кнопка отправки формы */
+.submit-btn {
+    background: #38a169;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* ==================== RESPONSIVE ==================== */
+/* Стили для мобильных устройств */
+@media (max-width: 768px) {
+    .farms-page {
+        margin-left: 0;
+        padding-top: 80px;
+    }
+
+    .farm-modal {
+        padding-left: 0;
+    }
+
+    .farms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-wrapper {
+        width: calc(100% - 20px);
+        max-width: none;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .header-card {
+        padding: 20px 10px;
+    }
+
+    .farms-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .farms-title {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .farm-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .farm-card {
+        height: auto;
+        min-height: 220px;
+    }
+
+    .farm-name {
+        font-size: 1.1rem;
+        line-height: 1.3;
+        max-height: 2.6rem;
+    }
+
+    .farm-meta {
+        font-size: 0.85rem;
+    }
+
+    .farm-meta i.fa-user-shield,
+    .farm-meta i.fa-calendar-alt {
+        font-size: 1rem;
+        margin-right: 6px;
+    }
+
+    .role-owner .farm-header i.fas,
+    .role-owner .farm-header i {
+        font-size: 1.1rem;
+    }
+}
+
+/* ==================== SCROLLBAR ==================== */
+/* Стилизация скроллбара описания */
+.farm-description::-webkit-scrollbar {
+    width: 4px;
+}
+
+.farm-description::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+}

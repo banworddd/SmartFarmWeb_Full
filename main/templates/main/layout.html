@@ -1,93 +1,93 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <!-- Мета-теги и настройки страницы -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <!-- Мета-теги и настройки страницы -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Заголовок страницы с возможностью переопределения в дочерних шаблонах -->
-    <title>{% block title %}Умная Ферма{% endblock %}</title>
-    <link rel="icon" href="{% static 'ico/favicon.ico' %}" />
-    <!-- Основные CSS стили -->
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+        <!-- Заголовок страницы с возможностью переопределения в дочерних шаблонах -->
+        <title>{% block title %}Умная Ферма{% endblock %}</title>
+        <link rel="icon" href="{% static 'ico/favicon.ico' %}" />
+        <!-- Основные CSS стили -->
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}">
 
-    <!-- Подключение шрифта Roboto с Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <!-- Подключение шрифта Roboto с Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- Иконки Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Иконки Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!-- Дополнительные CSS-стили (может быть переопределен в дочерних шаблонах) -->
-    {% block extra_css %}
-    {% endblock %}
-    {% block extra_js %}
-    {% endblock %}
-</head>
+        <!-- Дополнительные CSS-стили (может быть переопределен в дочерних шаблонах) -->
+        {% block extra_css %}
+        {% endblock %}
+        {% block extra_js %}
+        {% endblock %}
+    </head>
 
-<body>
-    <!-- Основной контейнер приложения -->
-    <div class="container">
-        <!-- Боковая панель (отображается только для авторизованных пользователей) -->
-        {% if user.is_authenticated %}
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <!-- Пункт меню: Главная -->
-                    <li>
-                        <a href="{% url 'main' %}">
-                            <i class="fas fa-home"></i>
-                            <span> Главная</span>
-                        </a>
-                    </li>
+    <body>
+        <!-- Основной контейнер приложения -->
+        <div class="container">
+            <!-- Боковая панель (отображается только для авторизованных пользователей) -->
+            {% if user.is_authenticated %}
+            <aside class="sidebar">
+                <nav>
+                    <ul>
+                        <!-- Пункт меню: Главная -->
+                        <li>
+                            <a href="{% url 'main' %}">
+                                <i class="fas fa-home"></i>
+                                <span> Главная</span>
+                            </a>
+                        </li>
 
-                    <!-- Пункт меню: Панель управления -->
-                    <li>
-                        <a href="{% url 'main' %}">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span> Панель управления</span>
-                        </a>
-                    </li>
+                        <!-- Пункт меню: Панель управления -->
+                        <li>
+                            <a href="{% url 'main' %}">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span> Панель управления</span>
+                            </a>
+                        </li>
 
-                    <!-- Пункт меню: Датчики -->
-                    <li>
-                        <a href="{% url 'main' %}">
-                            <i class="fas fa-thermometer-half"></i>
-                            <span> Датчики</span>
-                        </a>
-                    </li>
+                        <!-- Пункт меню: Датчики -->
+                        <li>
+                            <a href="{% url 'main' %}">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span> Датчики</span>
+                            </a>
+                        </li>
 
-                    <!-- Пункт меню: Растения -->
-                    <li>
-                        <a href="{% url 'main' %}">
-                            <i class="fas fa-seedling"></i>
-                            <span> Растения</span>
-                        </a>
-                    </li>
+                        <!-- Пункт меню: Растения -->
+                        <li>
+                            <a href="{% url 'main' %}">
+                                <i class="fas fa-seedling"></i>
+                                <span> Растения</span>
+                            </a>
+                        </li>
 
-                     <li>
-                        <a href="{% url 'logout' %}">
-                            <i class="fas fa-right-from-bracket"></i>
-                            <span> Выход</span>
-                        </a>
-                    </li>
+                         <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="fas fa-right-from-bracket"></i>
+                                <span> Выход</span>
+                            </a>
+                        </li>
 
-                </ul>
-            </nav>
-        </aside>
-        {% endif %}
+                    </ul>
+                </nav>
+            </aside>
+            {% endif %}
 
-        <!-- Основное содержимое страницы -->
-        <main class="content">
-            {% block content %}
-            <!-- Контент будет подставлен из дочерних шаблонов -->
-            {% endblock %}
-        </main>
-    </div>
+            <!-- Основное содержимое страницы -->
+            <main class="content">
+                {% block content %}
+                <!-- Контент будет подставлен из дочерних шаблонов -->
+                {% endblock %}
+            </main>
+        </div>
 
-    <!-- Подключение JavaScript в конце документа -->
-    <script src="{% static 'js/layout.js' %}"></script>
-</body>
-</html>
+        <!-- Подключение JavaScript в конце документа -->
+        <script src="{% static 'js/layout.js' %}"></script>
+    </body>
+    </html>
