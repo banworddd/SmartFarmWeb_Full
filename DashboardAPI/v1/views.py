@@ -1,9 +1,33 @@
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import BaseFilterBackend
+
 
 from .serializers import UserFarmMembershipsSerializer
 from users.models import FarmMembership
+
+
+class FarmMembershipFilterBackend(BaseFilterBackend):
+    """Кастомный фильтр для членств в фермах"""
+
+    def filter_queryset(self, request, queryset, view):
+        # Фильтрация по роли
+        role = request.query_params.get('role')
+        if role:
+            queryset = queryset.filter(role=role)
+
+        # Фильтрация по названию фермы (регистронезависимый поиск)
+        farm_name = request.query_params.get('farm_name')
+        if farm_name:
+            queryset = queryset.filter(farm__name__icontains=farm_name)
+
+        # Фильтрация по организации
+        organization = request.query_params.get('organization')
+        if organization in ['true', 'false']:
+            queryset = queryset.filter(farm__is_active=(organization == 'true'))
+
+        return queryset
 
 
 class UserFarmsAPIView(ListAPIView):
@@ -19,6 +43,7 @@ class UserFarmsAPIView(ListAPIView):
 
     serializer_class = UserFarmMembershipsSerializer
     permission_classes = [IsAuthenticated]  # Доступ только для аутентифицированных пользователей
+    filter_backends = [FarmMembershipFilterBackend]
 
     def get_queryset(self):
         """Создает и возвращает QuerySet членств пользователя в фермах с сортировкой по ролям.

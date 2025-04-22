@@ -8,10 +8,12 @@ class UserFarmsSerializer(serializers.ModelSerializer):
     Включает базовую информацию о ферме и полное имя владельца.
     """
     owner_full_name = serializers.SerializerMethodField()
+    organization_name = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Farm
-        fields = ['id', 'name', 'description', 'owner_full_name']
+        fields = ['id', 'name', 'description', 'owner_full_name', 'organization_name']
         """
         Поля:
             id (int): Уникальный идентификатор фермы
@@ -31,6 +33,18 @@ class UserFarmsSerializer(serializers.ModelSerializer):
             str: Строка в формате "{first_name} {last_name}"
         """
         return f"{obj.owner.first_name} {obj.owner.last_name}"
+
+    @staticmethod
+    def get_organization_name(obj):
+        """Возвращает название организации - владельца фермы.
+
+        Args:
+            obj (Farm): Объект фермы
+
+        Returns:
+            str: Строка"
+        """
+        return f"{obj.organization.name}"
 
 
 class UserFarmMembershipsSerializer(serializers.ModelSerializer):

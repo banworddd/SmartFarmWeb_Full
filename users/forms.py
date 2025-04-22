@@ -2,7 +2,7 @@ import re
 import time
 
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, ExternalOrganization
 
 class CustomUserRegistrationForm(forms.ModelForm):
     """
@@ -12,6 +12,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         password (CharField): Поле для ввода пароля.
         password2 (CharField): Поле для подтверждения пароля.
         phone_number (CharField): Поле для ввода номера телефона.
+        organization (ModelChoiceField): Поле для выбора организации.
     """
 
     password = forms.CharField(
@@ -31,10 +32,17 @@ class CustomUserRegistrationForm(forms.ModelForm):
         }),
         max_length=10
     )
+    organization = forms.ModelChoiceField(
+        queryset=ExternalOrganization.objects.all(),
+        label='Организация',
+        required=False,
+        empty_label='Выберите организацию',
+        help_text='Выберите организацию, к которой вы принадлежите (необязательно)'
+    )
 
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'phone_number', 'email', 'password')
+        fields = ('first_name', 'last_name', 'phone_number', 'email', 'password', 'organization')
         labels = {
             'phone_number': 'Номер телефона',
             'email': 'Email (необязательно)'
@@ -160,7 +168,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
 
     def save(self, commit=True):
         """
-        Сохранение пользователя с хешированным паролем.
+        Сохранение пользователя с хешированным паролем и организацией.
 
         Аргументы:
             commit (bool): Флаг для сохранения пользователя в базе данных.
@@ -172,6 +180,9 @@ class CustomUserRegistrationForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
+            # Добавляем организацию, если она была выбрана
+            if self.cleaned_data.get('organization'):
+                user.organizations.add(self.cleaned_data['organization'])
         return user
 
 class CustomUserConfirmationForm(forms.Form):

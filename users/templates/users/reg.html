@@ -96,6 +96,21 @@
                 {% endif %}
             </div>
 
+            <!-- Поле выбора организации -->
+            <div class="form-group">
+                <label for="{{ form.organization.id_for_label }}">
+                    <i class="fas fa-building"></i> Организация
+                </label>
+                {{ form.organization }}
+                <div class="input-hint">Выберите организацию, к которой вы принадлежите (необязательно)</div>
+                {% if form.organization.errors %}
+                <div class="field-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ form.organization.errors.0 }}
+                </div>
+                {% endif %}
+            </div>
+
             <!-- Поле пароля -->
             <div class="form-group">
                 <label for="{{ form.password.id_for_label }}">

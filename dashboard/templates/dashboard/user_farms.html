@@ -25,10 +25,47 @@
             </div>
         </div>
 
+        <!-- Панель фильтров -->
+        <div class="filters-panel">
+            <div class="filter-group">
+                <label for="roleFilter">
+                    <i class="fas fa-user-tag"></i> Роль
+                </label>
+                <select id="roleFilter" class="filter-select">
+                    <option value="">Все роли</option>
+                    <option value="owner">Владелец</option>
+                    <option value="admin">Администратор</option>
+                    <option value="manager">Менеджер</option>
+                    <option value="technician">Техник</option>
+                    <option value="viewer">Наблюдатель</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="nameFilter">
+                    <i class="fas fa-search"></i> Поиск
+                </label>
+                <input type="text" id="nameFilter" class="filter-input" placeholder="Название фермы">
+            </div>
+            <div class="filter-group">
+                <label for="orgFilter">
+                    <i class="fas fa-building"></i> Организация
+                </label>
+                <select id="orgFilter" class="filter-select">
+                    <option value="">Все организации</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Контейнер для списка ферм -->
         <div id="farmsList" class="farms-grid">
-            <!-- Фермы будут загружены через JS -->
-            <div class="loading-state"></div>
+            <!-- Фермы будут добавлены сюда динамически -->
+        </div>
+        <div class="empty-state-container">
+            <div class="no-farms" style="display: none;">
+                <i class="fas fa-tractor"></i>
+                <h3>У вас пока нет ферм</h3>
+                <p>Создайте новую ферму или попросите владельца добавить вас</p>
+            </div>
         </div>
     </div>
 
