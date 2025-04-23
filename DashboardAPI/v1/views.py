@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import BaseFilterBackend
 
 
-from .serializers import UserFarmMembershipsSerializer
-from users.models import FarmMembership
+from .serializers import UserFarmMembershipsSerializer, UserExternalOrganizationMembershipsSerializer
+from users.models import FarmMembership, ExternalOrganizationMembership
 
 
 class FarmMembershipFilterBackend(BaseFilterBackend):
@@ -78,3 +78,26 @@ class UserFarmsAPIView(ListAPIView):
         )
 
         return queryset
+
+
+class UserExternalOrganizationsAPIView(ListAPIView):
+    """API-представление для получения членств пользователя в организациях.
+
+    Позволяет аутентифицированному пользователю получить список своих членств
+    во внешних организациях с детализацией ролей и статусов.
+
+    Attributes:
+        serializer_class: Сериализатор для членств в организациях.
+        permission_classes: Ограничивает доступ аутентифицированным пользователям.
+    """
+    serializer_class = UserExternalOrganizationMembershipsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Возвращает queryset с членствами текущего пользователя.
+
+        Returns:
+            QuerySet: Набор объектов ExternalOrganizationMembership,
+                     отфильтрованный по текущему пользователю.
+        """
+        return ExternalOrganizationMembership.objects.filter(user=self.request.user)

@@ -164,6 +164,7 @@ class ExternalOrganization(models.Model):
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"
 
+
 class ExternalOrganizationMembership(models.Model):
     """
     Модель для связи пользователя и организации с дополнительными атрибутами.
@@ -226,6 +227,7 @@ class ExternalOrganizationMembership(models.Model):
 
     def __str__(self):
         return f"{self.user} в {self.organization} ({self.get_role_display()})"
+
 
 class Farm(models.Model):
     """

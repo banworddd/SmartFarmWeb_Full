@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import CustomUser, Farm, FarmMembership, FarmGroup
+from users.models import CustomUser, Farm, FarmMembership, FarmGroup, ExternalOrganization, ExternalOrganizationMembership
 
 
 class UserFarmsSerializer(serializers.ModelSerializer):
@@ -71,3 +71,45 @@ class UserFarmMembershipsSerializer(serializers.ModelSerializer):
             joined_at (str): Дата присоединения в формате "дд.мм.гггг чч:мм"
             updated_at (str): Дата обновления в формате "дд.мм.гггг чч:мм"
         """
+
+
+class UserExternalOrganizationSerializer(serializers.ModelSerializer):
+    """Сериализатор для краткого представления внешней организации.
+
+    Используется для вложенного отображения организации в других сериализаторах.
+    Выводит только базовые поля, исключая敏感ные или избыточные данные.
+
+    Attributes:
+        id (int): Уникальный идентификатор организации.
+        name (str): Название организации.
+        address (str): Физический адрес организации (опционально).
+        description (str): Описание деятельности организации (опционально).
+    """
+
+    class Meta:
+        model = ExternalOrganization
+        fields = ['id', 'name', 'address', 'description']
+
+
+class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer):
+    """Сериализатор для членства пользователя в организации.
+
+    Детализирует связь пользователя с организацией, включая:
+    - полные данные организации через вложенный сериализатор
+    - роль пользователя
+    - статус подтверждения членства
+    - дату последнего обновления в удобном формате
+
+    Attributes:
+        id (int): Уникальный идентификатор записи о членстве.
+        organization (dict): Сериализованные данные организации (UserExternalOrganizationSerializer).
+        role (str): Роль пользователя в организации (например, 'admin', 'member').
+        status (str): Статус членства ('approved', 'pending', 'rejected').
+        updated_at (str): Дата последнего обновления в формате 'DD.MM.YYYY HH:MM'.
+    """
+    organization = UserExternalOrganizationSerializer()
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+
+    class Meta:
+        model = ExternalOrganizationMembership
+        fields = ['id', 'organization', 'role', 'status', 'updated_at']
