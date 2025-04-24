@@ -113,3 +113,9 @@ class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer)
     class Meta:
         model = ExternalOrganizationMembership
         fields = ['id', 'organization', 'role', 'status', 'updated_at']
+
+
+class ExternalOrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExternalOrganization
+        fields = '__all__'

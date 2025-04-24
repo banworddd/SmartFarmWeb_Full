@@ -1,5 +1,5 @@
 from django.db.models import Case, When, Value, IntegerField
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import BaseFilterBackend
 
@@ -119,3 +119,5 @@ class UserExternalOrganizationsAPIView(ListAPIView):
                      отфильтрованный по текущему пользователю.
         """
         return ExternalOrganizationMembership.objects.filter(user=self.request.user)
+
+
