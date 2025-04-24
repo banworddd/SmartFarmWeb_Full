@@ -202,12 +202,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function createFarmCard(farm) {
+        const roleIcons = {
+            'owner': 'fas fa-crown',
+            'admin': 'fas fa-user-shield',
+            'manager': 'fas fa-user-tie',
+            'technician': 'fas fa-user-cog',
+            'viewer': 'fas fa-eye'
+        };
+        const roleNames = {
+            'owner': 'Владелец',
+            'admin': 'Администратор',
+            'manager': 'Менеджер',
+            'technician': 'Техник',
+            'viewer': 'Наблюдатель'
+        };
+
         return `
             <div class="farm-card" data-farm-id="${farm.id}">
                 <div class="farm-header">
                     <h3 class="farm-name">${farm.farm.name}</h3>
                     <div class="farm-badges">
-                        <span class="farm-role role-${farm.role}">${farm.role}</span>
+                        <span class="farm-role role-${farm.role}">
+                            <i class="${roleIcons[farm.role] || 'fas fa-user'}"></i>
+                            <span class="role-label">${roleNames[farm.role] || farm.role}</span>
+                        </span>
                     </div>
                 </div>
                 <p class="farm-description">${farm.farm.description || 'Нет описания'}</p>
@@ -219,4 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
+
+    // Toggle badge expansion to reveal role name
+    farmsList.addEventListener('click', function(e) {
+        const badge = e.target.closest('.farm-role');
+        if (badge) {
+            badge.classList.toggle('expanded');
+        }
+    });
 });

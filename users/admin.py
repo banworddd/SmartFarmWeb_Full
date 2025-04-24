@@ -4,7 +4,7 @@ from .models import (
     CustomUser,
     Farm,
     FarmGroup,
-    FarmMembership,
+    FarmMembership, ExternalOrganization,
 )
 
 
@@ -43,9 +43,15 @@ class FarmMembershipAdmin(admin.ModelAdmin):
     list_filter = ('farm', 'role')
     search_fields = ('user__phone_number', 'user__email')
 
+class ExternalOrganizationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'type', 'slug', 'address', 'email', 'description')
+    list_filter = ('name',)
+    search_fields = ('slug',)
+
 
 # Регистрация моделей
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Farm, FarmAdmin)
 admin.site.register(FarmGroup, FarmGroupAdmin)
 admin.site.register(FarmMembership, FarmMembershipAdmin)
+admin.site.register(ExternalOrganization, ExternalOrganizationAdmin)

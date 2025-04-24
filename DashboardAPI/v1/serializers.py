@@ -88,7 +88,7 @@ class UserExternalOrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExternalOrganization
-        fields = ['id', 'name', 'address', 'description']
+        fields = ['id', 'name', 'address', 'description', 'type']
 
 
 class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer):

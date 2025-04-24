@@ -1,7 +1,9 @@
+from typing import Dict, List
+from slugify import slugify
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
-from typing import Dict, List
 
 from .managers import CustomUserManager
 
@@ -117,6 +119,11 @@ class ExternalOrganization(models.Model):
         default=OrganizationType.OTHER
     )
 
+    slug = models.SlugField(
+        _('Slug организации'),
+        blank=True
+    )
+
     address = models.CharField(
         _('Адрес организации'),
         max_length=250,
@@ -160,6 +167,11 @@ class ExternalOrganization(models.Model):
         verbose_name = _('Внешняя организация')
         verbose_name_plural = _('Внешние организации')
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(ExternalOrganization, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"

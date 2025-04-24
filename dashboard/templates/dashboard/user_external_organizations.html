@@ -45,6 +45,29 @@
                 </label>
                 <input type="text" id="nameFilter" class="filter-input" placeholder="Название организации">
             </div>
+            <div class="filter-group">
+                <label for="statusFilter">
+                    <i class="fas fa-info-circle"></i> Статус
+                </label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="">Все статусы</option>
+                    <option value="approved">Одобрено</option>
+                    <option value="pending">В ожидании</option>
+                    <option value="rejected">Отклонено</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="organizationTypeFilter">
+                    <i class="fas fa-building"></i> Тип организации
+                </label>
+                <select id="organizationTypeFilter" class="filter-select">
+                    <option value="">Все типы</option>
+                    <option value="supplier">Поставщик</option>
+                    <option value="partner">Партнер</option>
+                    <option value="government">Государственная</option>
+                    <option value="other">Другое</option>
+                </select>
+            </div>
         </div>
 
         <!-- Контейнер для списка организаций -->

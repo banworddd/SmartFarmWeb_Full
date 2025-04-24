@@ -89,7 +89,16 @@ class ExternalOrganizationFilterBackend(BaseFilterBackend):
         if role:
             queryset = queryset.filter(role=role)
 
-        # Фильтрация по названию фермы (регистронезависимый поиск)
+        status = request.query_params.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+
+        # Фильтрация по типу организации
+        organization_type = request.query_params.get('organization_type')
+        if organization_type:
+            queryset = queryset.filter(organization__type=organization_type)
+
+        # Фильтрация по названию организации
         organization_name = request.query_params.get('organization_name')
         if organization_name:
             queryset = queryset.filter(organization__name__icontains=organization_name)

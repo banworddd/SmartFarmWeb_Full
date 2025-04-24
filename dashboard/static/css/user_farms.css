@@ -165,7 +165,7 @@
 }
 
 /* ==================== FARM CARD ==================== */
-/* Карточка фермы */
+/* Карточка фермы или организации */
 .farm-card {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -217,15 +217,39 @@
     font-size: 0.8rem;
     font-weight: 600;
     color: white;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
     margin-left: 10px;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
-/* Контейнер для бейджей */
-.farm-badges {
+.farm-role .role-label {
+    display: inline-block;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 0;
+    transform: translateX(-5px);
+    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
+}
+
+.farm-role.expanded .role-label {
+    opacity: 1;
+    max-width: 100px;
+    margin-left: 8px;
+    transform: translateX(0);
+}
+
+.farm-card[data-org-id] .farm-badges {
     display: flex;
-    gap: 8px;
     align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 /* Бейдж организации */
@@ -240,14 +264,73 @@
 }
 
 /* Бейдж статуса пользователя */
+.farm-status, .farm-type, .farm-role {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* Метки внутри бейджей */
+.farm-role .role-label,
+.farm-status .status-label,
+.farm-type .type-label {
+    display: inline-block;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 0;
+    transform: translateX(-5px);
+    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
+}
+
+.farm-role.expanded .role-label,
+.farm-status.expanded .status-label,
+.farm-type.expanded .type-label {
+    opacity: 1;
+    max-width: 100px;
+    margin-left: 8px;
+    transform: translateX(0);
+}
+
+/* Бейдж статуса пользователя */
 .farm-status {
     padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.8rem;
     font-weight: 600;
     color: white;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    vertical-align: middle;
     margin-left: 10px;
+}
+
+/* Бейдж типа организации */
+.farm-type {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+    margin-left: 10px;
+    background: #3498db;
 }
 
 /* Цвета бейджей для разных ролей */
@@ -680,4 +763,33 @@
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
+}
+
+.farm-card:not([data-org-id]) .farm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.farm-card:not([data-org-id]) .farm-description {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.farm-card[data-org-id] .farm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.farm-card[data-org-id] .farm-name {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }

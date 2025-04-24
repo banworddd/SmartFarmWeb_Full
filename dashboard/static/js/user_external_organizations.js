@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Элементы фильтров
     const roleFilter = document.getElementById('roleFilter');
     const nameFilter = document.getElementById('nameFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const organizationTypeFilter = document.getElementById('organizationTypeFilter');
 
     // Загрузка данных организаций с учетом фильтров
     function loadOrganizations() {
@@ -19,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         if (roleFilter.value) params.append('role', roleFilter.value);
         if (nameFilter.value) params.append('organization_name', nameFilter.value);
+        if (statusFilter.value) params.append('status', statusFilter.value);
+        if (organizationTypeFilter.value) params.append('organization_type', organizationTypeFilter.value);
 
         const url = `/api/v1/user_organizations/?${params.toString()}`;
         console.log('Отправляем запрос:', url);
@@ -129,6 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обработчики событий для фильтров
     roleFilter.addEventListener('change', loadOrganizations);
+    statusFilter.addEventListener('change', loadOrganizations);
+    organizationTypeFilter.addEventListener('change', loadOrganizations);
 
     // Обработчик для поиска с задержкой
     let searchTimeout;
@@ -141,15 +147,55 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOrganizations();
 
     function createOrgCard(org) {
+        const typeIcons = {
+            'supplier': 'fas fa-truck',
+            'partner': 'fas fa-handshake',
+            'government': 'fas fa-landmark',
+            'other': 'fas fa-building'
+        };
+        const roleIcons = {
+            'admin': 'fas fa-user-shield',
+            'member': 'fas fa-user',
+            'guest': 'fas fa-user-tag'
+        };
+        const statusIcons = {
+            'approved': 'fas fa-check-circle',
+            'pending': 'fas fa-hourglass-half',
+            'rejected': 'fas fa-times-circle'
+        };
+        const roleNames = {
+            'admin': 'Администратор',
+            'member': 'Сотрудник',
+            'guest': 'Гость'
+        };
+        const statusNames = {
+            'approved': 'Одобрено',
+            'pending': 'В ожидании',
+            'rejected': 'Отклонено'
+        };
+        const typeNames = {
+            'supplier': 'Поставщик',
+            'partner': 'Партнер',
+            'government': 'Государственная',
+            'other': 'Другое'
+        };
         return `
             <div class="farm-card" data-org-id="${org.id}">
-                <div class="farm-header">
-                    <h3 class="farm-name">${org.organization.name}</h3>
-                    <div class="farm-badges">
-                        <span class="farm-role role-${org.role}">${org.role}</span>
-                        <span class="farm-status status-${org.status}">${org.status}</span>
-                    </div>
+                <div class="farm-badges">
+                    <span class="farm-role role-${org.role}">
+                        <i class="${roleIcons[org.role] || 'fas fa-user'}"></i>
+                        <span class="role-label">${roleNames[org.role] || org.role}</span>
+                    </span>
+                    <span class="farm-status status-${org.status}">
+                        <i class="${statusIcons[org.status] || 'fas fa-info-circle'}"></i>
+                        <span class="status-label">${statusNames[org.status] || org.status}</span>
+                    </span>
+                    <span class="farm-type type-${org.organization.type}">
+                        <i class="${typeIcons[org.organization.type] || 'fas fa-building'}"></i>
+                        <span class="type-label">${typeNames[org.organization.type] || org.organization.type}</span>
+                    </span>
                 </div>
+                <h3 class="farm-name">${org.organization.name}</h3>
                 <p class="farm-description">${org.organization.description || 'Нет описания'}</p>
                 <div class="farm-meta">
                     <span><i class="fas fa-map-marker-alt"></i> ${org.organization.address || 'Нет адреса'}</span>
@@ -173,4 +219,12 @@ document.addEventListener('DOMContentLoaded', function() {
             year: 'numeric'
         });
     }
+
+    // Toggle badge expansion to reveal labels
+    orgsList.addEventListener('click', function(e) {
+        const badge = e.target.closest('.farm-badges span');
+        if (badge) {
+            badge.classList.toggle('expanded');
+        }
+    });
 }); 
