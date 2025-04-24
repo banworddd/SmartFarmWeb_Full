@@ -1,0 +1,84 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/user_external_organizations.js' %}"></script>
+{% endblock %}
+
+{% block title %}Мои внешние организации{% endblock %}
+
+{% block content %}
+<div class="farms-page">
+    <!-- Общий контейнер для заголовка и карточек организаций -->
+    <div class="content-wrapper">
+        <!-- Заголовок и кнопка добавления -->
+        <div class="header-card">
+            <div class="farms-header">
+                <h1 class="farms-title">Мои внешние организации</h1>
+                <button id="addOrgBtn" class="farm-action-btn">
+                    <i class="fas fa-plus"></i> Добавить организацию
+                </button>
+            </div>
+        </div>
+
+        <!-- Панель фильтров -->
+        <div class="filters-panel">
+            <div class="filter-group">
+                <label for="roleFilter">
+                    <i class="fas fa-user-tag"></i> Роль
+                </label>
+                <select id="roleFilter" class="filter-select">
+                    <option value="">Все роли</option>
+                    <option value="admin">Администратор</option>
+                    <option value="manager">Менеджер</option>
+                    <option value="member">Сотрудник</option>
+                    <option value="guest">Гость</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="nameFilter">
+                    <i class="fas fa-search"></i> Поиск
+                </label>
+                <input type="text" id="nameFilter" class="filter-input" placeholder="Название организации">
+            </div>
+        </div>
+
+        <!-- Контейнер для списка организаций -->
+        <div id="orgsList" class="farms-grid">
+            <!-- Организации будут добавлены сюда динамически -->
+        </div>
+        <div class="empty-state-container">
+            <div class="no-orgs" style="display: none;">
+                <i class="fas fa-building"></i>
+                <h3>У вас пока нет организаций</h3>
+                <p>Создайте новую организацию или попросите администратора добавить вас</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления организации -->
+    <div id="addOrgModal" class="farm-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Добавить новую организацию</h2>
+            <form id="addOrgForm" class="farm-form">
+                <div class="form-group">
+                    <label for="orgName">Название организации</label>
+                    <input type="text" id="orgName" required>
+                </div>
+                <div class="form-group">
+                    <label for="orgDescription">Описание</label>
+                    <textarea id="orgDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Создать организацию
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

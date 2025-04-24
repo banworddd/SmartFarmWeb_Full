@@ -194,13 +194,13 @@
     min-height: 30px;
 }
 
-/* Название фермы */
+/* Название фермы или организации */
 .farm-name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     margin: 0;
     color: #ffffff;
     line-height: 1.4;
-    max-height: 2.8rem;
+    max-height: 3.5rem;
     overflow: hidden;
 }
 
@@ -239,12 +239,28 @@
     background: #3498db;
 }
 
+/* Бейдж статуса пользователя */
+.farm-status {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    margin-left: 10px;
+}
+
 /* Цвета бейджей для разных ролей */
 .role-owner { background: #e67e22; }
 .role-admin { background: #3498db; }
 .role-manager { background: #2ecc71; }
 .role-technician { background: #9b59b6; }
 .role-viewer { background: #7f8c8d; }
+
+/* Цвета бейджей для разных статусов */
+.status-approved { background: #2ecc71; }
+.status-pending { background: #f39c12; }
+.status-rejected { background: #e74c3c; }
 
 /* Описание фермы */
 .farm-description {
@@ -631,6 +647,36 @@
 
 .no-farms p,
 .error-state p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+/* Сообщение о пустом состоянии для организаций */
+.no-orgs {
+    text-align: center;
+    color: white;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.no-orgs i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.no-orgs h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.no-orgs p {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
     margin: 0;

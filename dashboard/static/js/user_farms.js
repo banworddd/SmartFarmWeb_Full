@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const addFarmModal = document.getElementById('addFarmModal');
     const closeModal = document.querySelector('.close-modal');
     const addFarmForm = document.getElementById('addFarmForm');
-    
+
     // Элементы фильтров
     const roleFilter = document.getElementById('roleFilter');
     const nameFilter = document.getElementById('nameFilter');
     const orgFilter = document.getElementById('orgFilter');
+
+    // Переменная для хранения списка организаций
+    let allOrganizations = new Set();
 
     // Загрузка данных ферм с учетом фильтров
     function loadFarms() {
@@ -36,30 +39,27 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Получены данные:', data);
             const noFarmsMessage = document.querySelector('.no-farms');
-            
+
             // Фильтруем фермы по организации на клиенте, если выбрана организация
             let filteredData = data;
             if (orgFilter.value) {
                 filteredData = data.filter(farm => farm.farm.organization_name === orgFilter.value);
             }
-            
+
             if (filteredData.length === 0) {
                 farmsList.innerHTML = '';
                 noFarmsMessage.style.display = 'flex';
             } else {
-                // Собираем уникальные организации из всех данных, а не только отфильтрованных
-                const organizations = new Set();
-                data.forEach(farm => {
-                    if (farm.farm.organization_name) {
-                        organizations.add(farm.farm.organization_name);
-                    }
-                });
-
-                console.log('Уникальные организации:', organizations);
-                console.log('Выбранная организация:', orgFilter.value);
-
-                // Обновляем выпадающий список организаций
-                updateOrganizationFilter(organizations);
+                // Если это первый запрос, собираем уникальные организации из всех данных
+                if (allOrganizations.size === 0) {
+                    data.forEach(farm => {
+                        if (farm.farm.organization_name) {
+                            allOrganizations.add(farm.farm.organization_name);
+                        }
+                    });
+                    // Обновляем выпадающий список организаций
+                    updateOrganizationFilter(allOrganizations);
+                }
 
                 farmsList.innerHTML = '';
                 filteredData.forEach(farm => {
@@ -86,14 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Функция обновления фильтра организаций
     function updateOrganizationFilter(organizations) {
-        const currentValue = orgFilter.value;
-        
         // Если список организаций пуст, не обновляем выпадающий список
         if (organizations.size === 0) return;
-        
+
         // Сохраняем текущее значение
-        const selectedOrg = currentValue;
-        
+        const selectedOrg = orgFilter.value;
+
         // Обновляем список организаций
         orgFilter.innerHTML = '<option value="">Все организации</option>';
         organizations.forEach(org => {
@@ -104,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Восстанавливаем выбранное значение, если оно существует
-        if (selectedOrg && Array.from(organizations).includes(selectedOrg)) {
+        if (selectedOrg) {
             orgFilter.value = selectedOrg;
         }
     }
@@ -177,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработчики событий для фильтров
     roleFilter.addEventListener('change', loadFarms);
     orgFilter.addEventListener('change', loadFarms);
-    
+
     // Обработчик для поиска с задержкой
     let searchTimeout;
     nameFilter.addEventListener('input', function() {

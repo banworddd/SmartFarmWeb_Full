@@ -19,3 +19,14 @@ class UserFarmsView(LoginRequiredMixin, TemplateView):
     """
 
     template_name: str = 'dashboard/user_farms.html'
+
+
+class UserExternalOrganizationsView(LoginRequiredMixin, TemplateView):
+    """Представление для отображения страницы с организациями пользователя.
+
+    Наследует:
+        LoginRequiredMixin - гарантирует, что доступ имеют только аутентифицированные пользователи
+        TemplateView - базовый класс для отображения шаблонов Django
+    """
+
+    template_name: str = 'dashboard/user_external_organizations.html'

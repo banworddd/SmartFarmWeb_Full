@@ -23,9 +23,9 @@ class FarmMembershipFilterBackend(BaseFilterBackend):
             queryset = queryset.filter(farm__name__icontains=farm_name)
 
         # Фильтрация по организации
-        organization = request.query_params.get('organization')
-        if organization in ['true', 'false']:
-            queryset = queryset.filter(farm__is_active=(organization == 'true'))
+        organization_name = request.query_params.get('organization_name')
+        if organization_name:
+            queryset = queryset.filter(farm__organization__name=organization_name)
 
         return queryset
 
@@ -80,6 +80,23 @@ class UserFarmsAPIView(ListAPIView):
         return queryset
 
 
+class ExternalOrganizationFilterBackend(BaseFilterBackend):
+    """Кастомный фильтр для членств в фермах"""
+
+    def filter_queryset(self, request, queryset, view):
+        # Фильтрация по роли
+        role = request.query_params.get('role')
+        if role:
+            queryset = queryset.filter(role=role)
+
+        # Фильтрация по названию фермы (регистронезависимый поиск)
+        organization_name = request.query_params.get('organization_name')
+        if organization_name:
+            queryset = queryset.filter(organization__name__icontains=organization_name)
+
+        return queryset
+
+
 class UserExternalOrganizationsAPIView(ListAPIView):
     """API-представление для получения членств пользователя в организациях.
 
@@ -92,6 +109,7 @@ class UserExternalOrganizationsAPIView(ListAPIView):
     """
     serializer_class = UserExternalOrganizationMembershipsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [ExternalOrganizationFilterBackend]
 
     def get_queryset(self):
         """Возвращает queryset с членствами текущего пользователя.
