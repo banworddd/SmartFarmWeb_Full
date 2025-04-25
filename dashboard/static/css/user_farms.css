@@ -82,6 +82,7 @@
     padding-right: 60px;
     animation: fadeIn 0.5s ease-out forwards;
     opacity: 0;
+    color: white;
 }
 
 /* Состояние исчезновения контента */
@@ -106,10 +107,11 @@
 /* Внутренний контейнер заголовка */
 .farms-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     width: 100%;
     padding: 0;
+    text-align: center;
 }
 
 /* Заголовок страницы */
@@ -118,6 +120,8 @@
     color: #ffffff;
     margin: 0;
     padding: 0;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /* ==================== BUTTONS ==================== */
@@ -793,3 +797,512 @@
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
+
+.farm-role:hover,
+.farm-status:hover,
+.farm-type:hover {
+    transform: scale(1.05);
+}
+
+/* Основные стили */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    color: white;
+}
+
+/* Фоновое изображение страницы */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -2;
+}
+
+/* Затемнение фона */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.content-wrapper a {
+    color: white;
+}
+
+.content-wrapper h1, .content-wrapper h2, .content-wrapper h3 {
+    color: white;
+}
+
+.content-wrapper .detail-item {
+    color: white;
+}
+
+.content-wrapper .detail-item i {
+    color: white;
+}
+
+/* ==================== ORGANIZATION DETAILS ==================== */
+/* Контейнер для деталей организации */
+.organization-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Карточка с деталями */
+.detail-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    height: auto;
+    min-height: fit-content;
+}
+
+.detail-card h2 {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detail-card h2 i {
+    color: #2ecc71;
+}
+
+/* Контент деталей */
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Элемент детали */
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: white;
+    width: 100%;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-badge {
+    flex: 0 0 auto;
+    min-width: fit-content;
+    max-width: fit-content;
+}
+
+/* Список членов */
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Элемент члена */
+.member-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.member-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.member-name {
+    color: white;
+    font-weight: 500;
+}
+
+.member-details {
+    display: flex;
+    gap: 10px;
+}
+
+/* Бейджи ролей и статусов */
+.member-role,
+.member-status {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* Цвета для ролей */
+.member-role.admin { background: #3498db; }
+.member-role.manager { background: #2ecc71; }
+.member-role.member { background: #9b59b6; }
+.member-role.guest { background: #7f8c8d; }
+
+/* Цвета для статусов */
+.member-status.approved { background: #2ecc71; }
+.member-status.pending { background: #f39c12; }
+.member-status.rejected { background: #e74c3c; }
+
+/* Кнопки действий */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .organization-details {
+        grid-template-columns: 1fr;
+    }
+
+    .member-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .member-details {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+/* ==================== DETAIL BADGES ==================== */
+/* Бейдж детали */
+.detail-badge {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+}
+
+/* Специальные стили для бейджей на странице деталей организации */
+.organization-details .detail-badge {
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    min-width: 32px;
+    gap: 0px;
+}
+
+.organization-details .detail-badge i {
+    color: white;
+    width: 100%;
+    text-align: center;
+    flex: 1;
+}
+
+.organization-details .detail-badge.expanded {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+}
+
+/* Иконка в бейдже */
+.detail-badge i {
+    color: #2ecc71;
+    width: 16px;
+    text-align: center;
+}
+
+/* Метка бейджа */
+.badge-label {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+/* Расширенное состояние бейджа */
+.detail-badge.expanded {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.detail-badge.expanded .badge-label {
+    opacity: 1;
+    max-width: 200px;
+    margin-left: 4px;
+}
+
+/* Цвета для разных типов бейджей */
+.type-badge { background: #3498db; }
+.description-badge { background: #9b59b6; }
+.address-badge { background: #e67e22; }
+.email-badge { background: #e74c3c; }
+.phone-badge { background: #2ecc71; }
+.website-badge { background: #1abc9c; }
+.created-badge { background: #f39c12; }
+.updated-badge { background: #34495e; }
+
+/* Эффект при наведении */
+.detail-badge:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .detail-badge {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .detail-badge.expanded .badge-label {
+        max-width: 150px;
+    }
+}
+
+/* ==================== INLINE EDITING ==================== */
+.editable-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.editable-field {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.editable-field.editing {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.editable-container:hover .edit-btn {
+    opacity: 1;
+}
+
+.edit-btn:hover {
+    color: white;
+    background: none;
+}
+
+.edit-btn i {
+    font-size: 14px;
+}
+
+.editable-input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: calc(100% - 45px); /* Учитываем ширину кнопок и маленький отступ */
+    min-width: 0;
+    margin-right: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    transition: all 0.3s ease;
+}
+
+.editable-input[type="textarea"],
+textarea.editable-input {
+    resize: none;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.editable-input[type="textarea"]::-webkit-scrollbar,
+textarea.editable-input::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.editable-input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.editable-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.editable-actions button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.editable-actions .save-btn {
+    background: rgba(46, 204, 113, 0.2);
+    border-radius: 10px;
+}
+
+.editable-actions .save-btn:hover {
+    transform: scale(1.1);
+    background: rgba(46, 204, 113, 0.2);
+}
+
+.editable-actions .cancel-btn {
+    background: rgba(231, 76, 60, 0.2);
+    border-radius: 10px;
+}
+
+.editable-actions .cancel-btn:hover {
+    transform: scale(1.1);
+    background: rgba(231, 76, 60, 0.2);
+}
+
+.detail-item.editing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.detail-item.editing .editable-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.detail-item.editing .editable-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Переопределяем порядок элементов */
+.detail-item.editing > *:first-child {
+    order: 2;
+    margin: 0;
+}
+
+.detail-item.editing .editable-container {
+    order: 1;
+    margin: 0;
+}
+
+.detail-item.editing .editable-actions {
+    order: 3;
+    margin: 0;
+}
+
+/* Специальные стили для заголовка */
+.farms-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.farms-title .edit-btn {
+    font-size: 0.5em;
+}
+
+/* Скрываем кнопку редактирования при активном редактировании */
+.detail-item .edit-btn {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.detail-item:hover:not(.editing) .edit-btn {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease, visibility 0s linear;
+}
+
+.detail-item.editing .edit-btn {
+    display: none;
+}
+
+/* Скрываем карандашик для типа организации */
+.detail-item[data-field="type"] .edit-btn,
+.detail-item[data-field="organization_type"] .edit-btn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Скрываем карандашик только для поля типа организации */
+.detail-item:has(.type-badge) .edit-btn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+

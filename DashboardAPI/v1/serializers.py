@@ -3,7 +3,7 @@ from users.models import CustomUser, Farm, FarmMembership, FarmGroup, ExternalOr
 
 
 class UserFarmsSerializer(serializers.ModelSerializer):
-    """Сериализатор для отображения информации о ферме пользователя.
+    """Сериализатор для отображения информации о ферме пользователя в списке ферм.
 
     Включает базовую информацию о ферме и полное имя владельца.
     """
@@ -115,7 +115,11 @@ class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer)
         fields = ['id', 'organization', 'role', 'status', 'updated_at']
 
 
+
 class ExternalOrganizationSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = ExternalOrganization
-        fields = '__all__'
+        fields = ['name', 'type', 'address', 'email', 'phone', 'website', 'description', 'created_at', 'updated_at']
+
+

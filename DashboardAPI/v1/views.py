@@ -1,33 +1,14 @@
 from django.db.models import Case, When, Value, IntegerField
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.exceptions import NotFound
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import BaseFilterBackend
 
-
-from .serializers import UserFarmMembershipsSerializer, UserExternalOrganizationMembershipsSerializer
-from users.models import FarmMembership, ExternalOrganizationMembership
-
-
-class FarmMembershipFilterBackend(BaseFilterBackend):
-    """Кастомный фильтр для членств в фермах"""
-
-    def filter_queryset(self, request, queryset, view):
-        # Фильтрация по роли
-        role = request.query_params.get('role')
-        if role:
-            queryset = queryset.filter(role=role)
-
-        # Фильтрация по названию фермы (регистронезависимый поиск)
-        farm_name = request.query_params.get('farm_name')
-        if farm_name:
-            queryset = queryset.filter(farm__name__icontains=farm_name)
-
-        # Фильтрация по организации
-        organization_name = request.query_params.get('organization_name')
-        if organization_name:
-            queryset = queryset.filter(farm__organization__name=organization_name)
-
-        return queryset
+from .filters import ExternalOrganizationFilterBackend, FarmMembershipFilterBackend
+from .permissions import IsOrganizationMember
+from .serializers import UserFarmMembershipsSerializer, UserExternalOrganizationMembershipsSerializer, \
+    ExternalOrganizationSerializer
+from users.models import FarmMembership, ExternalOrganizationMembership, ExternalOrganization
 
 
 class UserFarmsAPIView(ListAPIView):
@@ -80,32 +61,6 @@ class UserFarmsAPIView(ListAPIView):
         return queryset
 
 
-class ExternalOrganizationFilterBackend(BaseFilterBackend):
-    """Кастомный фильтр для членств в фермах"""
-
-    def filter_queryset(self, request, queryset, view):
-        # Фильтрация по роли
-        role = request.query_params.get('role')
-        if role:
-            queryset = queryset.filter(role=role)
-
-        status = request.query_params.get('status')
-        if status:
-            queryset = queryset.filter(status=status)
-
-        # Фильтрация по типу организации
-        organization_type = request.query_params.get('organization_type')
-        if organization_type:
-            queryset = queryset.filter(organization__type=organization_type)
-
-        # Фильтрация по названию организации
-        organization_name = request.query_params.get('organization_name')
-        if organization_name:
-            queryset = queryset.filter(organization__name__icontains=organization_name)
-
-        return queryset
-
-
 class UserExternalOrganizationsAPIView(ListAPIView):
     """API-представление для получения членств пользователя в организациях.
 
@@ -129,4 +84,25 @@ class UserExternalOrganizationsAPIView(ListAPIView):
         """
         return ExternalOrganizationMembership.objects.filter(user=self.request.user)
 
+
+class ExternalOrganizationAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ExternalOrganizationSerializer
+    permission_classes = [IsAuthenticated, IsOrganizationMember]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    def get_object(self):
+        slug = self.request.query_params.get('slug')
+        if not slug:
+            raise NotFound('Необходимо передать параметр slug')
+
+        obj = ExternalOrganization.objects.filter(slug=slug).first()
+
+        if not obj:
+            raise NotFound('Нет организации с таким slug')
+
+        return obj
 

@@ -1,0 +1,215 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Передаем slug из контекста Django в JavaScript
+    const ORGANIZATION_SLUG = '{{ slug }}';
+</script>
+<script src="{% static 'js/external_organization.js' %}"></script>
+{% endblock %}
+
+{% block title %}{{ org_name }}{% endblock %}
+
+{% block content %}
+<div class="farms-page">
+    <div class="content-wrapper">
+        {% if status == 'approved' %}
+        <!-- Заголовок -->
+        <div class="header-card">
+            <div class="farms-header">
+                <h1 class="farms-title">
+                    <span id="orgName" class="editable-field" data-field="name">Загрузка...</span>
+                    {% if role == 'admin' %}
+                    <button class="edit-btn" data-target="orgName">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+
+        <!-- Основная информация об организации -->
+        <div class="organization-details">
+            <!-- Основная информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-info-circle"></i> Основная информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <span class="detail-badge type-badge">
+                            <i class="fas fa-building"></i>
+                            <span class="badge-label">Тип организации</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgType" class="editable-field" data-field="type">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgType">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge description-badge">
+                            <i class="fas fa-file-alt"></i>
+                            <span class="badge-label">Описание</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgDescription" class="editable-field" data-field="description">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgDescription">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контактная информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-address-card"></i> Контактная информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <span class="detail-badge address-badge">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="badge-label">Адрес</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgAddress" class="editable-field" data-field="address">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgAddress">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge email-badge">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge-label">Email</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgEmail" class="editable-field" data-field="email">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgEmail">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge phone-badge">
+                            <i class="fas fa-phone"></i>
+                            <span class="badge-label">Телефон</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgPhone" class="editable-field" data-field="phone">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgPhone">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge website-badge">
+                            <i class="fas fa-globe"></i>
+                            <span class="badge-label">Веб-сайт</span>
+                        </span>
+                        <div class="editable-container">
+                            <span id="orgWebsite" class="editable-field" data-field="website">Загрузка...</span>
+                            {% if role == 'admin' %}
+                            <button class="edit-btn" data-target="orgWebsite">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Мета информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-history"></i> Мета информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <span class="detail-badge created-badge">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="badge-label">Дата создания</span>
+                        </span>
+                        <span id="orgCreatedAt">Загрузка...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge updated-badge">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="badge-label">Дата обновления</span>
+                        </span>
+                        <span id="orgUpdatedAt">Загрузка...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Сообщение об отсутствии доступа -->
+        <div class="empty-state-container">
+            <div class="no-orgs">
+                <i class="fas fa-lock"></i>
+                <h3>У вас нет доступа к этой организации</h3>
+                <p>Дождитесь одобрения вашей заявки администратором организации</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Модальное окно для редактирования -->
+    <div id="editOrgModal" class="farm-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Редактировать организацию</h2>
+            <form id="editOrgForm" class="farm-form">
+                <div class="form-group">
+                    <label for="editOrgName">Название организации</label>
+                    <input type="text" id="editOrgName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editOrgType">Тип организации</label>
+                    <select id="editOrgType" required>
+                        <option value="supplier">Поставщик</option>
+                        <option value="partner">Партнер</option>
+                        <option value="government">Государственная</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editOrgAddress">Адрес</label>
+                    <input type="text" id="editOrgAddress" required>
+                </div>
+                <div class="form-group">
+                    <label for="editOrgEmail">Email</label>
+                    <input type="email" id="editOrgEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editOrgPhone">Телефон</label>
+                    <input type="tel" id="editOrgPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="editOrgWebsite">Веб-сайт</label>
+                    <input type="url" id="editOrgWebsite">
+                </div>
+                <div class="form-group">
+                    <label for="editOrgDescription">Описание</label>
+                    <textarea id="editOrgDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Сохранить изменения
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
