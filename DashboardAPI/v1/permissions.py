@@ -8,7 +8,7 @@ class IsOrganizationMember(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        organization_slug = request.query_params.get('slug')
+        organization_slug = request.query_params.get('slug') or request.query_params.get('organization')
 
         if not organization_slug:
             return False

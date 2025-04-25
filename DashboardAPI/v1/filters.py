@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.filters import BaseFilterBackend
 
 
@@ -35,6 +36,10 @@ class ExternalOrganizationFilterBackend(BaseFilterBackend):
         status = request.query_params.get('status')
         if status:
             queryset = queryset.filter(status=status)
+
+        username = request.query_params.get('user_name')
+        if username:
+            queryset = queryset.filter(Q(user__first_name__icontains=username)|Q(user__last_name__icontains=username))
 
         # Фильтрация по типу организации
         organization_type = request.query_params.get('organization_type')

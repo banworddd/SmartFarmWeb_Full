@@ -1,13 +1,13 @@
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.filters import BaseFilterBackend
+
 
 from .filters import ExternalOrganizationFilterBackend, FarmMembershipFilterBackend
 from .permissions import IsOrganizationMember
 from .serializers import UserFarmMembershipsSerializer, UserExternalOrganizationMembershipsSerializer, \
-    ExternalOrganizationSerializer
+    ExternalOrganizationSerializer, ExternalOrganizationUsersSerializer
 from users.models import FarmMembership, ExternalOrganizationMembership, ExternalOrganization
 
 
@@ -105,4 +105,41 @@ class ExternalOrganizationAPIView(RetrieveUpdateDestroyAPIView):
             raise NotFound('Нет организации с таким slug')
 
         return obj
+
+
+class ExternalOrganizationUsersAPIVIew(ListAPIView):
+    serializer_class = ExternalOrganizationUsersSerializer
+    permission_classes = [IsAuthenticated, IsOrganizationMember]
+    filter_backends = [ExternalOrganizationFilterBackend]
+
+    def get_queryset(self):
+        return ExternalOrganizationMembership.objects.filter(organization__slug=self.request.query_params.get('organization'))
+
+
+class ExternalOrganizationMembershipAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ExternalOrganizationUsersSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        membership_id = self.request.query_params.get('id')
+        organization_slug = self.request.query_params.get('organization')
+
+        if not membership_id or not organization_slug:
+            raise NotFound('Требуются параметры id и organization')
+
+        try:
+            # Получаем объект организации, а не строку
+            organization = ExternalOrganization.objects.get(slug=organization_slug)
+            membership = ExternalOrganizationMembership.objects.filter(
+                id=membership_id,
+                organization=organization  # Передаем объект, а не строку
+            ).first()
+            print(type(membership))
+            return membership
+        except (ExternalOrganization.DoesNotExist, ExternalOrganizationMembership.DoesNotExist):
+            raise NotFound('Запись не найдена')
+
+
+
+
 

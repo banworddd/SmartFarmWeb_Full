@@ -153,6 +153,49 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Пользователи организации -->
+            <div class="detail-card">
+                <h2><i class="fas fa-users"></i> Пользователи организации</h2>
+                
+                <!-- Фильтры -->
+                <div class="users-filters">
+                    <div class="filter-group">
+                        <label for="userNameFilter">
+                            <i class="fas fa-search"></i> Поиск
+                        </label>
+                        <input type="text" id="userNameFilter" class="filter-input" placeholder="Поиск по имени...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="userRoleFilter">
+                            <i class="fas fa-user-tag"></i> Роль
+                        </label>
+                        <select id="userRoleFilter" class="filter-select">
+                            <option value="">Все роли</option>
+                            <option value="admin">Администратор</option>
+                            <option value="manager">Менеджер</option>
+                            <option value="member">Сотрудник</option>
+                            <option value="guest">Гость</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="userStatusFilter">
+                            <i class="fas fa-info-circle"></i> Статус
+                        </label>
+                        <select id="userStatusFilter" class="filter-select">
+                            <option value="">Все статусы</option>
+                            <option value="approved">Одобрено</option>
+                            <option value="pending">В ожидании</option>
+                            <option value="rejected">Отклонено</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Список пользователей -->
+                <div id="usersList" class="users-list">
+                    <!-- Пользователи будут добавлены через JavaScript -->
+                </div>
+            </div>
         </div>
         {% else %}
         <!-- Сообщение об отсутствии доступа -->

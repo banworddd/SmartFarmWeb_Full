@@ -237,8 +237,6 @@ class ExternalOrganizationMembership(models.Model):
         verbose_name_plural = _('Членства в организациях')
         unique_together = ('user', 'organization')  # Один пользователь — одна организация
 
-    def __str__(self):
-        return f"{self.user} в {self.organization} ({self.get_role_display()})"
 
 
 class Farm(models.Model):

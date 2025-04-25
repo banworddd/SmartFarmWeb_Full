@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModal = document.querySelector('.close-modal');
     const editOrgForm = document.getElementById('editOrgForm');
 
+    // Элементы фильтров пользователей
+    const userRoleFilter = document.getElementById('userRoleFilter');
+    const userStatusFilter = document.getElementById('userStatusFilter');
+    const userNameFilter = document.getElementById('userNameFilter');
+    const usersList = document.getElementById('usersList');
+
     // Загрузка данных организации
     function loadOrganizationData() {
         fetch(`/api/v1/external_organization/?slug=${slug}`, {
@@ -253,7 +259,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function formatDate(dateString) {
+        if (!dateString) return '';
+        
+        // Если дата уже в нужном формате (DD.MM.YYYY HH:mm), возвращаем её как есть
+        if (dateString.match(/^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}$/)) {
+            return dateString;
+        }
+
+        // Для других форматов пытаемся преобразовать
         const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Некорректная дата';
+
         return date.toLocaleDateString('ru-RU', {
             day: '2-digit',
             month: '2-digit',
@@ -297,4 +313,131 @@ document.addEventListener('DOMContentLoaded', function() {
             badge.classList.toggle('expanded');
         });
     });
+
+    // Загрузка пользователей организации
+    function loadOrganizationUsers() {
+        const roleFilter = userRoleFilter.value;
+        const statusFilter = userStatusFilter.value;
+        const nameFilter = userNameFilter.value;
+
+        let url = `/api/v1/external_organization_users/?organization=${slug}`;
+        if (roleFilter) url += `&role=${roleFilter}`;
+        if (statusFilter) url += `&status=${statusFilter}`;
+        if (nameFilter) url += `&user_name=${nameFilter}`;
+
+        fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(users => {
+            usersList.innerHTML = users.length ? 
+                users.map(user => createUserCard(user)).join('') :
+                '<div class="empty-state">Нет пользователей, соответствующих фильтрам</div>';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            usersList.innerHTML = '<div class="error-state">Не удалось загрузить список пользователей</div>';
+        });
+    }
+
+    // Создание карточки пользователя
+    function createUserCard(user) {
+        const roleIcons = {
+            'admin': 'fas fa-user-shield',
+            'manager': 'fas fa-user-cog',
+            'member': 'fas fa-user',
+            'guest': 'fas fa-user-tag'
+        };
+
+        const roleNames = {
+            'admin': 'Администратор',
+            'manager': 'Менеджер',
+            'member': 'Сотрудник',
+            'guest': 'Гость'
+        };
+
+        const statusIcons = {
+            'approved': 'fas fa-check-circle',
+            'pending': 'fas fa-hourglass-half',
+            'rejected': 'fas fa-times'
+        };
+
+        const statusNames = {
+            'approved': 'Одобрено',
+            'pending': 'В ожидании',
+            'rejected': 'Отклонено'
+        };
+
+        return `
+            <div class="user-card">
+                <div class="user-info">
+                    <div class="user-name">
+                        <i class="fas fa-user"></i>
+                        ${user.user.user_full_name}
+                    </div>
+                    <div class="user-badges">
+                        <span class="user-role role-${user.role}">
+                            <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
+                            <span class="role-label">${roleNames[user.role] || user.role}</span>
+                        </span>
+                        <span class="user-status status-${user.status}">
+                            <i class="${statusIcons[user.status] || 'fas fa-circle'}"></i>
+                            <span class="status-label">${statusNames[user.status] || user.status}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="user-contacts">
+                    <span><i class="fas fa-envelope"></i> ${user.user.email}</span>
+                    <span><i class="fas fa-phone"></i> ${user.user.phone_number}</span>
+                </div>
+                <div class="user-meta">
+                    <i class="fas fa-clock"></i>
+                    <span>Обновлено: ${formatDate(user.updated_at)}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    // Обработчики фильтров
+    userRoleFilter.addEventListener('change', loadOrganizationUsers);
+    userStatusFilter.addEventListener('change', loadOrganizationUsers);
+    userNameFilter.addEventListener('input', debounce(loadOrganizationUsers, 300));
+
+    // Загружаем пользователей при загрузке страницы
+    loadOrganizationUsers();
+
+    // Обработка кликов по бейджам пользователей
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.user-role') || e.target.closest('.user-status')) {
+            const badge = e.target.closest('.user-role') || e.target.closest('.user-status');
+            
+            // Закрываем все остальные бейджи того же типа
+            const type = badge.classList.contains('user-role') ? 'user-role' : 'user-status';
+            document.querySelectorAll(`.${type}`).forEach(b => {
+                if (b !== badge) {
+                    b.classList.remove('expanded');
+                }
+            });
+            
+            // Переключаем текущий бейдж
+            badge.classList.toggle('expanded');
+        }
+    });
+
+    // Добавляем обработчик для поиска по имени
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
 });
