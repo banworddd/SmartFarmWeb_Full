@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         const roleIcons = {
             'admin': 'fas fa-user-shield',
+            'manager': 'fas fa-user-cog',
             'member': 'fas fa-user',
             'guest': 'fas fa-user-tag'
         };
@@ -165,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         const roleNames = {
             'admin': 'Администратор',
+            'manager': 'Менеджер',
             'member': 'Сотрудник',
             'guest': 'Гость'
         };
@@ -180,28 +182,30 @@ document.addEventListener('DOMContentLoaded', function() {
             'other': 'Другое'
         };
         return `
-            <div class="farm-card" data-org-id="${org.id}">
-                <div class="farm-badges">
-                    <span class="farm-role role-${org.role}">
-                        <i class="${roleIcons[org.role] || 'fas fa-user'}"></i>
-                        <span class="role-label">${roleNames[org.role] || org.role}</span>
-                    </span>
-                    <span class="farm-status status-${org.status}">
-                        <i class="${statusIcons[org.status] || 'fas fa-info-circle'}"></i>
-                        <span class="status-label">${statusNames[org.status] || org.status}</span>
-                    </span>
-                    <span class="farm-type type-${org.organization.type}">
-                        <i class="${typeIcons[org.organization.type] || 'fas fa-building'}"></i>
-                        <span class="type-label">${typeNames[org.organization.type] || org.organization.type}</span>
-                    </span>
+            <a href="/dashboard/organizations/${org.organization.slug}/" class="farm-card-link">
+                <div class="farm-card" data-org-id="${org.id}">
+                    <div class="farm-badges">
+                        <span class="farm-role role-${org.role}">
+                            <i class="${roleIcons[org.role] || 'fas fa-user'}"></i>
+                            <span class="role-label">${roleNames[org.role] || org.role}</span>
+                        </span>
+                        <span class="farm-status status-${org.status}">
+                            <i class="${statusIcons[org.status] || 'fas fa-info-circle'}"></i>
+                            <span class="status-label">${statusNames[org.status] || org.status}</span>
+                        </span>
+                        <span class="farm-type type-${org.organization.type}">
+                            <i class="${typeIcons[org.organization.type] || 'fas fa-building'}"></i>
+                            <span class="type-label">${typeNames[org.organization.type] || org.organization.type}</span>
+                        </span>
+                    </div>
+                    <h3 class="farm-name">${org.organization.name}</h3>
+                    <p class="farm-description">${org.organization.description || 'Нет описания'}</p>
+                    <div class="farm-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> ${org.organization.address || 'Нет адреса'}</span>
+                        <span><i class="fas fa-calendar-alt"></i> ${formatDate(org.updated_at)}</span>
+                    </div>
                 </div>
-                <h3 class="farm-name">${org.organization.name}</h3>
-                <p class="farm-description">${org.organization.description || 'Нет описания'}</p>
-                <div class="farm-meta">
-                    <span><i class="fas fa-map-marker-alt"></i> ${org.organization.address || 'Нет адреса'}</span>
-                    <span><i class="fas fa-calendar-alt"></i> ${formatDate(org.updated_at)}</span>
-                </div>
-            </div>
+            </a>
         `;
     }
 
@@ -224,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
     orgsList.addEventListener('click', function(e) {
         const badge = e.target.closest('.farm-badges span');
         if (badge) {
+            e.preventDefault(); // Предотвращаем переход по ссылке при клике на бейдж
             badge.classList.toggle('expanded');
         }
     });

@@ -341,13 +341,21 @@
 .role-owner { background: #e67e22; }
 .role-admin { background: #3498db; }
 .role-manager { background: #2ecc71; }
+.role-member { background: #9b59b6; }
+.role-guest { background: #7f8c8d; }
+.role-viewer { background: #95a5a6; }
+.role-observer { background: #95a5a6; }
 .role-technician { background: #9b59b6; }
-.role-viewer { background: #7f8c8d; }
 
 /* Цвета бейджей для разных статусов */
 .status-approved { background: #2ecc71; }
 .status-pending { background: #f39c12; }
 .status-rejected { background: #e74c3c; }
+
+/* Общие стили для всех бейджей ролей */
+[class*="role-"] {
+    background-color: #95a5a6;
+}
 
 /* Описание фермы */
 .farm-description {
@@ -1304,5 +1312,20 @@ textarea.editable-input::-webkit-scrollbar {
     visibility: hidden !important;
     pointer-events: none !important;
     opacity: 0 !important;
+}
+
+.farm-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.farm-card-link:hover {
+    transform: translateY(-5px);
+}
+
+.farm-card-link:hover .farm-card {
+    background: rgba(255, 255, 255, 0.15);
 }
 
