@@ -23,8 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const userNameFilter = document.getElementById('userNameFilter');
     const usersList = document.getElementById('usersList');
 
-    // Переменная для хранения роли текущего пользователя
-    let currentUserRole = null;
+    // Если пользователь админ, добавляем возможность редактирования
+    if (CURRENT_USER_ROLE === 'admin') {
+        addEditCapabilities();
+    }
 
     // Загрузка данных организации
     function loadOrganizationData() {
@@ -43,12 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             updateFields(data);
-            // Получаем роль текущего пользователя
-            currentUserRole = data.current_user_role;
-            // Если пользователь админ, добавляем возможность редактирования
-            if (currentUserRole === 'admin') {
-                addEditCapabilities();
-            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -120,7 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обновление роли пользователя
     window.updateUserRole = function(userId) {
-        const newRole = document.getElementById('newRole').value;
+        const editForm = document.querySelector(`.user-card[data-user-id="${userId}"] .edit-form`);
+        const newRole = editForm.querySelector('.edit-select').value;
+        
         fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
             method: 'PATCH',
             headers: {
@@ -135,18 +133,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(() => {
-            document.querySelector('.modal').remove();
             loadOrganizationUsers();
+            showSuccess('Роль пользователя успешно обновлена');
         })
         .catch(error => {
             console.error('Error:', error);
             showError('Не удалось обновить роль пользователя');
+            cancelEdit(editForm.querySelector('.cancel-edit'));
         });
     };
 
     // Обновление статуса пользователя
     window.updateUserStatus = function(userId) {
-        const newStatus = document.getElementById('newStatus').value;
+        const editForm = document.querySelector(`.user-card[data-user-id="${userId}"] .edit-form`);
+        const newStatus = editForm.querySelector('.edit-select').value;
+        
         fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
             method: 'PATCH',
             headers: {
@@ -161,12 +162,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(() => {
-            document.querySelector('.modal').remove();
             loadOrganizationUsers();
+            showSuccess('Статус пользователя успешно обновлен');
         })
         .catch(error => {
             console.error('Error:', error);
             showError('Не удалось обновить статус пользователя');
+            cancelEdit(editForm.querySelector('.cancel-edit'));
         });
     };
 
@@ -288,11 +290,15 @@ document.addEventListener('DOMContentLoaded', function() {
             actions.appendChild(cancelBtn);
             
             // Функция отмены редактирования
-            function cancelEdit() {
-                field.textContent = currentValue;
-                detailItem.classList.remove('editing');
-                actions.remove();
-                input.remove();
+            function cancelEdit(button) {
+                const editForm = button.closest('.edit-form');
+                const badgeContainer = editForm.parentElement;
+                const currentBadge = badgeContainer.querySelector('.user-role, .user-status');
+                const editControls = badgeContainer.querySelector('.edit-controls');
+                
+                currentBadge.style.display = '';
+                editControls.style.display = '';
+                editForm.remove();
             }
             
             // Функция сохранения изменений
@@ -503,14 +509,32 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${user.user.user_full_name}
                     </div>
                     <div class="user-badges">
-                        <span class="user-role role-${user.role}" data-role="${user.role}">
-                            <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
-                            <span class="role-label">${roleNames[user.role] || user.role}</span>
-                        </span>
-                        <span class="user-status status-${user.status}" data-status="${user.status}">
-                            <i class="${statusIcons[user.status] || 'fas fa-circle'}"></i>
-                            <span class="status-label">${statusNames[user.status] || user.status}</span>
-                        </span>
+                        <div class="badge-container">
+                            <span class="user-role role-${user.role}" data-role="${user.role}">
+                                <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
+                                <span class="role-label">${roleNames[user.role] || user.role}</span>
+                            </span>
+                            ${CURRENT_USER_ROLE === 'admin' ? `
+                                <div class="edit-controls">
+                                    <button class="edit-btn" onclick="showRoleEdit(${user.id}, '${user.role}')">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="badge-container">
+                            <span class="user-status status-${user.status}" data-status="${user.status}">
+                                <i class="${statusIcons[user.status] || 'fas fa-circle'}"></i>
+                                <span class="status-label">${statusNames[user.status] || user.status}</span>
+                            </span>
+                            ${CURRENT_USER_ROLE === 'admin' ? `
+                                <div class="edit-controls">
+                                    <button class="edit-btn" onclick="showStatusEdit(${user.id}, '${user.status}')">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
                     </div>
                 </div>
                 <div class="user-contacts">
@@ -524,6 +548,63 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
+
+    // Показ редактирования роли
+    window.showRoleEdit = function(userId, currentRole) {
+        const badgeContainer = document.querySelector(`.user-card[data-user-id="${userId}"] .user-role`).parentElement;
+        const currentBadge = badgeContainer.querySelector('.user-role');
+        
+        const editControls = badgeContainer.querySelector('.edit-controls');
+        editControls.style.display = 'none';
+        
+        const editForm = document.createElement('div');
+        editForm.className = 'edit-form';
+        editForm.innerHTML = `
+            <select class="edit-select">
+                <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>Администратор</option>
+                <option value="manager" ${currentRole === 'manager' ? 'selected' : ''}>Менеджер</option>
+                <option value="member" ${currentRole === 'member' ? 'selected' : ''}>Сотрудник</option>
+                <option value="guest" ${currentRole === 'guest' ? 'selected' : ''}>Гость</option>
+            </select>
+            <button class="save-edit" onclick="updateUserRole(${userId})">
+                <i class="fas fa-check"></i>
+            </button>
+            <button class="cancel-edit" onclick="cancelEdit(this)">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        currentBadge.style.display = 'none';
+        badgeContainer.appendChild(editForm);
+    };
+
+    // Показ редактирования статуса
+    window.showStatusEdit = function(userId, currentStatus) {
+        const badgeContainer = document.querySelector(`.user-card[data-user-id="${userId}"] .user-status`).parentElement;
+        const currentBadge = badgeContainer.querySelector('.user-status');
+        
+        const editControls = badgeContainer.querySelector('.edit-controls');
+        editControls.style.display = 'none';
+        
+        const editForm = document.createElement('div');
+        editForm.className = 'edit-form';
+        editForm.innerHTML = `
+            <select class="edit-select">
+                <option value="approved" ${currentStatus === 'approved' ? 'selected' : ''}>Одобрено</option>
+                <option value="pending" ${currentStatus === 'pending' ? 'selected' : ''}>В ожидании</option>
+                <option value="rejected" ${currentStatus === 'rejected' ? 'selected' : ''}>Отклонено</option>
+            </select>
+            <button class="save-edit" onclick="updateUserStatus(${userId})">
+                <i class="fas fa-check"></i>
+            </button>
+            <button class="cancel-edit" onclick="cancelEdit(this)">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        currentBadge.style.display = 'none';
+        badgeContainer.appendChild(editForm);
+    };
 
     // Обработчики фильтров
     userRoleFilter.addEventListener('change', loadOrganizationUsers);
@@ -562,5 +643,17 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    // Функция для показа уведомления об успехе
+    function showSuccess(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification success';
+        notification.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
     }
 });

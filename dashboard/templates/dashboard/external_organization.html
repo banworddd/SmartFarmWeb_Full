@@ -9,6 +9,8 @@
 <script>
     // Передаем slug из контекста Django в JavaScript
     const ORGANIZATION_SLUG = '{{ slug }}';
+    // Передаем роль пользователя из контекста Django
+    const CURRENT_USER_ROLE = '{{ role }}';
 </script>
 <script src="{% static 'js/external_organization.js' %}"></script>
 {% endblock %}
@@ -24,11 +26,6 @@
             <div class="farms-header">
                 <h1 class="farms-title">
                     <span id="orgName" class="editable-field" data-field="name">Загрузка...</span>
-                    {% if role == 'admin' %}
-                    <button class="edit-btn" data-target="orgName">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                    {% endif %}
                 </h1>
             </div>
         </div>
