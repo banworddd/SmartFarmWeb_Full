@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const userNameFilter = document.getElementById('userNameFilter');
     const usersList = document.getElementById('usersList');
 
+    // Переменная для хранения роли текущего пользователя
+    let currentUserRole = null;
+
     // Загрузка данных организации
     function loadOrganizationData() {
         fetch(`/api/v1/external_organization/?slug=${slug}`, {
@@ -40,12 +43,132 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             updateFields(data);
+            // Получаем роль текущего пользователя
+            currentUserRole = data.current_user_role;
+            // Если пользователь админ, добавляем возможность редактирования
+            if (currentUserRole === 'admin') {
+                addEditCapabilities();
+            }
         })
         .catch(error => {
             console.error('Error:', error);
             showError('Не удалось загрузить данные организации');
         });
     }
+
+    // Добавление возможности редактирования для администраторов
+    function addEditCapabilities() {
+        // Добавляем обработчики для бейджей
+        document.addEventListener('click', function(e) {
+            const roleBadge = e.target.closest('.user-role');
+            const statusBadge = e.target.closest('.user-status');
+            
+            if (roleBadge) {
+                const userId = roleBadge.closest('.user-card').dataset.userId;
+                const currentRole = roleBadge.dataset.role;
+                showRoleEditModal(userId, currentRole);
+            }
+            
+            if (statusBadge) {
+                const userId = statusBadge.closest('.user-card').dataset.userId;
+                const currentStatus = statusBadge.dataset.status;
+                showStatusEditModal(userId, currentStatus);
+            }
+        });
+    }
+
+    // Показ модального окна для редактирования роли
+    function showRoleEditModal(userId, currentRole) {
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Изменение роли пользователя</h3>
+                <select id="newRole" class="filter-select">
+                    <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>Администратор</option>
+                    <option value="manager" ${currentRole === 'manager' ? 'selected' : ''}>Менеджер</option>
+                    <option value="member" ${currentRole === 'member' ? 'selected' : ''}>Сотрудник</option>
+                    <option value="guest" ${currentRole === 'guest' ? 'selected' : ''}>Гость</option>
+                </select>
+                <button class="save-btn" onclick="updateUserRole(${userId})">Сохранить</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
+    }
+
+    // Показ модального окна для редактирования статуса
+    function showStatusEditModal(userId, currentStatus) {
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Изменение статуса пользователя</h3>
+                <select id="newStatus" class="filter-select">
+                    <option value="approved" ${currentStatus === 'approved' ? 'selected' : ''}>Одобрено</option>
+                    <option value="pending" ${currentStatus === 'pending' ? 'selected' : ''}>В ожидании</option>
+                    <option value="rejected" ${currentStatus === 'rejected' ? 'selected' : ''}>Отклонено</option>
+                </select>
+                <button class="save-btn" onclick="updateUserStatus(${userId})">Сохранить</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
+    }
+
+    // Обновление роли пользователя
+    window.updateUserRole = function(userId) {
+        const newRole = document.getElementById('newRole').value;
+        fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ role: newRole }),
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка обновления роли');
+            return response.json();
+        })
+        .then(() => {
+            document.querySelector('.modal').remove();
+            loadOrganizationUsers();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Не удалось обновить роль пользователя');
+        });
+    };
+
+    // Обновление статуса пользователя
+    window.updateUserStatus = function(userId) {
+        const newStatus = document.getElementById('newStatus').value;
+        fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ status: newStatus }),
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка обновления статуса');
+            return response.json();
+        })
+        .then(() => {
+            document.querySelector('.modal').remove();
+            loadOrganizationUsers();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Не удалось обновить статус пользователя');
+        });
+    };
 
     // Обновление полей данными
     function updateFields(data) {
@@ -373,18 +496,18 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         return `
-            <div class="user-card">
+            <div class="user-card" data-user-id="${user.id}">
                 <div class="user-info">
                     <div class="user-name">
                         <i class="fas fa-user"></i>
                         ${user.user.user_full_name}
                     </div>
                     <div class="user-badges">
-                        <span class="user-role role-${user.role}">
+                        <span class="user-role role-${user.role}" data-role="${user.role}">
                             <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
                             <span class="role-label">${roleNames[user.role] || user.role}</span>
                         </span>
-                        <span class="user-status status-${user.status}">
+                        <span class="user-status status-${user.status}" data-status="${user.status}">
                             <i class="${statusIcons[user.status] || 'fas fa-circle'}"></i>
                             <span class="status-label">${statusNames[user.status] || user.status}</span>
                         </span>

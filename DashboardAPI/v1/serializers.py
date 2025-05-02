@@ -163,4 +163,5 @@ class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExternalOrganizationMembership
         fields = ['id', 'user', 'role', 'status', 'updated_at']
+        read_only_fields = ['id', 'user', 'updated_at']
 
