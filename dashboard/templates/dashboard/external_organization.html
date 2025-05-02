@@ -11,6 +11,7 @@
     const ORGANIZATION_SLUG = '{{ slug }}';
     // Передаем роль пользователя из контекста Django
     const CURRENT_USER_ROLE = '{{ role }}';
+    const CURRENT_USER_EMAIL = '{{ request.user.email }}';
 </script>
 <script src="{% static 'js/external_organization.js' %}"></script>
 {% endblock %}
@@ -131,6 +132,7 @@
             </div>
 
             <!-- Мета информация -->
+            {% if role == 'admin' %}
             <div class="detail-card">
                 <h2><i class="fas fa-history"></i> Мета информация</h2>
                 <div class="detail-content">
@@ -150,6 +152,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             <!-- Пользователи организации -->
             <div class="detail-card">

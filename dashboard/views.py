@@ -48,6 +48,7 @@ class ExternalOrganizationView(LoginRequiredMixin, TemplateView):
             user=self.request.user
         ).first()
 
+
         context['status'] = membership.status if membership else None
         context['role'] = membership.role if membership else None
 

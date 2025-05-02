@@ -1750,17 +1750,30 @@ textarea.editable-input::-webkit-scrollbar {
 
 /* Стили для карточки текущего пользователя */
 .user-card.current-user {
-    background: rgba(46, 204, 113, 0.1);
-    border: 1px solid rgba(46, 204, 113, 0.2);
-    box-shadow: 0 0 10px rgba(46, 204, 113, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.user-card.current-user::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #2ecc71;
+    border-radius: 4px 0 0 4px;
 }
 
 .user-card.current-user:hover {
-    background: rgba(46, 204, 113, 0.15);
-    border-color: rgba(46, 204, 113, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .user-card.current-user .edit-controls {
-    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 

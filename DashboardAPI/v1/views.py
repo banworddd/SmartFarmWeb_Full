@@ -134,11 +134,19 @@ class ExternalOrganizationUsersAPIVIew(ListAPIView):
     filter_backends = [ExternalOrganizationFilterBackend]
 
     def get_queryset(self):
-        """Возвращает queryset членов организации по slug из параметров."""
-        return ExternalOrganizationMembership.objects.filter(
-            organization__slug=self.request.query_params.get('organization')
+        """Возвращает queryset членов организации с приоритетом для текущего пользователя."""
+        organization_slug = self.request.query_params.get('organization')
+        queryset = ExternalOrganizationMembership.objects.filter(
+            organization__slug=organization_slug
         )
 
+        return queryset.annotate(
+            is_current_user=Case(
+                When(user=self.request.user, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        ).order_by('-is_current_user', 'user__username')
 
 class ExternalOrganizationMembershipAPIView(RetrieveUpdateDestroyAPIView):
     """API для работы с членством во внешних организациях."""

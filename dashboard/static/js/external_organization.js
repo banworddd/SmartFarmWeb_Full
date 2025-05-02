@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(users => {
             usersList.innerHTML = users.length ? 
-                users.map(user => createUserCard(user)).join('') :
+                users.map((user, index) => createUserCard(user, index)).join('') :
                 '<div class="empty-state">Нет пользователей, соответствующих фильтрам</div>';
         })
         .catch(error => {
@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Создание карточки пользователя
-    function createUserCard(user) {
+    function createUserCard(user, index) {
         const roleIcons = {
             'admin': 'fas fa-user-shield',
             'manager': 'fas fa-user-cog',
@@ -501,8 +501,11 @@ document.addEventListener('DOMContentLoaded', function() {
             'rejected': 'Отклонено'
         };
 
+        const isCurrentUser = user.user.email === CURRENT_USER_EMAIL;
+        const isFirstCard = index === 0 && isCurrentUser;
+
         return `
-            <div class="user-card" data-user-id="${user.id}">
+            <div class="user-card ${isFirstCard ? 'current-user' : ''}" data-user-id="${user.id}">
                 <div class="user-info">
                     <div class="user-name">
                         <i class="fas fa-user"></i>
