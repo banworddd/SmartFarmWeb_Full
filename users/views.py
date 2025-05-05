@@ -5,6 +5,7 @@ from django.views.generic import CreateView, FormView, RedirectView, TemplateVie
 from django.contrib.auth import login, logout
 from django.http import HttpRequest, HttpResponse
 
+from main.mixins import LoginRequiredMixin
 from .forms import CustomUserRegistrationForm, CustomUserConfirmationForm, CustomUserLoginForm
 from .utils import generate_and_send_confirmation_code
 from users.models import CustomUser
@@ -244,6 +245,6 @@ class CustomUserConfirmNewCodeView(RedirectView):
         return super().get(request, *args, **kwargs)
 
 
-class CustomUserProfileView(TemplateView):
+class CustomUserProfileView(LoginRequiredMixin,TemplateView):
     template_name = 'users/profile.html'
 

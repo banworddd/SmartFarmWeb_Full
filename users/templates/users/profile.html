@@ -53,6 +53,34 @@
                     <div class="detail-item">
                         <span class="detail-badge phone-badge"><i class="fas fa-phone"></i><span class="badge-label">Телефон</span></span><div class="editable-container"><span id="phone" class="editable-field" data-field="phone_number">Загрузка...</span><button class="edit-btn" data-target="phone"><i class="fas fa-pencil-alt"></i></button></div>
                     </div>
+                    <div class="detail-item">
+                        <span class="detail-badge password-badge"><i class="fas fa-key"></i><span class="badge-label">Пароль</span></span>
+                        <div class="editable-container">
+                            <span id="passwordPlaceholder" class="editable-field" data-field="password">********</span>
+                            <button id="changePasswordBtn" class="edit-btn" type="button" title="Сменить пароль">
+                                <i class="fas fa-key"></i>
+                            </button>
+                            <form id="changePasswordForm" class="editable-actions change-password-form" style="display: none; flex-direction: column; align-items: stretch; gap: 8px;">
+                                <input type="password" id="oldPassword" class="editable-input" placeholder="Старый пароль" required autocomplete="current-password">
+                                <div class="password-wrapper" style="position: relative;">
+                                    <input type="password" id="newPassword1" class="editable-input" placeholder="Новый пароль" required autocomplete="new-password">
+                                    <button type="button" class="toggle-password" tabindex="-1" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #888; cursor: pointer;"><i class="fas fa-eye"></i></button>
+                                </div>
+                                <div class="input-hint password-hint" style="font-size: 0.85em; color: #888; margin-bottom: 0; margin-top: -6px;">
+                                    Минимум 8 символов, цифры и буквы в разных регистрах
+                                </div>
+                                <div class="password-strength"><div class="strength-bar"></div></div>
+                                <div class="password-wrapper" style="position: relative;">
+                                    <input type="password" id="newPassword2" class="editable-input" placeholder="Подтвердите новый пароль" required autocomplete="new-password">
+                                    <button type="button" class="toggle-password" tabindex="-1" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #888; cursor: pointer;"><i class="fas fa-eye"></i></button>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="submit" class="save-btn" title="Сохранить"><i class="fas fa-check"></i></button>
+                                    <button type="button" id="cancelChangePassword" class="cancel-btn" title="Отмена"><i class="fas fa-times"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 

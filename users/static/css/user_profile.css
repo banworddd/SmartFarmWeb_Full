@@ -6,7 +6,7 @@
     width: 100%;
     margin-bottom: 20px;
     position: relative;
-    /* cursor: pointer; убираем, чтобы вся область не была кликабельной */
+
 }
 
 .avatar-badge img {
