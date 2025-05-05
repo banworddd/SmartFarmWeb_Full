@@ -54,6 +54,7 @@ class CustomUser(AbstractUser):
         default='profile_pics/default.png',
         upload_to='profile_pics/',
         blank=True,
+        null = True,
     )
 
     is_active = models.BooleanField(
@@ -88,6 +89,9 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
+        if not self.profile_pic:
+            self.profile_pic = 'profile_pics/default.png'
+
         self.username = self.phone_number
         super().save(*args, **kwargs)
 

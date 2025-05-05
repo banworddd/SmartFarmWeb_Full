@@ -1,3 +1,19 @@
+let globalErrorToastTimeout = null;
+function showGlobalError(message) {
+    let toast = document.getElementById('globalErrorToast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'globalErrorToast';
+        toast.className = 'global-error-toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 5000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Используем slug из глобальной переменной
     const slug = ORGANIZATION_SLUG;
@@ -48,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            showError('Не удалось загрузить данные организации');
+            showGlobalError('Не удалось загрузить данные организации');
         });
     }
 
@@ -59,59 +75,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const roleBadge = e.target.closest('.user-role');
             const statusBadge = e.target.closest('.user-status');
             
-            if (roleBadge) {
-                const userId = roleBadge.closest('.user-card').dataset.userId;
-                const currentRole = roleBadge.dataset.role;
-                showRoleEditModal(userId, currentRole);
-            }
-            
-            if (statusBadge) {
-                const userId = statusBadge.closest('.user-card').dataset.userId;
-                const currentStatus = statusBadge.dataset.status;
-                showStatusEditModal(userId, currentStatus);
-            }
+            // Удалить или закомментировать:
+            // if (roleBadge) {
+            //     const userId = roleBadge.closest('.user-card').dataset.userId;
+            //     const currentRole = roleBadge.dataset.role;
+            //     showRoleEditModal(userId, currentRole);
+            // }
+            // if (statusBadge) {
+            //     const userId = statusBadge.closest('.user-card').dataset.userId;
+            //     const currentStatus = statusBadge.dataset.status;
+            //     showStatusEditModal(userId, currentStatus);
+            // }
         });
-    }
-
-    // Показ модального окна для редактирования роли
-    function showRoleEditModal(userId, currentRole) {
-        const modal = document.createElement('div');
-        modal.className = 'modal active';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3>Изменение роли пользователя</h3>
-                <select id="newRole" class="filter-select">
-                    <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>Администратор</option>
-                    <option value="manager" ${currentRole === 'manager' ? 'selected' : ''}>Менеджер</option>
-                    <option value="member" ${currentRole === 'member' ? 'selected' : ''}>Сотрудник</option>
-                    <option value="guest" ${currentRole === 'guest' ? 'selected' : ''}>Гость</option>
-                </select>
-                <button class="save-btn" onclick="updateUserRole(${userId})">Сохранить</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
-    }
-
-    // Показ модального окна для редактирования статуса
-    function showStatusEditModal(userId, currentStatus) {
-        const modal = document.createElement('div');
-        modal.className = 'modal active';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3>Изменение статуса пользователя</h3>
-                <select id="newStatus" class="filter-select">
-                    <option value="approved" ${currentStatus === 'approved' ? 'selected' : ''}>Одобрено</option>
-                    <option value="pending" ${currentStatus === 'pending' ? 'selected' : ''}>В ожидании</option>
-                    <option value="rejected" ${currentStatus === 'rejected' ? 'selected' : ''}>Отклонено</option>
-                </select>
-                <button class="save-btn" onclick="updateUserStatus(${userId})">Сохранить</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
     }
 
     // Обновление роли пользователя
@@ -247,12 +222,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (detailItem.classList.contains('editing')) return;
             
             // Сохраняем текущее значение
-            const currentValue = field.textContent;
+            const oldText = field.textContent;
             
             // Создаем input для редактирования
             const input = document.createElement(fieldName === 'description' ? 'textarea' : 'input');
             input.className = 'editable-input';
-            input.value = currentValue;
+            input.value = oldText;
             
             if (fieldName === 'type') {
                 // Для типа организации создаем select
@@ -268,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const option = document.createElement('option');
                     option.value = value;
                     option.textContent = text;
-                    option.selected = text === currentValue;
+                    option.selected = text === oldText;
                     select.appendChild(option);
                 });
                 input = select;
@@ -289,17 +264,14 @@ document.addEventListener('DOMContentLoaded', function() {
             actions.appendChild(saveBtn);
             actions.appendChild(cancelBtn);
             
-            // Функция отмены редактирования
-            function cancelEdit(button) {
-                const editForm = button.closest('.edit-form');
-                const badgeContainer = editForm.parentElement;
-                const currentBadge = badgeContainer.querySelector('.user-role, .user-status');
-                const editControls = badgeContainer.querySelector('.edit-controls');
-                
-                currentBadge.style.display = '';
-                editControls.style.display = '';
-                editForm.remove();
-            }
+            // Обработчик крестика — по аналогии с user_profile.js
+            cancelBtn.addEventListener('click', function() {
+                field.textContent = oldText;
+                detailItem.classList.remove('editing');
+                actions.remove();
+                input.remove();
+                if (this.closest('.edit-btn')) this.closest('.edit-btn').style.display = '';
+            });
             
             // Функция сохранения изменений
             function saveEdit() {
@@ -316,13 +288,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     }),
                     credentials: 'include'
                 })
-                .then(response => {
+                .then(async response => {
+                    const data = await response.json();
                     if (!response.ok) {
-                        throw new Error('Ошибка сохранения');
+                        console.log('API PATCH error response:', data);
+                        let errorMsg = '';
+                        if (typeof data === 'object' && data !== null) {
+                            // Если ошибка в конкретном поле (например, {email: ["..."]})
+                            if (Object.keys(data).length === 1) {
+                                const fieldErrors = Object.values(data)[0];
+                                errorMsg = Array.isArray(fieldErrors) ? fieldErrors[0] : fieldErrors;
+                            } else {
+                                // Если несколько ошибок
+                                errorMsg = Object.entries(data)
+                                    .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors[0] : errors}`)
+                                    .join('\n');
+                            }
+                        } else {
+                            errorMsg = data.detail || JSON.stringify(data);
+                        }
+                        showGlobalError(errorMsg);
+                        return;
                     }
-                    return response.json();
-                })
-                .then(data => {
                     field.textContent = fieldName === 'type' ? 
                         getOrganizationTypeName(newValue) : newValue;
                     detailItem.classList.remove('editing');
@@ -331,14 +318,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showError('Не удалось сохранить изменения');
+                    showGlobalError('Не удалось сохранить изменения: ' + (error.message || error));
                     cancelEdit();
                 });
             }
             
             // Добавляем обработчики событий
             saveBtn.addEventListener('click', saveEdit);
-            cancelBtn.addEventListener('click', cancelEdit);
             input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -418,9 +404,21 @@ document.addEventListener('DOMContentLoaded', function() {
         return types[type] || type;
     }
 
+    // Функция для показа уведомления об успехе
+    function showSuccess(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification success';
+        notification.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    // Функция для показа ошибок — только через showGlobalError
     function showError(message) {
-        // Здесь можно добавить отображение ошибки
-        console.error(message);
+        showGlobalError(message);
     }
 
     // Загружаем данные при загрузке страницы
@@ -646,17 +644,5 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
-    }
-
-    // Функция для показа уведомления об успехе
-    function showSuccess(message) {
-        const notification = document.createElement('div');
-        notification.className = 'notification success';
-        notification.innerHTML = `
-            <i class="fas fa-check-circle"></i>
-            <span>${message}</span>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
     }
 });

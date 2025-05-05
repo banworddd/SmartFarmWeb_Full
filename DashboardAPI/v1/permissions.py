@@ -20,7 +20,7 @@ class IsOrganizationMember(permissions.BasePermission):
         ).exists()
 
     def has_object_permission(self, request, view, obj):
-        organization = obj.organization if obj.organization else obj
+        organization = obj.organization if hasattr(obj, 'organization') else obj
 
         return request.user.organization_memberships.filter(
             organization=organization,

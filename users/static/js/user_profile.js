@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             // Заполнение полей данными
-            profilePic.src = data.profile_pic;
+            profilePic.src = data.profile_pic || '/profile_pics/default.png';
             firstName.textContent = data.first_name;
             lastName.textContent = data.last_name;
             email.textContent = data.email;
@@ -86,18 +86,30 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleApiError(errorData, field) {
         // Если ошибка строка
         if (typeof errorData === 'string') {
+            if (field && field.classList) {
+                field.classList.add('error');
+                setTimeout(() => field.classList.remove('error'), 5000);
+            }
             showGlobalError(errorData);
             return;
         }
 
         // Если ошибка массив
         if (Array.isArray(errorData)) {
+            if (field && field.classList) {
+                field.classList.add('error');
+                setTimeout(() => field.classList.remove('error'), 5000);
+            }
             showGlobalError(errorData[0]);
             return;
         }
 
         // Если ошибка объект с message
         if (errorData.message) {
+            if (field && field.classList) {
+                field.classList.add('error');
+                setTimeout(() => field.classList.remove('error'), 5000);
+            }
             showGlobalError(errorData.message);
             return;
         }
@@ -107,6 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
             let found = false;
             let globalMessages = [];
             Object.keys(errorData).forEach(key => {
+                // Найти поле на странице по data-field
+                const input = document.querySelector(`[data-field="${key}"]`);
+                if (input && input.classList) {
+                    input.classList.add('error');
+                    setTimeout(() => input.classList.remove('error'), 5000);
+                }
+                // Для аватарки
+                if (key === 'profile_pic') {
+                    const pic = document.getElementById('profilePic');
+                    if (pic) {
+                        pic.classList.add('error');
+                        setTimeout(() => pic.classList.remove('error'), 5000);
+                    }
+                }
                 const msg = Array.isArray(errorData[key]) ? errorData[key][0] : errorData[key];
                 globalMessages.push(msg);
                 found = true;
@@ -118,6 +144,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Если формат ошибки не распознан
+        if (field && field.classList) {
+            field.classList.add('error');
+            setTimeout(() => field.classList.remove('error'), 5000);
+        }
         showGlobalError('Произошла ошибка при обновлении данных');
     }
 
@@ -253,8 +283,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Обработчик клика по аватарке
-    avatarBadge.addEventListener('click', () => {
+    // Обработчик клика по аватарке (только по картинке)
+    profilePic.addEventListener('click', () => {
         avatarInput.click();
     });
 
@@ -301,6 +331,32 @@ document.addEventListener('DOMContentLoaded', function() {
             showGlobalError('Произошла ошибка при загрузке файла');
         }
     });
+
+    // Обработчик удаления аватарки
+    const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+    if (removeAvatarBtn) {
+        removeAvatarBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/v1/custom_user_profile/', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ profile_pic: null })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    handleApiError(data, document.getElementById('profilePic'));
+                    return;
+                }
+                profilePic.src = data.profile_pic;
+                showGlobalError('Аватарка удалена');
+            } catch (error) {
+                showGlobalError('Не удалось удалить аватарку');
+            }
+        });
+    }
 
     // Делегированная логика раскрытия бейджей (как в user_external_organizations.js)
     const orgDetails = document.querySelector('.organization-details');

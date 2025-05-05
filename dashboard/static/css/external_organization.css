@@ -232,4 +232,76 @@
 .cancel-edit:hover {
     color: #f44336;
     transform: scale(1.1);
-} 
+}
+
+/* Стили для ошибок (унификация между страницами) */
+.editable-input.error {
+    border-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+#profilePic.error {
+    border: 3px solid #e74c3c !important;
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+}
+
+/* Стили для сообщений об ошибках */
+.field-error {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    animation: fadeIn 0.3s ease;
+    text-align: center;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для контейнера с полем и ошибкой */
+.editable-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Унификация стилей всплывающего окна ошибки с профилем */
+.global-error-toast {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(231, 76, 60, 0.92);
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    padding: 16px 32px;
+    z-index: 9999;
+    font-size: 1rem;
+    font-family: inherit;
+    min-width: 220px;
+    max-width: 90vw;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.global-error-toast.show {
+    opacity: 1;
+    pointer-events: auto;
+}

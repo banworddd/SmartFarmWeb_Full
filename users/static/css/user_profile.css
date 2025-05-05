@@ -5,7 +5,8 @@
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
-    cursor: pointer;
+    position: relative;
+    /* cursor: pointer; убираем, чтобы вся область не была кликабельной */
 }
 
 .avatar-badge img {
@@ -16,6 +17,7 @@
     border: 3px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .avatar-badge img:hover {
@@ -24,70 +26,31 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Стили для сообщений об ошибках */
-.field-error {
-    color: #e74c3c;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    animation: fadeIn 0.3s ease;
-    text-align: center;
-    font-family: inherit;
-    line-height: 1.4;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Стили для контейнера с полем и ошибкой */
-.editable-container {
-    position: relative;
+/* Кнопка удаления аватарки (крестик) — позиционируем у края кружка */
+.remove-avatar-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    width: 28px;
+    height: 28px;
+    background: rgba(231, 76, 60, 0.92);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
+    justify-content: center;
+    z-index: 2;
+    opacity: 0.85;
+    transition: background 0.2s, opacity 0.2s;
+    /* Тень для лучшей видимости */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
-
-/* Стили для поля ввода при ошибке */
-.editable-input.error {
-    border-color: #e74c3c;
-    background-color: rgba(231, 76, 60, 0.1);
-}
-
-/* Всплывающее окно для ошибок */
-.global-error-toast {
-    position: fixed;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    color: #e74c3c;
-    /* border: 1.5px solid #e74c3c; */
-    border-radius: 8px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    padding: 16px 32px;
-    z-index: 9999;
-    font-size: 1rem;
-    font-family: inherit;
-    min-width: 220px;
-    max-width: 90vw;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-.global-error-toast.show {
+.remove-avatar-btn:hover {
+    background: #c0392b;
     opacity: 1;
-    pointer-events: auto;
 }
