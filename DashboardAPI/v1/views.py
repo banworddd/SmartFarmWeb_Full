@@ -1,6 +1,6 @@
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from .filters import (
@@ -13,11 +13,13 @@ from .serializers import (
     UserExternalOrganizationMembershipsSerializer,
     ExternalOrganizationSerializer,
     ExternalOrganizationUsersSerializer,
+    CustomUserProfileSerializer
 )
 from users.models import (
     FarmMembership,
     ExternalOrganizationMembership,
     ExternalOrganization,
+    CustomUser,
 )
 
 
@@ -33,7 +35,7 @@ class UserFarmsAPIView(ListAPIView):
     """
 
     serializer_class = UserFarmMembershipsSerializer
-    permission_classes = [IsAuthenticated]  # Доступ только для аутентифицированных пользователей
+    permission_classes = [IsAuthenticated]
     filter_backends = [FarmMembershipFilterBackend]
 
     def get_queryset(self):
@@ -176,6 +178,15 @@ class ExternalOrganizationMembershipAPIView(RetrieveUpdateDestroyAPIView):
         except (ExternalOrganization.DoesNotExist,
                ExternalOrganizationMembership.DoesNotExist):
             raise NotFound('Запись не найдена')
+
+
+class CustomUserProfileAPIView(RetrieveUpdateAPIView):
+    serializer_class = CustomUserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
 
 
 

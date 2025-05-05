@@ -165,3 +165,11 @@ class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'role', 'status', 'updated_at']
         read_only_fields = ['id', 'user', 'updated_at']
 
+
+class CustomUserProfileSerializer(serializers.ModelSerializer):
+    date_joined = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+
+    class Meta:
+        model = CustomUser
+        fields = ['date_joined', 'last_name', 'first_name', 'email', 'phone_number', 'profile_pic','is_active', 'is_deleted']
+        read_only_fields = ['date_joined']
