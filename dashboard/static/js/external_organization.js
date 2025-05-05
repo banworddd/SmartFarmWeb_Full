@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
             field.textContent = '';
             detailItem.classList.add('editing');
             field.appendChild(input);
-            detailItem.insertBefore(actions, detailItem.firstChild);
+            field.parentNode.insertBefore(actions, field.nextSibling);
             
             // Фокусируемся на input
             input.focus();

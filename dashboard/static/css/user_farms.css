@@ -1243,31 +1243,16 @@ textarea.editable-input::-webkit-scrollbar {
 }
 
 .detail-item.editing .editable-container {
-    display: flex;
-    align-items: center;
     flex: 1;
     min-width: 0;
 }
 
 .detail-item.editing .editable-actions {
-    display: flex;
-    gap: 4px;
     flex-shrink: 0;
 }
 
-/* Переопределяем порядок элементов */
+/* Удаляем старые стили order */
 .detail-item.editing > *:first-child {
-    order: 2;
-    margin: 0;
-}
-
-.detail-item.editing .editable-container {
-    order: 1;
-    margin: 0;
-}
-
-.detail-item.editing .editable-actions {
-    order: 3;
     margin: 0;
 }
 

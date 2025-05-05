@@ -1,0 +1,84 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/external_organization.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/user_profile.js' %}"></script>   
+{% endblock %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+<div class="farms-page">
+    <div class="content-wrapper">
+        <div class="header-card">
+            <div class="farms-header">
+                <h1 class="farms-title">Профиль пользователя</h1>
+            </div>
+        </div>
+
+        <div class="organization-details">
+            <!-- Аватар и основная информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-user-circle"></i> Основная информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <div class="avatar-badge">
+                            <img id="profilePic" src="" alt="Аватар пользователя">
+                            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge name-badge"><i class="fas fa-user"></i><span class="badge-label">Имя</span></span><div class="editable-container"><span id="firstName" class="editable-field" data-field="first_name">Загрузка...</span><button class="edit-btn" data-target="firstName"><i class="fas fa-pencil-alt"></i></button></div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge name-badge"><i class="fas fa-user"></i><span class="badge-label">Фамилия</span></span><div class="editable-container"><span id="lastName" class="editable-field" data-field="last_name">Загрузка...</span><button class="edit-btn" data-target="lastName"><i class="fas fa-pencil-alt"></i></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контактная информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-address-card"></i> Контактная информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <span class="detail-badge email-badge"><i class="fas fa-envelope"></i><span class="badge-label">Email</span></span><div class="editable-container"><span id="email" class="editable-field" data-field="email">Загрузка...</span><button class="edit-btn" data-target="email"><i class="fas fa-pencil-alt"></i></button></div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge phone-badge"><i class="fas fa-phone"></i><span class="badge-label">Телефон</span></span><div class="editable-container"><span id="phone" class="editable-field" data-field="phone_number">Загрузка...</span><button class="edit-btn" data-target="phone"><i class="fas fa-pencil-alt"></i></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Мета информация -->
+            <div class="detail-card">
+                <h2><i class="fas fa-history"></i> Мета информация</h2>
+                <div class="detail-content">
+                    <div class="detail-item">
+                        <span class="detail-badge joined-badge">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span class="badge-label">Дата регистрации</span>
+                        </span>
+                        <span id="dateJoined">Загрузка...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-badge status-badge">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="badge-label">Статус</span>
+                        </span>
+                        <span id="status">Загрузка...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<body>
+    <div class="global-error-toast" id="globalErrorToast"></div>
+</body>
+{% endblock %} 

@@ -1,7 +1,7 @@
 from typing import Any, Dict
 
 from django.shortcuts import redirect
-from django.views.generic import CreateView, FormView, RedirectView
+from django.views.generic import CreateView, FormView, RedirectView, TemplateView
 from django.contrib.auth import login, logout
 from django.http import HttpRequest, HttpResponse
 
@@ -242,4 +242,8 @@ class CustomUserConfirmNewCodeView(RedirectView):
         """
         generate_and_send_confirmation_code(self.request)
         return super().get(request, *args, **kwargs)
+
+
+class CustomUserProfileView(TemplateView):
+    template_name = 'users/profile.html'
 
