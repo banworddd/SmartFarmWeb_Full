@@ -50,9 +50,20 @@ class CustomUser(AbstractUser):
         help_text=_("Имя пользователя в системе")
     )
 
+    profile_pic = models.ImageField(
+        default='profile_pics/default.png',
+        upload_to='profile_pics/',
+        blank=True,
+    )
+
     is_active = models.BooleanField(
         default=False,
         help_text=_("Флаг активности пользователя")
+    )
+
+    is_deleted = models.BooleanField(
+        default=False,
+        help_text=_("Флаг мягкого удаления пользователя")
     )
 
     farms = models.ManyToManyField(
