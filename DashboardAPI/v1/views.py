@@ -224,6 +224,7 @@ class FarmAPIView(RetrieveUpdateAPIView):
     serializer_class = FarmSerializer
     permission_classes = [IsAuthenticated]
 
+
     def get_object(self):
         slug = self.request.query_params.get('slug')
         return Farm.objects.filter(slug=slug).first()

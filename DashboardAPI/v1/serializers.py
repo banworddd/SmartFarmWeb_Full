@@ -58,6 +58,7 @@ class UserFarmMembershipsSerializer(serializers.ModelSerializer):
     farm = UserFarmsSerializer()
     joined_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
     updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+    farm_slug = serializers.SerializerMethodField()
 
     class Meta:
         model = FarmMembership
@@ -71,6 +72,9 @@ class UserFarmMembershipsSerializer(serializers.ModelSerializer):
             joined_at (str): Дата присоединения в формате "дд.мм.гггг чч:мм"
             updated_at (str): Дата обновления в формате "дд.мм.гггг чч:мм"
         """
+
+    def get_farm_slug(self, obj):
+        return obj.farm.slug
 
 
 class UserExternalOrganizationSerializer(serializers.ModelSerializer):
@@ -169,7 +173,7 @@ class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
 class ExternalOrganizationFarmsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farm
-        fields = []
+        fields = '__all__'
 
 
 
@@ -199,6 +203,7 @@ class CustomUserChangePasswordSerializer(serializers.Serializer):
 
 
 class FarmSerializer(serializers.ModelSerializer):
+    owner = ExternalOrganizationUserSerializer(read_only=True)
     class Meta:
         model = Farm
         fields = '__all__'

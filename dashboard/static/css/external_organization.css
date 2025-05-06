@@ -317,3 +317,40 @@
 .farm-card-link:last-child {
     margin-bottom: 0;  /* Убираем отступ у последней карточки */
 }
+
+/* Цветные бейджи ролей */
+.user-role.role-admin {
+    background: #1976d2;
+    color: #fff;
+    border-radius: 6px;
+    padding: 3px 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.user-role.role-technician {
+    background: #388e3c;
+    color: #fff;
+    border-radius: 6px;
+    padding: 3px 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.user-role.role-viewer {
+    background: #607d8b;
+    color: #fff;
+    border-radius: 6px;
+    padding: 3px 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.user-role.expanded {
+    filter: brightness(1.1) saturate(1.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    opacity: 1;
+}

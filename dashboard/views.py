@@ -53,3 +53,11 @@ class ExternalOrganizationView(LoginRequiredMixin, TemplateView):
         context['role'] = membership.role if membership else None
 
         return context
+
+class FarmView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/farm.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['slug'] = self.kwargs.get('slug')
+        return context

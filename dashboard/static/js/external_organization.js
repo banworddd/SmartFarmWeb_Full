@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             farmsList.innerHTML = farms.map(farm => `
-                <a href="/dashboard/farms/${farm.id}/" class="farm-card-link">
+                <a href="/dashboard/farms/${farm.slug}/" class="farm-card-link">
                     <div class="farm-card">
                         <h3 class="farm-name">${farm.name}</h3>
                         <p class="farm-description">${farm.description || 'Нет описания'}</p>
