@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (statusFilter.value) params.append('status', statusFilter.value);
         if (organizationTypeFilter.value) params.append('organization_type', organizationTypeFilter.value);
 
-        const url = `/api/v1/user_organizations/?${params.toString()}`;
+        const url = `/api/v1/user_pages/user_organizations/?${params.toString()}`;
         console.log('Отправляем запрос:', url);
 
         fetch(url, {

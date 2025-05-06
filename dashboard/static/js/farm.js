@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загрузка данных фермы
     function loadFarmData() {
-        fetch(`/api/v1/farm/?slug=${slug}`, {
+        fetch(`/api/v1/farm/main_data/?slug=${slug}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken')
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загрузка данных родительской организации
     function loadParentOrganizationData() {
-        fetch(`/api/v1/farm_ext_org/?slug=${slug}`, {
+        fetch(`/api/v1/farm/ext_org/?slug=${slug}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken')
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загрузка пользователей фермы
     function loadFarmUsers() {
-        fetch(`/api/v1/farm_users/?slug=${slug}`, {
+        fetch(`/api/v1/farm/users/?slug=${slug}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken')

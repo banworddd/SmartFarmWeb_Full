@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import CustomUser, Farm, FarmMembership, FarmGroup, ExternalOrganization, ExternalOrganizationMembership
+from users.models import Farm, FarmMembership, ExternalOrganization, ExternalOrganizationMembership
 
 
 class UserFarmsSerializer(serializers.ModelSerializer):
@@ -119,101 +119,6 @@ class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer)
         fields = ['id', 'organization', 'role', 'status', 'updated_at']
 
 
-
-class ExternalOrganizationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ExternalOrganization
-        fields = ['name', 'type', 'address', 'email', 'phone', 'website', 'description', 'created_at', 'updated_at']
-
-class ExternalOrganizationUserSerializer(serializers.ModelSerializer):
-
-    user_full_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = CustomUser
-        fields = ['user_full_name', 'phone_number', 'email']
-
-    @staticmethod
-    def get_user_full_name(obj):
-        """Генерирует полное имя владельца фермы.
-
-
-        Returns:
-            str: Строка в формате "{first_name} {last_name}"
-        """
-        return f"{obj.first_name} {obj.last_name}"
-
-
-class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
-    """Сериализатор для членства пользователя в организации.
-
-    Детализирует связь пользователя с организацией, включая:
-    - полные данные организации через вложенный сериализатор
-    - роль пользователя
-    - статус подтверждения членства
-    - дату последнего обновления в удобном формате
-
-    Attributes:
-        id (int): Уникальный идентификатор записи о членстве.
-        organization (dict): Сериализованные данные организации (UserExternalOrganizationSerializer).
-        role (str): Роль пользователя в организации (например, 'admin', 'member').
-        status (str): Статус членства ('approved', 'pending', 'rejected').
-        updated_at (str): Дата последнего обновления в формате 'DD.MM.YYYY HH:MM'.
-    """
-    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
-    user =  ExternalOrganizationUserSerializer()
-
-    class Meta:
-        model = ExternalOrganizationMembership
-        fields = ['id', 'user', 'role', 'status', 'updated_at']
-        read_only_fields = ['id', 'user', 'updated_at']
-
-
-class ExternalOrganizationFarmsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Farm
-        fields = '__all__'
-
-
-
-class CustomUserProfileSerializer(serializers.ModelSerializer):
-    date_joined = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
-
-    class Meta:
-        model = CustomUser
-        fields = ['date_joined', 'last_name', 'first_name', 'email', 'phone_number', 'profile_pic','is_active', 'is_deleted']
-        read_only_fields = ['date_joined']
-
-
-class CustomUserChangePasswordSerializer(serializers.Serializer):
-    current_password = serializers.CharField(required=True, write_only=True)
-    new_password = serializers.CharField(required=True, write_only=True)
-    new_password_confirmation = serializers.CharField(required=True, write_only=True)
-
-    def validate(self, attrs):
-        user = self.context["request"].user
-        if not user.check_password(attrs["current_password"]):
-            raise serializers.ValidationError('Неверный текущий пароль')
-
-        if attrs["new_password"] != attrs["new_password_confirmation"]:
-            raise serializers.ValidationError('Введенные пароли не совпадают')
-
-        return attrs
-
-
-class FarmSerializer(serializers.ModelSerializer):
-    owner = ExternalOrganizationUserSerializer(read_only=True)
-    class Meta:
-        model = Farm
-        fields = '__all__'
-
-class FarmMembershipsSerializer(serializers.ModelSerializer):
-    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
-    user = ExternalOrganizationUserSerializer()
-    class Meta:
-        model = FarmMembership
-        fields = '__all__'
 
 
 

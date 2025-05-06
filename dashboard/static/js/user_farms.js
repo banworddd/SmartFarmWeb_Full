@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (nameFilter.value) params.append('farm_name', nameFilter.value);
         if (orgFilter.value) params.append('organization_name', orgFilter.value);
 
-        const url = `/api/v1/user_farms/?${params.toString()}`;
+        const url = `/api/v1/user_pages/user_farms/?${params.toString()}`;
         console.log('Отправляем запрос:', url);
 
         fetch(url, {

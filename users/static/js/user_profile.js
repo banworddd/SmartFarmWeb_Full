@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Загрузка данных профиля
     async function loadProfileData() {
         try {
-            const response = await fetch('/api/v1/custom_user_profile/');
+            const response = await fetch('/api/v1/profile/user_data/');
             if (!response.ok) {
                 throw new Error('Ошибка загрузки данных профиля');
             }
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Сохранение
         saveBtn.onclick = async () => {
             try {
-                const response = await fetch('/api/v1/custom_user_profile/', {
+                const response = await fetch('/api/v1/profile/user_data/', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('profile_pic', file);
 
         try {
-            const response = await fetch('/api/v1/custom_user_profile/', {
+            const response = await fetch('/api/v1/profile/user_data/', {
                 method: 'PATCH',
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken')
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (removeAvatarBtn) {
         removeAvatarBtn.addEventListener('click', async () => {
             try {
-                const response = await fetch('/api/v1/custom_user_profile/', {
+                const response = await fetch('/api/v1/profile/user_data/', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const response = await fetch('/api/v1/custom_user_change_password/', {
+                const response = await fetch('/api/v1/profile/user_change_password/', {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

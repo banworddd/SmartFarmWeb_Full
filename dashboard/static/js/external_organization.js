@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загрузка данных организации
     function loadOrganizationData() {
-        fetch(`/api/v1/external_organization/?slug=${slug}`, {
+        fetch(`/api/v1/ext_org/main_data/?slug=${slug}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken')
@@ -74,18 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('click', function(e) {
             const roleBadge = e.target.closest('.user-role');
             const statusBadge = e.target.closest('.user-status');
-            
-            // Удалить или закомментировать:
-            // if (roleBadge) {
-            //     const userId = roleBadge.closest('.user-card').dataset.userId;
-            //     const currentRole = roleBadge.dataset.role;
-            //     showRoleEditModal(userId, currentRole);
-            // }
-            // if (statusBadge) {
-            //     const userId = statusBadge.closest('.user-card').dataset.userId;
-            //     const currentStatus = statusBadge.dataset.status;
-            //     showStatusEditModal(userId, currentStatus);
-            // }
+
         });
     }
 
@@ -94,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const editForm = document.querySelector(`.user-card[data-user-id="${userId}"] .edit-form`);
         const newRole = editForm.querySelector('.edit-select').value;
         
-        fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
+        fetch(`/api/v1/ext_org/user/?organization=${slug}&id=${userId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const editForm = document.querySelector(`.user-card[data-user-id="${userId}"] .edit-form`);
         const newStatus = editForm.querySelector('.edit-select').value;
         
-        fetch(`/api/v1/external_organization_user/?organization=${slug}&id=${userId}`, {
+        fetch(`/api/v1/ext_org/user/?organization=${slug}&id=${userId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -209,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             description: document.getElementById('editOrgDescription').value
         };
 
-        fetch(`/api/v1/external_organization/?slug=${slug}`, {
+        fetch(`/api/v1/ext_org/main_data/?slug=${slug}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -301,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
             function saveEdit() {
                 const newValue = input.value;
                 
-                fetch(`/api/v1/external_organization/?slug=${slug}`, {
+                fetch(`/api/v1/ext_org/main_data/?slug=${slug}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -471,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const statusFilter = userStatusFilter.value;
         const nameFilter = userNameFilter.value;
 
-        let url = `/api/v1/external_organization_users/?organization=${slug}`;
+        let url = `/api/v1/ext_org/users/?organization=${slug}`;
         if (roleFilter) url += `&role=${roleFilter}`;
         if (statusFilter) url += `&status=${statusFilter}`;
         if (nameFilter) url += `&user_name=${nameFilter}`;
@@ -679,7 +668,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchQuery = farmNameFilter ? farmNameFilter.value : '';
 
         // Формируем URL с параметрами поиска
-        let url = `/api/v1/external_organization_farms/?organization=${ORGANIZATION_SLUG}`;
+        let url = `/api/v1/ext_org/farms/?organization=${ORGANIZATION_SLUG}`;
         if (searchQuery) {
             url += `&search=${encodeURIComponent(searchQuery)}`;
         }
