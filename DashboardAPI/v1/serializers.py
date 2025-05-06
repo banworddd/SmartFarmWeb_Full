@@ -166,6 +166,13 @@ class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'updated_at']
 
 
+class ExternalOrganizationFarmsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Farm
+        fields = []
+
+
+
 class CustomUserProfileSerializer(serializers.ModelSerializer):
     date_joined = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
 

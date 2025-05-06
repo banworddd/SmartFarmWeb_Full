@@ -305,3 +305,15 @@
     opacity: 1;
     pointer-events: auto;
 }
+
+/* Отступ между карточками ферм */
+.farm-card-link {
+    display: block;
+    margin-bottom: 16px;  /* Увеличиваем отступ между карточками */
+    text-decoration: none;
+    color: inherit;
+}
+
+.farm-card-link:last-child {
+    margin-bottom: 0;  /* Убираем отступ у последней карточки */
+}

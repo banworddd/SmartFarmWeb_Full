@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .filters import (
     ExternalOrganizationFilterBackend,
-    FarmMembershipFilterBackend,
+    FarmMembershipFilterBackend, FarmFilterBackend,
 )
 from .permissions import IsOrganizationMember, IsOrganizationAdmin
 from .serializers import (
@@ -15,13 +15,14 @@ from .serializers import (
     UserExternalOrganizationMembershipsSerializer,
     ExternalOrganizationSerializer,
     ExternalOrganizationUsersSerializer,
-    CustomUserProfileSerializer, CustomUserChangePasswordSerializer
+    CustomUserProfileSerializer, CustomUserChangePasswordSerializer, ExternalOrganizationFarmsSerializer,
+    UserFarmsSerializer
 )
 from users.models import (
     FarmMembership,
     ExternalOrganizationMembership,
     ExternalOrganization,
-    CustomUser,
+    CustomUser, Farm,
 )
 
 
@@ -151,6 +152,17 @@ class ExternalOrganizationUsersAPIVIew(ListAPIView):
                 output_field=IntegerField()
             )
         ).order_by('-is_current_user', 'user__username')
+
+class ExternalOrganizationFarmsAPIView(ListAPIView):
+    serializer_class = UserFarmsSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [FarmFilterBackend]
+
+    def get_queryset(self):
+        organization_slug = self.request.query_params.get('organization')
+        queryset = Farm.objects.filter(organization__slug=organization_slug)
+        return queryset
+
 
 class ExternalOrganizationMembershipAPIView(RetrieveUpdateDestroyAPIView):
     """API для работы с членством во внешних организациях."""

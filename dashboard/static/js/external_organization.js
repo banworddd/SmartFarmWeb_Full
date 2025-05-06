@@ -149,15 +149,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обновление полей данными
     function updateFields(data) {
-        document.getElementById('orgName').textContent = data.name;
-        document.getElementById('orgType').textContent = getOrganizationTypeName(data.type);
-        document.getElementById('orgDescription').textContent = data.description || 'Нет описания';
-        document.getElementById('orgAddress').textContent = data.address || 'Адрес не указан';
-        document.getElementById('orgEmail').textContent = data.email || 'Email не указан';
-        document.getElementById('orgPhone').textContent = data.phone || 'Телефон не указан';
-        document.getElementById('orgWebsite').textContent = data.website || 'Веб-сайт не указан';
-        document.getElementById('orgCreatedAt').textContent = formatDate(data.created_at);
-        document.getElementById('orgUpdatedAt').textContent = formatDate(data.updated_at);
+        // Основные поля, которые есть у всех
+        const fields = {
+            'orgName': data.name,
+            'orgType': getOrganizationTypeName(data.type),
+            'orgDescription': data.description || 'Нет описания',
+            'orgAddress': data.address || 'Адрес не указан',
+            'orgEmail': data.email || 'Email не указан',
+            'orgPhone': data.phone || 'Телефон не указан',
+            'orgWebsite': data.website || 'Веб-сайт не указан'
+        };
+
+        // Обновляем только существующие поля
+        Object.entries(fields).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        });
+
+        // Мета-информация (только для админов)
+        if (CURRENT_USER_ROLE === 'admin') {
+            const metaFields = {
+                'orgCreatedAt': formatDate(data.created_at),
+                'orgUpdatedAt': formatDate(data.updated_at)
+            };
+
+            Object.entries(metaFields).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            });
+        }
     }
 
     // Управление модальным окном
@@ -645,4 +669,70 @@ document.addEventListener('DOMContentLoaded', function() {
             timeout = setTimeout(later, wait);
         };
     }
+
+    // Загрузка ферм организации
+    function loadOrganizationFarms() {
+        const farmsList = document.getElementById('farmsList');
+        if (!farmsList) return;
+
+        const farmNameFilter = document.getElementById('farmNameFilter');
+        const searchQuery = farmNameFilter ? farmNameFilter.value : '';
+
+        // Формируем URL с параметрами поиска
+        let url = `/api/v1/external_organization_farms/?organization=${ORGANIZATION_SLUG}`;
+        if (searchQuery) {
+            url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+
+        fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(farms => {
+            if (farms.length === 0) {
+                farmsList.innerHTML = `
+                    <div class="no-items">
+                        <i class="fas fa-tractor"></i>
+                        <p>Фермы не найдены</p>
+                    </div>
+                `;
+                return;
+            }
+
+            farmsList.innerHTML = farms.map(farm => `
+                <a href="/dashboard/farms/${farm.id}/" class="farm-card-link">
+                    <div class="farm-card">
+                        <h3 class="farm-name">${farm.name}</h3>
+                        <p class="farm-description">${farm.description || 'Нет описания'}</p>
+                        <div class="farm-meta">
+                            <span><i class="fas fa-user"></i> ${farm.owner_full_name}</span>
+                            <span><i class="fas fa-building"></i> ${farm.organization_name}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        })
+        .catch(error => {
+            console.error('Error loading farms:', error);
+            farmsList.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Ошибка загрузки ферм</p>
+                </div>
+            `;
+        });
+    }
+
+    // Обработчик поиска ферм с debounce
+    const farmNameFilter = document.getElementById('farmNameFilter');
+    if (farmNameFilter) {
+        farmNameFilter.addEventListener('input', debounce(loadOrganizationFarms, 500));
+    }
+
+    // Загружаем фермы при загрузке страницы
+    loadOrganizationFarms();
 });

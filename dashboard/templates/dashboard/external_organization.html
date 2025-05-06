@@ -8,9 +8,7 @@
 
 {% block extra_js %}
 <script>
-    // Передаем slug из контекста Django в JavaScript
     const ORGANIZATION_SLUG = '{{ slug }}';
-    // Передаем роль пользователя из контекста Django
     const CURRENT_USER_ROLE = '{{ role }}';
     const CURRENT_USER_EMAIL = '{{ request.user.email }}';
 </script>
@@ -195,6 +193,26 @@
                 <!-- Список пользователей -->
                 <div id="usersList" class="users-list">
                     <!-- Пользователи будут добавлены через JavaScript -->
+                </div>
+            </div>
+
+            <!-- Фермы организации -->
+            <div class="detail-card">
+                <h2><i class="fas fa-tractor"></i> Фермы организации</h2>
+                
+                <!-- Фильтры -->
+                <div class="users-filters">
+                    <div class="filter-group">
+                        <label for="farmNameFilter">
+                            <i class="fas fa-search"></i> Поиск
+                        </label>
+                        <input type="text" id="farmNameFilter" class="filter-input" placeholder="Поиск по названию...">
+                    </div>
+                </div>
+
+                <!-- Список ферм -->
+                <div id="farmsList" class="users-list">
+                    <!-- Фермы будут добавлены через JavaScript -->
                 </div>
             </div>
         </div>
