@@ -13,7 +13,7 @@ class UserFarmsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Farm
-        fields = ['id', 'name', 'description', 'owner_full_name', 'organization_name']
+        fields = ['id', 'name', 'description', 'owner_full_name', 'organization_name','slug']
         """
         Поля:
             id (int): Уникальный идентификатор фермы

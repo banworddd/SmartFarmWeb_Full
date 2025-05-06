@@ -216,8 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'technician': 'Техник',
             'viewer': 'Наблюдатель'
         };
-
-        return `
+        const cardHtml = `
             <div class="farm-card" data-farm-id="${farm.id}">
                 <div class="farm-header">
                     <h3 class="farm-name">${farm.farm.name}</h3>
@@ -236,6 +235,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
+        if (farm.farm_slug) {
+            return `<a href="/dashboard/farms/${farm.farm_slug}/" class="farm-card-link">${cardHtml}</a>`;
+        } else {
+            return cardHtml;
+        }
     }
 
     // Toggle badge expansion to reveal role name
