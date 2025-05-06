@@ -1,7 +1,8 @@
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework import status
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView, UpdateAPIView, \
+    RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -16,7 +17,7 @@ from .serializers import (
     ExternalOrganizationSerializer,
     ExternalOrganizationUsersSerializer,
     CustomUserProfileSerializer, CustomUserChangePasswordSerializer, ExternalOrganizationFarmsSerializer,
-    UserFarmsSerializer, FarmSerializer
+    UserFarmsSerializer, FarmSerializer, UserExternalOrganizationSerializer, FarmMembershipsSerializer
 )
 from users.models import (
     FarmMembership,
@@ -219,9 +220,30 @@ class CustomUserChangePasswordAPIView(UpdateAPIView):
         return Response({"detail": "Пароль успешно изменён."}, status=status.HTTP_200_OK)
 
 
+class FarmAPIView(RetrieveUpdateAPIView):
+    serializer_class = FarmSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        slug = self.request.query_params.get('slug')
+        return Farm.objects.filter(slug=slug).first()
+
+class FarmOrganizationAPIView(RetrieveAPIView):
+    serializer_class = UserExternalOrganizationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        slug = self.request.query_params.get('slug')
+        return ExternalOrganization.objects.filter(farms__slug=slug).first()
 
 
+class FarmMembershipsAPIView(ListAPIView):
+    serializer_class = FarmMembershipsSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        slug = self.request.query_params.get('slug')
+        return FarmMembership.objects.filter(farm__slug=slug)
 
 
 

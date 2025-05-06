@@ -199,10 +199,18 @@ class CustomUserChangePasswordSerializer(serializers.Serializer):
 
 
 class FarmSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Farm
         fields = '__all__'
+
+class FarmMembershipsSerializer(serializers.ModelSerializer):
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+    user = ExternalOrganizationUserSerializer()
+    class Meta:
+        model = FarmMembership
+        fields = '__all__'
+
+
 
 
 
