@@ -16,7 +16,7 @@ from .serializers import (
     ExternalOrganizationSerializer,
     ExternalOrganizationUsersSerializer,
     CustomUserProfileSerializer, CustomUserChangePasswordSerializer, ExternalOrganizationFarmsSerializer,
-    UserFarmsSerializer
+    UserFarmsSerializer, FarmSerializer
 )
 from users.models import (
     FarmMembership,
@@ -217,6 +217,9 @@ class CustomUserChangePasswordAPIView(UpdateAPIView):
         user.save()
 
         return Response({"detail": "Пароль успешно изменён."}, status=status.HTTP_200_OK)
+
+
+
 
 
 

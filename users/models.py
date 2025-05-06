@@ -290,6 +290,10 @@ class Farm(models.Model):
         help_text=_('Связанная внешняя организация')
     )
 
+    slug = models.SlugField(
+        _('Slug'),
+        blank=True,
+    )
     created_at = models.DateTimeField(
         _('Дата создания'),
         auto_now_add=True
@@ -318,6 +322,11 @@ class Farm(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Farm, self).save(*args, **kwargs)
 
 
 class FarmMembership(models.Model):
