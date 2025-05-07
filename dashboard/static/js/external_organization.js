@@ -476,11 +476,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(users => {
             usersList.innerHTML = users.length ? 
                 users.map((user, index) => createUserCard(user, index)).join('') :
-                '<div class="empty-state">Нет пользователей, соответствующих фильтрам</div>';
+                '<div class="empty-state" style="grid-column: 1 / -1;">Нет пользователей, соответствующих фильтрам</div>';
         })
         .catch(error => {
             console.error('Error:', error);
-            usersList.innerHTML = '<div class="error-state">Не удалось загрузить список пользователей</div>';
+            usersList.innerHTML = '<div class="error-state" style="grid-column: 1 / -1;">Не удалось загрузить список пользователей</div>';
         });
     }
 
@@ -492,72 +492,41 @@ document.addEventListener('DOMContentLoaded', function() {
             'member': 'fas fa-user',
             'guest': 'fas fa-user-tag'
         };
-
         const roleNames = {
             'admin': 'Администратор',
             'manager': 'Менеджер',
             'member': 'Сотрудник',
             'guest': 'Гость'
         };
-
         const statusIcons = {
             'approved': 'fas fa-check-circle',
             'pending': 'fas fa-hourglass-half',
-            'rejected': 'fas fa-times'
+            'rejected': 'fas fa-times-circle'
         };
-
         const statusNames = {
             'approved': 'Одобрено',
             'pending': 'В ожидании',
             'rejected': 'Отклонено'
         };
-
-        const isCurrentUser = user.user.email === CURRENT_USER_EMAIL;
-        const isFirstCard = index === 0 && isCurrentUser;
-
         return `
-            <div class="user-card ${isFirstCard ? 'current-user' : ''}" data-user-id="${user.id}">
-                <div class="user-info">
-                    <div class="user-name">
-                        <i class="fas fa-user"></i>
-                        ${user.user.user_full_name}
-                    </div>
-                    <div class="user-badges">
-                        <div class="badge-container">
-                            <span class="user-role role-${user.role}" data-role="${user.role}">
-                                <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
-                                <span class="role-label">${roleNames[user.role] || user.role}</span>
-                            </span>
-                            ${CURRENT_USER_ROLE === 'admin' ? `
-                                <div class="edit-controls">
-                                    <button class="edit-btn" onclick="showRoleEdit(${user.id}, '${user.role}')">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="badge-container">
-                            <span class="user-status status-${user.status}" data-status="${user.status}">
-                                <i class="${statusIcons[user.status] || 'fas fa-circle'}"></i>
-                                <span class="status-label">${statusNames[user.status] || user.status}</span>
-                            </span>
-                            ${CURRENT_USER_ROLE === 'admin' ? `
-                                <div class="edit-controls">
-                                    <button class="edit-btn" onclick="showStatusEdit(${user.id}, '${user.status}')">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
+            <div class="farm-card">
+                <div class="farm-header">
+                    <h3 class="farm-name">${user.user.user_full_name}</h3>
+                    <div class="farm-badges">
+                        <span class="farm-role role-${user.role}">
+                            <i class="${roleIcons[user.role] || 'fas fa-user'}"></i>
+                            <span class="role-label">${roleNames[user.role] || user.role}</span>
+                        </span>
+                        <span class="farm-status status-${user.status}">
+                            <i class="${statusIcons[user.status] || 'fas fa-info-circle'}"></i>
+                            <span class="status-label">${statusNames[user.status] || user.status}</span>
+                        </span>
                     </div>
                 </div>
-                <div class="user-contacts">
+                <div class="farm-meta">
+                    <span><i class="fas fa-clock"></i> Обновлено: ${formatDate(user.updated_at)}</span>
                     <span><i class="fas fa-envelope"></i> ${user.user.email}</span>
-                    <span><i class="fas fa-phone"></i> ${user.user.phone_number}</span>
-                </div>
-                <div class="user-meta">
-                    <i class="fas fa-clock"></i>
-                    <span>Обновлено: ${formatDate(user.updated_at)}</span>
+                    <span><i class="fas fa-phone"></i> ${user.user.phone_number || ''}</span>
                 </div>
             </div>
         `;
@@ -684,7 +653,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(farms => {
             if (farms.length === 0) {
                 farmsList.innerHTML = `
-                    <div class="no-items">
+                    <div class="no-farms">
                         <i class="fas fa-tractor"></i>
                         <p>Фермы не найдены</p>
                     </div>
@@ -695,7 +664,15 @@ document.addEventListener('DOMContentLoaded', function() {
             farmsList.innerHTML = farms.map(farm => `
                 <a href="/dashboard/farms/${farm.slug}/" class="farm-card-link">
                     <div class="farm-card">
-                        <h3 class="farm-name">${farm.name}</h3>
+                        <div class="farm-header">
+                            <div class="farm-badges">
+                                <span class="farm-type type-${farm.type}">
+                                    <i class="fas fa-building"></i>
+                                    <span class="type-label">${getOrganizationTypeName(farm.type)}</span>
+                                </span>
+                            </div>
+                            <h3 class="farm-name">${farm.name}</h3>
+                        </div>
                         <p class="farm-description">${farm.description || 'Нет описания'}</p>
                         <div class="farm-meta">
                             <span><i class="fas fa-user"></i> ${farm.owner_full_name}</span>
@@ -724,4 +701,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загружаем фермы при загрузке страницы
     loadOrganizationFarms();
+
+    // После определения usersList и создания карточек пользователей:
+    usersList.addEventListener('click', e => {
+        const badge = e.target.closest('.farm-badges span');
+        if (badge) {
+            e.preventDefault();
+            badge.classList.toggle('expanded');
+        }
+    });
 });

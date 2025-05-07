@@ -11,21 +11,10 @@ class ExternalOrganizationSerializer(serializers.ModelSerializer):
 
 class ExternalOrganizationUserSerializer(serializers.ModelSerializer):
 
-    user_full_name = serializers.SerializerMethodField()
-
     class Meta:
         model = CustomUser
-        fields = ['user_full_name', 'phone_number', 'email']
+        fields = ['first_name','last_name', 'phone_number', 'email', 'profile_pic']
 
-    @staticmethod
-    def get_user_full_name(obj):
-        """Генерирует полное имя владельца фермы.
-
-
-        Returns:
-            str: Строка в формате "{first_name} {last_name}"
-        """
-        return f"{obj.first_name} {obj.last_name}"
 
 
 class ExternalOrganizationUsersSerializer(serializers.ModelSerializer):
