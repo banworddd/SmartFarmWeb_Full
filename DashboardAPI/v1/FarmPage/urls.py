@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import FarmAPIView, FarmOrganizationAPIView, FarmMembershipsAPIView
+from .views import FarmAPIView, FarmMembershipsAPIView, FarmOrganizationAPIView
 
 urlpatterns = [
     path('main_data/', FarmAPIView.as_view(), name='farm_main_data'),

@@ -1,0 +1,139 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_ext_orgs.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/user_ext_orgs.js' %}"></script>
+{% endblock %}
+
+{% block title %}Мои внешние организации{% endblock %}
+
+{% block content %}
+<div class="farms-page">
+    <div class="content-wrapper">
+        <!-- Заголовок -->
+        <header class="header-card">
+            <div class="farms-header">
+                <h1 class="farms-title">Мои внешние организации</h1>
+            </div>
+        </header>
+
+        <!-- Панель фильтров и сортировки -->
+        <section class="filters-panel">
+            <input type="checkbox" id="toggleFilters" class="toggle-filters-checkbox" hidden>
+            <label for="toggleFilters" class="filter-toggle">
+                <i class="fas fa-filter"></i> Фильтрация
+            </label>
+            <div class="filters-fields">
+                <div class="filter-group">
+                    <label for="roleFilter" class="visually-hidden">Роль</label>
+                    <div class="filter-field">
+                        <i class="fas fa-user-tag"></i>
+                        <select id="roleFilter" class="filter-select">
+                            <option value="">Все роли</option>
+                            <option value="admin">Администратор</option>
+                            <option value="manager">Менеджер</option>
+                            <option value="member">Сотрудник</option>
+                            <option value="guest">Гость</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="nameFilter" class="visually-hidden">Поиск</label>
+                    <div class="filter-field">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="nameFilter" class="filter-input" placeholder="Название организации">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="statusFilter" class="visually-hidden">Статус</label>
+                    <div class="filter-field">
+                        <i class="fas fa-info-circle"></i>
+                        <select id="statusFilter" class="filter-select">
+                            <option value="">Все статусы</option>
+                            <option value="approved">Одобрено</option>
+                            <option value="pending">В ожидании</option>
+                            <option value="rejected">Отклонено</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="organizationTypeFilter" class="visually-hidden">Тип организации</label>
+                    <div class="filter-field">
+                        <i class="fas fa-building"></i>
+                        <select id="organizationTypeFilter" class="filter-select">
+                            <option value="">Все типы</option>
+                            <option value="supplier">Поставщик</option>
+                            <option value="partner">Партнер</option>
+                            <option value="government">Государственная</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="toggleSort" class="toggle-sort-checkbox" hidden>
+            <label for="toggleSort" class="sort-toggle">
+                <i class="fas fa-sort"></i> Сортировка
+            </label>
+            <div class="sort-fields">
+                <div class="filter-group">
+                    <div class="sort-buttons">
+                        <div class="sort-badge" data-sort="role">
+                            <i class="fas fa-user-tag"></i>
+                            <span class="sort-label">По роли</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="sort-badge" data-sort="updated_at">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="sort-label">По дате</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="sort-badge" data-sort="organization__name">
+                            <i class="fas fa-font"></i>
+                            <span class="sort-label">По названию</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Список организаций -->
+        <main id="orgsList" class="farms-grid">
+            <!-- Организации будут добавлены сюда динамически -->
+        </main>
+        <div class="empty-state-container">
+            <div class="no-orgs" style="display: none;">
+                <i class="fas fa-building"></i>
+                <h3>У вас пока нет организаций</h3>
+                <p>Создайте новую организацию или попросите администратора добавить вас</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

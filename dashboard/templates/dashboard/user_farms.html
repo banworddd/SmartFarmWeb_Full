@@ -1,93 +1,140 @@
 {% extends "main/layout.html" %}
 {% load static %}
 
+{% block title %}Мои фермы{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/user_farms.js' %}"></script>
+    <script src="{% static 'js/user_farms.js' %}"></script>
 {% endblock %}
 
-{% block title %}Мои фермы{% endblock %}
-
 {% block content %}
-<div class="farms-page">
-    <!-- Общий контейнер для заголовка и карточек ферм -->
-    <div class="content-wrapper">
-        <!-- Заголовок и кнопка добавления -->
-        <div class="header-card">
-            <div class="farms-header">
-                <h1 class="farms-title">Мои фермы</h1>
-                <button id="addFarmBtn" class="farm-action-btn">
-                    <i class="fas fa-plus"></i> Добавить ферму
-                </button>
-            </div>
-        </div>
+    <div class="farms-page">
+        <div class="content-wrapper">
+            <!-- Заголовок -->
+            <header class="header-card">
+                <div class="farms-header">
+                    <h1 class="farms-title">Мои фермы</h1>
+                </div>
+            </header>
 
-        <!-- Панель фильтров -->
-        <div class="filters-panel">
-            <div class="filter-group">
-                <label for="roleFilter">
-                    <i class="fas fa-user-tag"></i> Роль
+            <!-- Панель фильтров -->
+            <section class="filters-panel">
+                <!-- Мобильные кнопки фильтрации и сортировки -->
+                <input type="checkbox" id="toggleFilters" class="toggle-filters-checkbox" hidden>
+                <label for="toggleFilters" class="filter-toggle">
+                  <i class="fas fa-filter"></i> Фильтрация
                 </label>
-                <select id="roleFilter" class="filter-select">
-                    <option value="">Все роли</option>
-                    <option value="owner">Владелец</option>
-                    <option value="admin">Администратор</option>
-                    <option value="manager">Менеджер</option>
-                    <option value="technician">Техник</option>
-                    <option value="viewer">Наблюдатель</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="nameFilter">
-                    <i class="fas fa-search"></i> Поиск
-                </label>
-                <input type="text" id="nameFilter" class="filter-input" placeholder="Название фермы">
-            </div>
-            <div class="filter-group">
-                <label for="orgFilter">
-                    <i class="fas fa-building"></i> Организация
-                </label>
-                <select id="orgFilter" class="filter-select">
-                    <option value="">Все организации</option>
-                </select>
-            </div>
-        </div>
+                <div class="filters-fields">
+                  <!-- Фильтр по роли -->
+                  <div class="filter-group">
+                      <label for="roleFilter" class="visually-hidden">Роль</label>
+                      <div class="filter-field">
+                          <i class="fas fa-user-tag"></i>
+                          <select id="roleFilter" class="filter-select">
+                              <option value="">Все роли</option>
+                              <option value="owner">Владелец</option>
+                              <option value="admin">Администратор</option>
+                              <option value="manager">Менеджер</option>
+                              <option value="technician">Техник</option>
+                              <option value="viewer">Наблюдатель</option>
+                          </select>
+                      </div>
+                  </div>
 
-        <!-- Контейнер для списка ферм -->
-        <div id="farmsList" class="farms-grid">
-            <!-- Фермы будут добавлены сюда динамически -->
-        </div>
-        <div class="empty-state-container">
-            <div class="no-farms" style="display: none;">
-                <i class="fas fa-tractor"></i>
-                <h3>У вас пока нет ферм</h3>
-                <p>Создайте новую ферму или попросите владельца добавить вас</p>
+                  <!-- Поиск по названию -->
+                  <div class="filter-group">
+                      <label for="nameFilter" class="visually-hidden">Поиск</label>
+                      <div class="filter-field">
+                          <i class="fas fa-search"></i>
+                          <input 
+                              type="text" 
+                              id="nameFilter" 
+                              class="filter-input" 
+                              placeholder="Название фермы"
+                          >
+                      </div>
+                  </div>
+
+                  <!-- Фильтр по организации -->
+                  <div class="filter-group">
+                      <label for="orgFilter" class="visually-hidden">Организация</label>
+                      <div class="filter-field">
+                          <i class="fas fa-building"></i>
+                          <select id="orgFilter" class="filter-select">
+                              <option value="">Все организации</option>
+                          </select>
+                      </div>
+                  </div>
+                </div>
+
+                <input type="checkbox" id="toggleSort" class="toggle-sort-checkbox" hidden>
+                <label for="toggleSort" class="sort-toggle">
+                  <i class="fas fa-sort"></i> Сортировка
+                </label>
+                <div class="sort-fields">
+                  <div class="filter-group">
+                    <div class="sort-buttons">
+                        <!-- Сортировка по роли -->
+                        <div class="sort-badge" data-sort="role">
+                            <i class="fas fa-user-tag"></i>
+                            <span class="sort-label">По роли</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Сортировка по дате -->
+                        <div class="sort-badge" data-sort="updated_at">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="sort-label">По дате</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Сортировка по названию -->
+                        <div class="sort-badge" data-sort="farm__name">
+                            <i class="fas fa-font"></i>
+                            <span class="sort-label">По названию</span>
+                            <div class="sort-arrows">
+                                <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </section>
+
+            <!-- Список ферм -->
+            <main id="farmsList" class="farms-grid">
+                <!-- Фермы будут добавлены сюда динамически -->
+            </main>
+
+            <!-- Состояние отсутствия ферм -->
+            <div class="empty-state-container">
+                <div class="no-farms" style="display: none;">
+                    <i class="fas fa-tractor"></i>
+                    <h3>У вас пока нет ферм</h3>
+                    <p>Создайте новую ферму или попросите владельца добавить вас</p>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Модальное окно для добавления фермы -->
-    <div id="addFarmModal" class="farm-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Добавить новую ферму</h2>
-            <form id="addFarmForm" class="farm-form">
-                <div class="form-group">
-                    <label for="farmName">Название фермы</label>
-                    <input type="text" id="farmName" required>
-                </div>
-                <div class="form-group">
-                    <label for="farmDescription">Описание</label>
-                    <textarea id="farmDescription" rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Создать ферму
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
 {% endblock %}

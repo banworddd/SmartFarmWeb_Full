@@ -1,0 +1,42 @@
+/* ==================== ПК-ВЕРСИЯ: КАРТОЧКИ ОРГАНИЗАЦИЙ ==================== */
+@media (min-width: 769px) {
+  /* Растягиваем farm-header и farm-badges на всю ширину карточки */
+  .farms-page .farm-header,
+  .farms-page .farm-header .farm-badges {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  /* Делаем бейджи над названием (column-reverse) */
+  .farms-page .farm-header {
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 4px;
+  }
+  /* Отступы и разделитель между бейджами и названием */
+  .farms-page .farm-header .farm-badges {
+    margin-bottom: 0;
+    margin-top: 4px;
+    position: relative;
+  }
+  .farms-page .farm-header .farm-badges::after {
+    content: "";
+    display: block;
+    width: 100%;
+    align-self: stretch;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 8px 0 0 0;
+  }
+  .farms-page .farm-header .farm-name {
+    margin-bottom: 0;
+  }
+  /* Убираем левый отступ у бейджей, добавляем правый */
+  .farms-page .farm-role,
+  .farms-page .farm-status,
+  .farms-page .farm-type,
+  .farms-page .user-role,
+  .farms-page .user-status {
+    margin-left: 0 !important;
+    margin-right: 10px !important;
+  }
+}

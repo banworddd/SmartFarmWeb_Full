@@ -1,40 +1,41 @@
-/* ==================== BASE STYLES ==================== */
-/* Анимация появления элементов */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* ==================== ПЕРЕМЕННЫЕ ==================== */
+:root {
+    --primary-color: #2ecc71;
+    --primary-dark: #27ae60;
+    --secondary-color: #3498db;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --text-color: white;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --border-radius: 10px;
+    --border-radius-sm: 8px;
+    --transition-speed: 0.3s;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.2);
+    --backdrop-blur: blur(5px);
+    --backdrop-bg: rgba(255, 255, 255, 0.1);
+    --backdrop-bg-hover: rgba(255, 255, 255, 0.2);
 }
 
-/* Анимация исчезновения элементов */
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-}
+/* ==================== АНИМАЦИИ ==================== */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+@keyframes fadeOut { from { opacity: 1; transform: translateY(0);} to { opacity: 0; transform: translateY(20px);} }
 
-/* Основной контейнер страницы */
-.farms-page {
+/* ==================== БАЗОВЫЕ СТИЛИ СТРАНИЦЫ ==================== */
+.farms-page { /* Главный контейнер страницы */
     padding: 20px;
     min-height: calc(100vh - 40px);
-    transition: margin-left 0.5s ease-in-out;
+    transition: margin-left var(--transition-speed) ease-in-out;
     position: relative;
     z-index: 1;
     overflow: hidden;
 }
-
-/* Фоновое изображение страницы */
-.farms-page::before {
+.farms-page a,
+.farms-page a:link,
+.farms-page a:visited,
+.farms-page a:hover,
+.farms-page a:active { text-decoration: none; color: inherit; }
+.farms-page::before { /* Фоновое изображение */
     content: '';
     position: absolute;
     top: 0;
@@ -48,32 +49,29 @@
     background-attachment: fixed;
     z-index: -2;
 }
-
-/* Затемнение фона */
-.farms-page::after {
+.farms-page::after { /* Затемнение и блюр */
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    backdrop-filter: var(--backdrop-blur);
     background: rgba(0, 0, 0, 0.4);
     z-index: -1;
     pointer-events: none;
 }
 
-/* ==================== CONTENT WRAPPER ==================== */
-/* Основной контейнер контента */
-.content-wrapper {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+/* ==================== КОНТЕНТНЫЙ КАРКАС ==================== */
+.content-wrapper { /* Центрированный контейнер для контента */
+    background: var(--backdrop-bg);
+    border-radius: var(--border-radius);
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    backdrop-filter: var(--backdrop-blur);
     width: calc(100% - 120px);
     max-width: 900px;
     margin: 0 auto;
@@ -82,30 +80,22 @@
     padding-right: 60px;
     animation: fadeIn 0.5s ease-out forwards;
     opacity: 0;
-    color: white;
+    color: var(--text-color);
 }
+.content-wrapper.fade-out { animation: fadeOut 0.5s ease-in forwards; }
 
-/* Состояние исчезновения контента */
-.content-wrapper.fade-out {
-    animation: fadeOut 0.5s ease-in forwards;
-}
-
-/* ==================== HEADER STYLES ==================== */
-/* Контейнер заголовка */
-.header-card {
+/* ==================== ХЕДЕР ==================== */
+.header-card { /* Карточка заголовка */
     background: transparent;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
     width: 100%;
     box-sizing: border-box;
 }
-
-/* Внутренний контейнер заголовка */
-.farms-header {
+.farms-header { /* Внутренний контейнер заголовка */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -113,522 +103,214 @@
     padding: 0;
     text-align: center;
 }
-
-/* Заголовок страницы */
-.farms-title {
+.farms-title { /* Заголовок страницы */
     font-size: 2rem;
-    color: #ffffff;
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* ==================== BUTTONS ==================== */
-/* Кнопка добавления фермы */
-.farm-action-btn {
-    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-    margin: 0;
-}
-
-/* Эффект при наведении на кнопку */
-.farm-action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-}
-
-/* ==================== FARMS GRID ==================== */
-/* Сетка ферм */
-.farms-grid {
+/* ==================== СЕТКА ФЕРМ ==================== */
+.farms-grid { /* Сетка карточек ферм */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
 }
+.farms-grid.updating { pointer-events: none; }
 
-/* Анимация обновления */
-.farms-grid.updating {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: none;
-}
-
-/* ==================== FARM CARD ==================== */
-/* Карточка фермы или организации */
-.farm-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+/* ==================== КАРТОЧКА ФЕРМЫ ==================== */
+.farm-card { /* Карточка фермы */
+    background: var(--backdrop-bg);
+    border-radius: var(--border-radius);
     padding: 20px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
     box-sizing: border-box;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    backdrop-filter: var(--backdrop-blur);
     height: 240px;
     display: flex;
     flex-direction: column;
 }
-
-/* Эффект при наведении на карточку */
-.farm-card:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateX(5px);
-}
-
-/* Заголовок карточки */
-.farm-header {
+.farm-card:hover { background: var(--backdrop-bg-hover); transform: translateX(5px);}
+.farm-header { /* Хедер карточки фермы */
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
     min-height: 30px;
 }
-
-/* Название фермы или организации */
-.farm-name {
+.farm-name { /* Название фермы */
     font-size: 1.1rem;
     margin: 0;
-    color: #ffffff;
+    color: var(--text-color);
     line-height: 1.4;
     max-height: 3.5rem;
     overflow: hidden;
 }
 
-/* Стиль иконки владельца */
-.role-owner .farm-header i.fas,
-.role-owner .farm-header i {
-    color: #2ecc71 !important;
-}
-
-/* Бейдж роли пользователя */
-.farm-role {
-    padding: 4px 12px;
+/* ==================== БЕЙДЖИ РОЛЕЙ И СТАТУСОВ ==================== */
+.farm-role, .farm-status, .farm-type, .user-role, .user-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 20px;
+    padding: 4px;
     border-radius: 15px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
+    color: var(--text-color);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
     margin-left: 10px;
     cursor: pointer;
     vertical-align: middle;
 }
-
-.farm-role .role-label {
-    display: inline-block;
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-left: 0;
-    transform: translateX(-5px);
-    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
-    background: rgba(255, 255, 255, 0.0);
-}
-
-.farm-role.expanded .role-label {
-    opacity: 1;
-    max-width: 100px;
-    margin-left: 8px;
-    transform: translateX(0);
-    background: rgba(255, 255, 255, 0.0);
-}
-
-.farm-card[data-org-id] .farm-badges {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-/* Бейдж организации */
-.farm-organization {
+.farm-role.expanded, .farm-status.expanded, .farm-type.expanded, .user-role.expanded, .user-status.expanded {
+    justify-content: flex-start;
     padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-block;
-    background: #3498db;
+    min-height: 20px;
 }
-
-/* Бейдж статуса пользователя */
-.farm-status, .farm-type, .farm-role {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    margin-left: 10px;
-    cursor: pointer;
-    vertical-align: middle;
+.farm-role i, .farm-status i, .farm-type i, .user-role i, .user-status i {
+    /* Иконка внутри бейджа */
+    margin: 0;
+    font-size: 0.9rem;
 }
-
-/* Метки внутри бейджей */
+.farm-role.expanded i, .farm-status.expanded i, .farm-type.expanded i, .user-role.expanded i, .user-status.expanded i {
+    margin-right: 8px;
+}
 .farm-role .role-label,
 .farm-status .status-label,
-.farm-type .type-label {
+.farm-type .type-label,
+.user-role .role-label,
+.user-status .status-label {
     display: inline-block;
     opacity: 0;
     max-width: 0;
+    min-width: 0;
+    width: 0;
+    margin-left: 0;
+    padding: 0;
     overflow: hidden;
     white-space: nowrap;
-    margin-left: 0;
-    transform: translateX(-5px);
-    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
+    transition:
+        max-width 0.4s cubic-bezier(0.4,0,0.2,1),
+        width 0.4s cubic-bezier(0.4,0,0.2,1),
+        opacity 0.25s cubic-bezier(0.4,0,0.2,1),
+        margin-left 0.3s cubic-bezier(0.4,0,0.2,1),
+        padding 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-
 .farm-role.expanded .role-label,
 .farm-status.expanded .status-label,
-.farm-type.expanded .type-label {
+.farm-type.expanded .type-label,
+.user-role.expanded .role-label,
+.user-status.expanded .status-label {
     opacity: 1;
     max-width: 100px;
-    margin-left: 8px;
-    transform: translateX(0);
+    width: auto;
+    padding: 2px 8px;
 }
-
-/* Бейдж статуса пользователя */
-.farm-status {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-    margin-left: 10px;
-}
-
-/* Бейдж типа организации */
-.farm-type {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-    margin-left: 10px;
-    background: #3498db;
-}
-
-/* Цвета бейджей для разных ролей */
+/* Цвета ролей и статусов */
 .role-owner { background: #e67e22; }
-.role-admin { background: #3498db; }
-.role-manager { background: #2ecc71; }
+.role-admin { background: var(--secondary-color); }
+.role-manager { background: var(--primary-color); }
 .role-member { background: #9b59b6; }
 .role-guest { background: #7f8c8d; }
-.role-viewer { background: #95a5a6; }
-.role-observer { background: #95a5a6; }
+.role-viewer, .role-observer { background: #95a5a6; }
 .role-technician { background: #9b59b6; }
+.status-approved { background: var(--primary-color); }
+.status-pending { background: var(--warning-color); }
+.status-rejected { background: var(--danger-color); }
+.type-supplier { background: #f39c12; }
+.type-partner { background: #3498db; }
+.type-government { background: #16a085; }
+.type-other { background: #7f8c8d; }
 
-/* Цвета бейджей для разных статусов */
-.status-approved { background: #2ecc71; }
-.status-pending { background: #f39c12; }
-.status-rejected { background: #e74c3c; }
-
-/* Общие стили для всех бейджей ролей */
-[class*="role-"] {
-    background-color: #95a5a6;
-}
-
-/* Описание фермы */
-.farm-description {
-    color: #ffffff;
+/* ==================== ОПИСАНИЕ ФЕРМЫ ==================== */
+.farm-description { /* Описание фермы в карточке */
+    color: var(--text-color);
     margin: 0 0 12px 0;
     flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    display: block;
+    white-space: normal;
     line-height: 1.4;
-    max-height: 4.2rem;
+    max-height: 2.8em;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
-/* Мета-информация карточки */
-.farm-meta {
+/* ==================== МЕТАИНФОРМАЦИЯ ФЕРМЫ ==================== */
+.farm-meta { /* Контейнер метаинформации */
     display: flex;
     flex-direction: column;
     gap: 8px;
     font-size: 0.95rem;
-    color: #ffffff;
+    color: var(--text-color);
     margin-top: auto;
     padding-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-/* Стиль иконок в мета-информации */
-.farm-meta i {
-    color: #2ecc71;
+.farm-meta i { /* Иконки в метаинформации */
+    color: var(--primary-color);
     font-size: 1.1rem;
     margin-right: 8px;
     width: 20px;
     text-align: center;
 }
-
-/* Стиль для каждой строки мета-информации */
-.farm-meta span {
+.farm-meta span { /* Элементы метаинформации */
     display: flex;
     align-items: center;
     transition: transform 0.2s ease, color 0.2s ease;
     cursor: default;
 }
+.farm-meta span:hover { color: var(--primary-color); }
 
-/* Эффект при наведении на строку */
-.farm-meta span:hover {
-    transform: translateY(-3px);
-    color: #2ecc71;
-}
-
-/* Стиль иконки владельца */
-.role-owner .farm-header i.fas,
-.role-owner .farm-header i {
-    color: #2ecc71 !important;
-    font-size: 1.2rem;
-}
-
-/* ==================== MODAL STYLES ==================== */
-/* Модальное окно */
-.farm-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    padding-left: 60px;
-}
-
-/* Активное состояние модального окна */
-.farm-modal.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Контент модального окна */
-.modal-content {
-    background: white;
-    border-radius: 10px;
-    padding: 30px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Кнопка закрытия модального окна */
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* ==================== FORM STYLES ==================== */
-/* Форма создания/редактирования фермы */
-.farm-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Группа полей формы */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Поля ввода формы */
-.form-group input,
-.form-group textarea {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-/* Кнопка отправки формы */
-.submit-btn {
-    background: #38a169;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-/* ==================== RESPONSIVE ==================== */
-/* Стили для мобильных устройств */
-@media (max-width: 768px) {
-    .farms-page {
-        margin-left: 0;
-        padding-top: 80px;
-    }
-
-    .farm-modal {
-        padding-left: 0;
-    }
-
-    .farms-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .content-wrapper {
-        width: calc(100% - 20px);
-        max-width: none;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .header-card {
-        padding: 20px 10px;
-    }
-
-    .farms-header {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .farms-title {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-
-    .farm-action-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .farm-card {
-        height: auto;
-        min-height: 220px;
-    }
-
-    .farm-name {
-        font-size: 1.1rem;
-        line-height: 1.3;
-        max-height: 2.6rem;
-    }
-
-    .farm-meta {
-        font-size: 0.85rem;
-    }
-
-    .farm-meta i {
-        font-size: 1rem;
-        margin-right: 6px;
-    }
-
-    .farm-meta span:hover {
-        transform: translateY(-2px);
-    }
-
-    .role-owner .farm-header i.fas,
-    .role-owner .farm-header i {
-        font-size: 1.1rem;
-    }
-}
-
-/* ==================== SCROLLBAR ==================== */
-/* Стилизация скроллбара описания */
-.farm-description::-webkit-scrollbar {
-    width: 4px;
-}
-
-.farm-description::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.3);
-    border-radius: 2px;
-}
-
-/* ==================== FILTERS PANEL ==================== */
-/* Панель фильтров */
-.filters-panel {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+/* ==================== ПАНЕЛЬ ФИЛЬТРОВ ==================== */
+.filters-panel { /* Контейнер фильтров */
+    background: var(--backdrop-bg);
+    border-radius: var(--border-radius);
     padding: 20px;
     margin-bottom: 20px;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    backdrop-filter: blur(5px);
+    backdrop-filter: var(--backdrop-blur);
 }
-
-/* Группа фильтров */
-.filter-group {
+.filter-group { /* Группа фильтра */
     flex: 1;
     min-width: 200px;
 }
-
-/* Метка фильтра */
-.filter-group label {
+.filter-group label { /* Лейбл фильтра */
     display: block;
-    color: white;
+    color: var(--text-color);
     margin-bottom: 8px;
     font-weight: 500;
 }
-
-/* Иконка в метке */
-.filter-group label i {
+.filter-group label i { /* Иконка фильтра */
     margin-right: 8px;
-    color: #2ecc71;
+    color: var(--primary-color);
     width: 20px;
     text-align: center;
 }
-
-/* Поле ввода фильтра */
-.filter-input,
-.filter-select {
+.filter-input, .filter-select { /* Инпуты и селекты фильтров */
     width: 100%;
     padding: 10px 15px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
+    background: var(--backdrop-bg);
+    color: var(--text-color);
     font-size: 0.9rem;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
     box-sizing: border-box;
 }
-
-/* Стили для выпадающего списка */
-.filter-select {
+.filter-select { /* Селект с кастомной стрелкой */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -639,87 +321,77 @@
     padding-right: 40px;
     cursor: pointer;
 }
-
-/* Стили для опций в выпадающем списке */
-.filter-select option {
+.filter-select option { /* Опции селекта */
     background: rgba(255, 255, 255, 0.95);
     color: #2c3e50;
     padding: 12px 15px;
     border: none;
     font-size: 0.9rem;
 }
-
-/* Стили для активного состояния выпадающего списка */
-.filter-select:focus {
+.filter-select:focus, .filter-input:focus { /* Фокус на фильтрах */
     outline: none;
-    border-color: #2ecc71;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.3);
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--backdrop-bg-hover);
 }
 
-/* Стили для выбранной опции */
-.filter-select option:checked {
-    background: rgba(255, 255, 255, 0.95);
-    color: #2c3e50;
-    font-weight: 600;
+/* ==================== КНОПКИ СОРТИРОВКИ ==================== */
+.sort-buttons { /* Контейнер кнопок сортировки */
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
 }
-
-/* Стили для наведения на опции */
-.filter-select option:hover {
-    background: rgba(255, 255, 255, 0.95);
-    color: #2c3e50;
-    font-size: 0.95rem;
-    transition: font-size 0.2s ease;
+.sort-badge { /* Бейдж сортировки */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: var(--backdrop-bg);
+    color: var(--text-color);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
 }
-
-/* Стили для поля ввода при фокусе */
-.filter-input:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.3);
-    background: rgba(255, 255, 255, 0.25);
+.sort-badge:hover { background: var(--backdrop-bg-hover); border-color: rgba(255,255,255,0.4);}
+.sort-badge i { font-size: 0.9rem; color: var(--primary-color);}
+.sort-arrows { /* Контейнер стрелок сортировки */
+    display: flex;
+    gap: 4px;
+    margin-left: 4px;
 }
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-    .filters-panel {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .filter-group {
-        min-width: 100%;
-    }
-
-    .filter-select {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-    }
-    
-    .filter-select option {
-        padding: 10px 12px;
-        font-size: 0.85rem;
-    }
-
-    .filter-select option:hover {
-        font-size: 0.9rem;
-    }
+.sort-arrow { /* Кнопка-стрелка сортировки */
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.sort-arrow:hover { color: var(--text-color); background: var(--backdrop-bg);}
+.sort-arrow.active { color: var(--primary-color); background: rgba(46,204,113,0.2); }
 
-/* ==================== EMPTY STATES ==================== */
-/* Контейнер для сообщения о пустом состоянии */
-.empty-state-container {
+/* ==================== ПУСТЫЕ СОСТОЯНИЯ ==================== */
+.empty-state-container { /* Контейнер для пустого состояния */
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 40px;
 }
-
-/* Сообщение о пустом состоянии */
-.no-farms,
-.error-state {
+.no-farms, .error-state, .no-orgs { /* Стили для пустых/ошибочных состояний */
     text-align: center;
-    color: white;
+    color: var(--text-color);
     padding: 40px 20px;
     width: 100%;
     max-width: 600px;
@@ -727,1038 +399,260 @@
     flex-direction: column;
     align-items: center;
 }
+.no-farms i, .error-state i, .no-orgs i { font-size: 3rem; margin-bottom: 20px; color: var(--text-muted);}
+.no-farms h3, .error-state h3, .no-orgs h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-color);}
+.no-farms p, .error-state p, .no-orgs p { font-size: 1rem; color: var(--text-muted); margin: 0; }
 
-.no-farms i,
-.error-state i {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.no-farms h3,
-.error-state h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.no-farms p,
-.error-state p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-}
-
-/* Сообщение о пустом состоянии для организаций */
-.no-orgs {
-    text-align: center;
-    color: white;
-    padding: 40px 20px;
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.no-orgs i {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.no-orgs h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.no-orgs p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-}
-
-.farm-card:not([data-org-id]) .farm-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.farm-card:not([data-org-id]) .farm-description {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.farm-card[data-org-id] .farm-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.farm-card[data-org-id] .farm-name {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.farm-role:hover,
-.farm-status:hover,
-.farm-type:hover {
-    transform: scale(1.05);
-}
-
-/* Основные стили */
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-    color: white;
-}
-
-/* Фоновое изображение страницы */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../images/background.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    z-index: -2;
-}
-
-/* Затемнение фона */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    background: rgba(0, 0, 0, 0.4);
-    z-index: -1;
-    pointer-events: none;
-}
-
-.content-wrapper a {
-    color: white;
-}
-
-.content-wrapper h1, .content-wrapper h2, .content-wrapper h3 {
-    color: white;
-}
-
-.content-wrapper .detail-item {
-    color: white;
-}
-
-.content-wrapper .detail-item i {
-    color: white;
-}
-
-/* ==================== ORGANIZATION DETAILS ==================== */
-/* Контейнер для деталей организации */
-.organization-details {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-/* Карточка с деталями */
-.detail-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    height: auto;
-    min-height: fit-content;
-}
-
-.detail-card h2 {
-    color: white;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.detail-card h2 i {
-    color: #2ecc71;
-}
-
-/* Контент деталей */
-.detail-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-/* Элемент детали */
-.detail-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    color: white;
-    width: 100%;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.detail-item:last-child {
-    border-bottom: none;
-}
-
-.detail-badge {
-    flex: 0 0 auto;
-    min-width: fit-content;
-    max-width: fit-content;
-}
-
-/* Список членов */
-.members-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Элемент члена */
-.member-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.member-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-}
-
-.member-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.member-name {
-    color: white;
-    font-weight: 500;
-}
-
-.member-details {
-    display: flex;
-    gap: 10px;
-}
-
-/* Бейджи ролей и статусов */
-.member-role,
-.member-status {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-}
-
-/* Цвета для ролей */
-.member-role.admin { background: #3498db; }
-.member-role.manager { background: #2ecc71; }
-.member-role.member { background: #9b59b6; }
-.member-role.guest { background: #7f8c8d; }
-
-/* Цвета для статусов */
-.member-status.approved { background: #2ecc71; }
-.member-status.pending { background: #f39c12; }
-.member-status.rejected { background: #e74c3c; }
-
-/* Кнопки действий */
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-/* Адаптивность */
+/* ==================== АДАПТИВНОСТЬ ==================== */
 @media (max-width: 768px) {
-    .organization-details {
-        grid-template-columns: 1fr;
+    .farms-page { 
+        margin-left: 0; 
+        padding-top: 80px;
     }
-
-    .member-item {
+    .farms-grid { grid-template-columns: 1fr; }
+    .content-wrapper { width: calc(100% - 20px); max-width: none; padding-left: 10px; padding-right: 10px; }
+    .header-card { padding: 20px 10px; }
+    .farms-header { flex-direction: column; align-items: center; gap: 15px; }
+    .farms-title { text-align: center; margin-bottom: 15px; }
+    .farm-card { height: auto; min-height: 220px; }
+    .farm-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
+        gap: 4px;
     }
-
-    .member-details {
+    .farm-name {
+        order: 2;
+        margin-bottom: 0;
+        text-align: left;
         width: 100%;
-        justify-content: flex-start;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 6px;
     }
-}
-
-/* ==================== DETAIL BADGES ==================== */
-/* Бейдж детали */
-.detail-badge {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1);
-    margin-right: 10px;
-}
-
-/* Специальные стили для бейджей на странице деталей организации */
-.organization-details .detail-badge {
-    background: rgba(255, 255, 255, 0.1);
-    display: inline-flex;
-    align-items: center;
-    padding: 4px;
-    min-width: 32px;
-    gap: 0px;
-}
-
-.organization-details .detail-badge i {
-    color: white;
-    width: 100%;
-    text-align: center;
-    flex: 1;
-}
-
-.organization-details .detail-badge.expanded {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 12px;
-}
-
-/* Иконка в бейдже */
-.detail-badge i {
-    color: #2ecc71;
-    width: 16px;
-    text-align: center;
-}
-
-/* Метка бейджа */
-.badge-label {
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-/* Расширенное состояние бейджа */
-.detail-badge.expanded {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.detail-badge.expanded .badge-label {
-    opacity: 1;
-    max-width: 200px;
-    margin-left: 4px;
-}
-
-/* Цвета для разных типов бейджей */
-.type-badge { background: #3498db; }
-.description-badge { background: #9b59b6; }
-.address-badge { background: #e67e22; }
-.email-badge { background: #e74c3c; }
-.phone-badge { background: #2ecc71; }
-.website-badge { background: #1abc9c; }
-.created-badge { background: #f39c12; }
-.updated-badge { background: #34495e; }
-
-/* Эффект при наведении */
-.detail-badge:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .detail-badge {
-        padding: 4px 8px;
-        font-size: 0.75rem;
+    .farm-badges {
+        margin-top: 4px;
+        margin-left: 0;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+        
     }
-    
-    .detail-badge.expanded .badge-label {
-        max-width: 150px;
+    .farm-card a, .farm-card-link {
+        -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
     }
-}
-
-/* ==================== INLINE EDITING ==================== */
-.editable-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
-.editable-field {
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
-.editable-field.editing {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.edit-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
-.editable-container:hover .edit-btn {
-    opacity: 1;
-}
-
-.edit-btn:hover {
-    color: white;
-    background: none;
-}
-
-.edit-btn i {
-    font-size: 14px;
-}
-
-.editable-input {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    width: calc(100% - 45px); /* Учитываем ширину кнопок и маленький отступ */
-    min-width: 0;
-    margin-right: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    transition: all 0.3s ease;
-}
-
-.editable-input[type="textarea"],
-textarea.editable-input {
-    resize: none;
-    max-height: 150px;
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.editable-input[type="textarea"]::-webkit-scrollbar,
-textarea.editable-input::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-}
-
-.editable-input:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.editable-actions {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-}
-
-.editable-actions button {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-}
-
-.editable-actions .save-btn {
-    background: rgba(46, 204, 113, 0.2);
-    border-radius: 10px;
-}
-
-.editable-actions .save-btn:hover {
-    transform: scale(1.1);
-    background: rgba(46, 204, 113, 0.2);
-}
-
-.editable-actions .cancel-btn {
-    background: rgba(231, 76, 60, 0.2);
-    border-radius: 10px;
-}
-
-.editable-actions .cancel-btn:hover {
-    transform: scale(1.1);
-    background: rgba(231, 76, 60, 0.2);
-}
-
-.detail-item.editing {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.detail-item.editing .editable-container {
-    flex: 1;
-    min-width: 0;
-}
-
-.detail-item.editing .editable-actions {
-    flex-shrink: 0;
-}
-
-/* Удаляем старые стили order */
-.detail-item.editing > *:first-child {
-    margin: 0;
-}
-
-/* Специальные стили для заголовка */
-.farms-title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.farms-title .edit-btn {
-    font-size: 0.5em;
-}
-
-/* Скрываем кнопку редактирования при активном редактировании */
-.detail-item .edit-btn {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
-}
-
-.detail-item:hover:not(.editing) .edit-btn {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.2s ease, visibility 0s linear;
-}
-
-.detail-item.editing .edit-btn {
-    display: none;
-}
-
-/* Скрываем карандашик для типа организации */
-.detail-item[data-field="type"] .edit-btn,
-.detail-item[data-field="organization_type"] .edit-btn {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-/* Скрываем карандашик только для поля типа организации */
-.detail-item:has(.type-badge) .edit-btn {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-}
-
-.farm-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.farm-card-link:hover {
-    transform: translateY(-5px);
-}
-
-.farm-card-link:hover .farm-card {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Users List Section */
-.users-section {
-    margin-top: 2rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-}
-
-.users-section h2 {
-    margin-bottom: 1.5rem;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.users-section h2 i {
-    color: #2ecc71;
-}
-
-.users-filters {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.filter-group {
-    flex: 1;
-    min-width: 200px;
-}
-
-.filter-group label {
-    display: block;
-    color: white;
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-
-.filter-group label i {
-    margin-right: 8px;
-    color: #2ecc71;
-}
-
-.filter-select {
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 20px;
-    padding-right: 40px;
-    cursor: pointer;
-}
-
-.filter-select:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.3);
-    background-color: rgba(255, 255, 255, 0.25);
-}
-
-.filter-select option {
-    background: #2c3e50;
-    color: white;
-    padding: 12px 15px;
-}
-
-/* User Cards */
-.user-card {
-    position: relative;
-    padding: 15px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    margin-bottom: 15px;
-    transition: all 0.3s ease;
-}
-
-.user-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.user-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.user-name {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.user-name i {
-    color: #2ecc71;
-    font-size: 1rem;
-}
-
-.user-badges {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.user-role,
-.user-status {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    margin-left: 10px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-.user-role i,
-.user-status i {
-    font-size: 0.8rem;
-    width: 16px;
-    text-align: center;
-}
-
-.user-role .role-label,
-.user-status .status-label {
-    display: inline-block;
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-left: 0;
-    transform: translateX(-5px);
-    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
-    background: rgba(255, 255, 255, 0.0);
-}
-
-.user-role.expanded,
-.user-status.expanded {
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.0);
-}
-
-.user-role.expanded .role-label,
-.user-status.expanded .status-label {
-    opacity: 1;
-    max-width: 100px;
-    margin-left: 8px;
-    transform: translateX(0);
-    background: rgba(255, 255, 255, 0.0);
-}
-
-.user-role:hover,
-.user-status:hover {
-    transform: scale(1.05);
-    
-}
-
-/* Role Colors */
-.role-admin { background: #3498db; }
-.role-manager { background: #2ecc71; }
-.role-member { background: #9b59b6; }
-.role-guest { background: #7f8c8d; }
-
-/* Status Colors */
-.status-approved { background: #27ae60; }
-.status-pending { background: #f1c40f; }
-.status-rejected { background: #e74c3c; }
-
-/* Применяем цвета через background */
-.user-role,
-.user-status {
-    background: var(--badge-color, currentColor);
-}
-
-.user-contacts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-}
-
-.user-contacts span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.2s ease;
-}
-
-.user-contacts span:hover {
-    transform: translateY(-2px);
-}
-
-.user-contacts i {
-    color: #2ecc71;
-}
-
-.user-meta {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.user-meta i {
-    color: #2ecc71;
-}
-
-/* Empty and Error States */
-.empty-state,
-.error-state {
-    text-align: center;
-    padding: 2rem;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    margin: 1rem 0;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-}
-
-.empty-state i,
-.error-state i {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.error-state {
-    color: white;
-    background: rgba(231, 76, 60, 0.2);
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .users-filters {
+    .farm-meta { font-size: 0.85rem; }
+    .farm-meta i { font-size: 1rem; margin-right: 6px; }
+    .farm-meta span:hover { transform: translateY(-2px);}
+    .filters-panel {
         flex-direction: column;
+        gap: 8px;
+        padding: 10px;
     }
-
+    .filter-toggle,
+    .sort-toggle {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
     .filter-group {
-        min-width: 100%;
+        position: relative;
     }
-
-    .user-info {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .user-badges {
+    .filter-field,
+    .sort-badge {
+        display: flex;
+        align-items: center;
         width: 100%;
-        justify-content: flex-start;
-    }
-
-    .user-contacts {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
-
-.user-role.role-admin,
-.user-badges .role-admin {
-    background: #3498db;
-}
-
-.user-role.role-manager,
-.user-badges .role-manager {
-    background: #2ecc71;
-}
-
-.user-role.role-member,
-.user-badges .role-member {
-    background: #9b59b6;
-}
-
-.user-role.role-guest,
-.user-badges .role-guest {
-    background: #7f8c8d;
-}
-
-.user-status.status-approved,
-.user-badges .status-approved {
-    background: #27ae60;
-}
-
-.user-status.status-pending,
-.user-badges .status-pending {
-    background: #f1c40f;
-}
-
-.user-status.status-rejected,
-.user-badges .status-rejected {
-    background: #e74c3c;
-}
-
-.filter-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.filter-input:focus {
-    outline: none;
-    border-color: #2ecc71;
-    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.2);
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.filter-group {
-    position: relative;
-}
-
-.filter-group .search-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-}
-
-@media (max-width: 768px) {
-    .filter-input {
+        min-height: 44px;
+        background: var(--backdrop-bg);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--text-color);
         padding: 8px 12px;
-        font-size: 0.85rem;
+        box-sizing: border-box;
+        gap: 14px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    .filter-field:last-of-type,
+    .sort-badge:last-child {
+        margin-bottom: 0;
+    }
+    .filter-field i,
+    .sort-badge i {
+        font-size: 1rem;
+        color: var(--primary-color);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .filter-field .filter-input,
+    .filter-field .filter-select {
+        flex: 1 1 0%;
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: var(--text-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: inherit;
+        letter-spacing: normal;
+        padding: 0 0 0 4px;
+        box-shadow: none;
+        outline: none;
+    }
+    .sort-arrows {
+        margin-left: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        align-items: center;
+    }
+    .filter-toggle, .sort-toggle {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 40px;
+        background: var(--backdrop-bg);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: var(--text-color);
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        gap: 10px;
+        cursor: pointer;
+    }
+    .filters-fields {
+        gap: 4px;
+        margin-bottom: 16px;
+    }
+    .sort-buttons {
+        gap: 4px;
+    }
+    .filters-fields, .sort-fields { display: none; }
+    .sort-buttons { display: none; }
+    .filters-fields, .sort-buttons { gap: 0; margin-bottom: 0; }
+
+    .toggle-filters-checkbox:checked + .filter-toggle + .filters-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 16px;
+    }
+    .toggle-sort-checkbox:checked + .sort-toggle + .sort-fields {
+        display: block;
+    }
+    .toggle-sort-checkbox:checked + .sort-toggle + .sort-fields .sort-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .filter-group label {
+        display: none !important;
+    }
+    .sort-fields {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    .sort-buttons {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    .sort-buttons .sort-badge:first-child {
+        margin-top: 0 !important;
+    }
+    .farm-role,
+    .farm-status,
+    .farm-type,
+    .user-role,
+    .user-status {
+        margin-left: 0;
     }
 }
 
-/* Стили для контейнера бейджей */
-.badge-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: 10px;
+@media (min-width: 769px) {
+    .filter-toggle,
+    .sort-toggle {
+        display: none !important;
+    }
+    .filter-group label {
+        display: none !important;
+    }
+    .filter-field {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+        background: var(--backdrop-bg);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--text-color);
+        padding: 8px 12px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .filter-field i {
+        font-size: 1rem;
+        color: var(--primary-color);
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .filter-input,
+    .filter-select {
+        flex: 1 1 0%;
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: var(--text-color);
+        font-size: 1rem;
+        font-weight: 500;
+        font-family: inherit;
+        padding: 0 0 0 4px;
+        box-shadow: none;
+        outline: none;
+    }
+    .filters-fields {
+        display: flex !important;
+        flex-direction: row;
+        gap: 20px;
+        margin-bottom: 0;
+    }
+    .filters-fields .filter-group {
+        flex: 1 1 0%;
+        min-width: 0;
+        margin-bottom: 0;
+    }
+    .filters-panel {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: flex-end;
+    }
+    .filter-group {
+        flex: 1 1 0%;
+        min-width: 0;
+        margin-bottom: 0;
+    }
+    .filter-select:focus,
+    .filter-input:focus {
+        background: transparent !important;
+        box-shadow: none !important;
+        border-color: var(--primary-color);
+    }
 }
 
-/* Стили для кнопок редактирования */
-.edit-controls {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+/* ==================== СКРОЛЛБАРЫ ==================== */
+.farm-description::-webkit-scrollbar { width: 4px; }
+.farm-description::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px;}
+.sort-buttons::-webkit-scrollbar { height: 0; width: 0; }
 
-.user-card:hover .edit-controls {
-    opacity: 1;
-}
 
-.edit-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 5px;
-    transition: all 0.3s ease;
-}
-
-.edit-btn:hover {
-    color: white;
-    transform: scale(1.1);
-}
-
-/* Стили для формы редактирования */
-.edit-form {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.edit-select {
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    min-width: 150px;
-}
-
-.edit-select option {
-    background: #2c2c2c;
-    color: white;
-}
-
-.save-edit, .cancel-edit {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 5px;
-    transition: all 0.3s ease;
-}
-
-.save-edit:hover {
-    color: #4CAF50;
-    transform: scale(1.1);
-}
-
-.cancel-edit:hover {
-    color: #f44336;
-    transform: scale(1.1);
-}
-
-/* Стили для карточки текущего пользователя */
-.user-card.current-user {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-    position: relative;
-}
-
-.user-card.current-user::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: #2ecc71;
-    border-radius: 4px 0 0 4px;
-}
-
-.user-card.current-user:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-.user-card.current-user .edit-controls {
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
 

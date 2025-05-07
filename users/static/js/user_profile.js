@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Делегированная логика раскрытия бейджей (как в user_external_organizations.js)
+    // Делегированная логика раскрытия бейджей (как в user_ext_orgs.js)
     const orgDetails = document.querySelector('.organization-details');
     if (orgDetails) {
         orgDetails.addEventListener('click', function(e) {

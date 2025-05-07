@@ -30,7 +30,7 @@ class UserExternalOrganizationsView(LoginRequiredMixin, TemplateView):
         TemplateView - базовый класс для отображения шаблонов Django
     """
 
-    template_name: str = 'dashboard/user_external_organizations.html'
+    template_name: str = 'dashboard/user_ext_orgs.html'
 
 
 class ExternalOrganizationView(LoginRequiredMixin, TemplateView):
