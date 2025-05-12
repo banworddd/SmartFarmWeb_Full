@@ -473,7 +473,7 @@
         padding: 8px 12px;
         box-sizing: border-box;
         gap: 14px;
-        font-size: 0.9rem;
+           font-size: 0.9rem;
         font-weight: 600;
     }
     .filter-field:last-of-type,

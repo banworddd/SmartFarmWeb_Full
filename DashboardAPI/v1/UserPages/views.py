@@ -45,7 +45,7 @@ class UserExternalOrganizationsAPIView(ListAPIView):
     serializer_class = UserExternalOrganizationMembershipsSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [ExternalOrganizationFilterBackend, OrderingFilter]
-    ordering_fields = ['role', 'updated_at', '  organization__name']
+    ordering_fields = ['role', 'updated_at', 'organization__name']
     ordering = ['role']
 
     def get_queryset(self) -> QuerySet:

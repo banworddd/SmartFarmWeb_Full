@@ -42,6 +42,7 @@ class ExternalOrganizationView(LoginRequiredMixin, TemplateView):
 
         org = ExternalOrganization.objects.get(slug=context['slug'])
         context['org_name'] = org.name
+        context['id'] = org.id
 
         membership = ExternalOrganizationMembership.objects.filter(
             organization=org,
