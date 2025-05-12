@@ -1,7 +1,7 @@
 {% extends 'main/layout.html' %}
 {% load static %}
 
-{% block title %}Организация{% endblock %}
+{% block title %}{{ org_name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
@@ -115,7 +115,7 @@
     <!-- === Блок: Пользователи организации === -->
     <div class="content-wrapper">
         <div class="detail-card">
-            <h2><i class="fas fa-users"></i> Пользователи организации</h2>
+            <h2><i class="fas fa-users"> </i> Пользователи организации</h2>
             
             <!-- Фильтры и сортировка -->
             <div class="filters-panel">
@@ -213,7 +213,7 @@
     <!-- === Блок: Фермы организации === -->
     <div class="content-wrapper">
         <div class="detail-card">
-            <h2><i class="fas fa-tractor"></i> Фермы организации</h2>
+            <h2><i class="fas fa-tractor"> </i> Фермы организации</h2>
             
             <!-- Фильтры -->
             <div class="filters-panel">

@@ -1,3 +1,4 @@
+/* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
 html, body {
   height: 100%;
   width: 100%;
@@ -5,15 +6,105 @@ html, body {
   padding: 0;
 }
 
-/* ==================== АВАТАР, ИМЯ ==================== */
-.user-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  margin-right: 14px;
-  background: #e0e0e0;
+/* ==================== КАРТОЧКИ ==================== */
+/* Основные стили карточек */
+.farm-card {
+  height: auto !important;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Карточка текущего пользователя */
+.current-user-card .farm-card {
+  border-left: 5px solid var(--primary-color, #2ecc71);
+  box-shadow: 0 2px 12px rgba(46,204,113,0.08);
+}
+
+.current-user-card .farm-card::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Карточка с ссылкой */
+.farm-card--linked {
+  border: 2px solid var(--primary-color, #2ecc71);
+  box-shadow: 0 0 0 2px rgba(46,204,113,0.08);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.farm-card--linked:hover {
+  box-shadow: 0 0 12px 2px rgba(46,204,113,0.18);
+  border-color: #27ae60;
+}
+
+.farm-card--linked::after {
+  display: none !important;
+}
+
+.farm-card--linked .farm-name {
+  text-decoration: none;
+}
+
+/* Карточка пустого состояния */
+.empty-state-card {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.empty-state-card .farm-user-center {
+  text-align: center;
+  padding: 20px;
+}
+
+.empty-state-card .empty-state-icon {
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 15px;
+}
+
+.empty-state-card .user-names {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.empty-state-card .user-first-name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.empty-state-card .user-last-name {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==================== ЗАГОЛОВКИ И ТЕКСТ ==================== */
+.farm-name {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0;
+  display: block;
+}
+
+.farm-description {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.3;
+  display: block;
 }
 
 .farm-header {
@@ -22,6 +113,14 @@ html, body {
   gap: 8px;
 }
 
+.farm-header-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ==================== БЕЙДЖИ И СТАТУСЫ ==================== */
 .farm-badges {
   width: 100%;
   margin: 0;
@@ -32,12 +131,46 @@ html, body {
   padding: 4px 0;
 }
 
-/* Разделитель с одинаковой прозрачностью для всех карточек */
-.farm-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.25); /* Прозрачность 0.25 для единообразия */
-  margin: 8px 0;
+.farm-role,
+.farm-status,
+.farm-type,
+.user-role,
+.user-status {
+  margin-left: 0 !important;
+}
+
+.farm-type {
+  background: var(--primary-color, #2ecc71) !important;
+  color: #fff !important;
+}
+
+.farm-type.badge-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+
+.farm-type.badge-toggle.expanded {
+  flex-shrink: 0;
+  min-width: max-content;
+}
+
+.farm-role-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+}
+
+/* ==================== ПОЛЬЗОВАТЕЛЬСКИЙ ИНТЕРФЕЙС ==================== */
+/* Аватар и имя пользователя */
+.user-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 14px;
+  background: #e0e0e0;
 }
 
 .farm-user-center {
@@ -76,95 +209,54 @@ html, body {
   color: rgba(255,255,255,0.85);
 }
 
-.organization-details .farm-header {
-  overflow: visible;
-  position: relative;
+/* Разделители */
+.farm-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.25);
+  margin: 8px 0;
 }
 
-.organization-details .farm-badges {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  max-width: 100%;
-  gap: 8px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
-
-.organization-details .edit-select {
-  max-width: 140px;
-  min-width: 90px;
-  width: auto;
-  margin-bottom: 4px;
-}
-
-.organization-details .farm-card {
-  padding-top: 12px;
-}
-
-.organization-details .farm-meta {
-  margin-top: 8px !important;
-  padding-top: 0 !important;
+/* Метаданные */
+.farm-meta {
   border-top: none !important;
 }
-.farm-meta {
-    border-top: none !important;
+
+.farm-meta-item span {
+  display: inline;
+  white-space: nowrap;
 }
 
-/* ==================== КАРТОЧКА ПОЛЬЗОВАТЕЛЯ ==================== */
-.farm-card {
-  height: auto !important;
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.current-user-card .farm-card {
-  border-left: 5px solid var(--primary-color, #2ecc71);
-  box-shadow: 0 2px 12px rgba(46,204,113,0.08);
-}
-
-.current-user-card .farm-card::before {
-  display: none !important;
-  content: none !important;
-}
-
-/* ==================== БЕЙДЖИ ==================== */
-.farm-role,
-.farm-status,
-.farm-type,
-.user-role,
-.user-status {
-  margin-left: 0 !important;
-}
-
-.farm-type {
-  background: var(--primary-color, #2ecc71) !important;
-  color: #fff !important;
-}
-
-.farm-type.badge-toggle {
+/* ==================== КНОПКИ И ДЕЙСТВИЯ ==================== */
+/* Кнопка создания фермы */
+.create-farm-btn {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 22px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(46,204,113,0.08);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
 }
 
-.farm-type.badge-toggle.expanded {
-  flex-shrink: 0;
-  min-width: max-content;
+.create-farm-btn:hover, .create-farm-btn:focus {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  box-shadow: 0 4px 16px rgba(46,204,113,0.18);
+  transform: translateY(-2px) scale(1.03);
 }
 
-.value {
-  flex: 1;
-  min-width: 0;
-  display: block;
-  word-break: break-word;
+.create-farm-btn i {
+  font-size: 1.15em;
 }
 
-/* ==================== КНОПКИ РЕДАКТИРОВАНИЯ ==================== */
+/* Кнопки редактирования */
 .edit-membership-btn {
   background: none;
   border: none;
@@ -229,6 +321,117 @@ html, body {
   background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: #fff;
   box-shadow: 0 4px 12px rgba(231,76,60,0.18);
+}
+
+/* ==================== МОДАЛЬНОЕ ОКНО ==================== */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 60, 40, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.modal[style*="display: none"] {
+  display: none !important;
+}
+
+.modal-content {
+  background: rgba(40, 60, 40, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(46,204,113,0.18);
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-modal {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.18s;
+}
+
+.close-modal:hover { 
+  opacity: 1; 
+}
+
+/* ==================== ФОРМЫ И ПОЛЯ ВВОДА ==================== */
+#createFarmForm label {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #fff;
+  display: block;
+}
+
+#createFarmForm input[type="text"], 
+#createFarmForm textarea {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: var(--border-radius-sm, 8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  background: var(--backdrop-bg, rgba(255,255,255,0.1));
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  resize: none;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+#createFarmForm input[type="text"]:focus, 
+#createFarmForm textarea:focus {
+  border: 1.5px solid var(--primary-color, #2ecc71);
+  background: var(--backdrop-bg-hover, rgba(255,255,255,0.2));
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
+}
+
+#createFarmForm textarea {
+  min-height: 80px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#createFarmForm .submit-btn {
+  margin-top: 16px;
+  width: 100%;
+}
+
+#createFarmError {
+  margin-top: 10px;
+  color: #e74c3c;
+  font-size: 0.98rem;
+  text-align: center;
 }
 
 /* ==================== ОРГАНИЗАЦИОННЫЕ БЛОКИ ==================== */
@@ -301,7 +504,8 @@ html, body {
   flex-shrink: 0;
 }
 
-.org-field-edit.edit-btn:hover, .org-field-edit.edit-btn:focus {
+.org-field-edit.edit-btn:hover, 
+.org-field-edit.edit-btn:focus {
   background: none;
   color: var(--primary-dark, #27ae60);
   transform: scale(1.18);
@@ -360,72 +564,7 @@ html, body {
   margin-top: 0;
 }
 
-/* ==================== РЕДАКТИРОВАНИЕ ОПИСАНИЯ/ПОЛЕЙ ==================== */
-.edit-input {
-  width: 100%;
-  min-height: 80px;
-  resize: vertical;
-  font-size: 1rem;
-  font-family: inherit;
-  color: var(--text-color, #fff);
-  background: var(--backdrop-bg, rgba(255,255,255,0.1));
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: var(--border-radius-sm, 8px);
-  padding: 10px 15px;
-  box-sizing: border-box;
-  line-height: 1.4;
-  margin-right: 8px;
-  margin-bottom: 0;
-  font-weight: 500;
-  white-space: pre-line;
-  word-break: break-word;
-  transition: all 0.2s;
-}
-
-.edit-input:focus {
-  border-color: var(--primary-color, #2ecc71);
-  box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
-  background: var(--backdrop-bg-hover, rgba(255,255,255,0.2));
-}
-
-.edit-input[contenteditable="true"] {
-  min-height: 40px;
-  width: calc(100% - 80px);
-  outline: none;
-  border: 2px solid transparent;
-  border-radius: var(--border-radius-sm, 8px);
-  background: var(--backdrop-bg, rgba(255,255,255,0.1));
-  color: var(--text-color, #fff);
-  font-size: 1rem;
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.4;
-  padding: 8px 12px;
-  box-sizing: border-box;
-  white-space: pre-line;
-  word-break: break-word;
-  transition: all 0.2s ease;
-  cursor: text;
-  margin-right: 8px;
-}
-
-.edit-input[contenteditable="true"]:hover {
-  background: var(--backdrop-bg-hover, rgba(255,255,255,0.15));
-}
-
-.edit-input[contenteditable="true"]:focus {
-  border: 2px solid var(--primary-color, #2ecc71);
-  background: var(--backdrop-bg-hover, rgba(255,255,255,0.2));
-  box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
-}
-
-.edit-input[contenteditable="true"]:empty::before {
-  content: attr(data-placeholder);
-  color: rgba(255,255,255,0.5);
-  font-weight: 400;
-}
-
-/* ==================== ОШИБКИ, АНИМАЦИИ ==================== */
+/* ==================== ОШИБКИ И АНИМАЦИИ ==================== */
 .edit-error-message {
   color: #e74c3c;
   margin-top: 0;
@@ -453,6 +592,7 @@ html, body {
   background: rgba(231,76,60,0.08) !important;
 }
 
+/* ==================== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ==================== */
 .content-wrapper + .content-wrapper {
   margin-top: 32px;
 }
@@ -463,99 +603,6 @@ html, body {
   justify-content: center;
   display: flex;
   align-items: center;
-}
-
-/* ==================== КАРТОЧКА ПУСТОГО СОСТОЯНИЯ ==================== */
-.empty-state-card {
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.empty-state-card .farm-user-center {
-    text-align: center;
-    padding: 20px;
-}
-
-.empty-state-card .empty-state-icon {
-    font-size: 2.5rem;
-    color: rgba(255, 255, 255, 0.3);
-    margin-bottom: 15px;
-}
-
-.empty-state-card .user-names {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.empty-state-card .user-first-name {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.empty-state-card .user-last-name {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.farm-card--linked {
-  border: 2px solid var(--primary-color, #2ecc71);
-  box-shadow: 0 0 0 2px rgba(46,204,113,0.08);
-  transition: box-shadow 0.2s, border-color 0.2s;
-  position: relative;
-}
-.farm-card--linked:hover {
-  box-shadow: 0 0 12px 2px rgba(46,204,113,0.18);
-  border-color: #27ae60;
-}
-.farm-card--linked::after {
-  display: none !important;
-}
-.farm-card--linked .farm-name {
-  text-decoration: none;
-}
-
-.farm-name {
-  font-size: 1.18rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.1;
-  margin: 0;
-  display: block;
-}
-
-.farm-description {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.8);
-  margin-top: 6px;
-  margin-bottom: 0;
-  font-weight: 400;
-  line-height: 1.3;
-  display: block;
-}
-
-.farm-header-main {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.farm-role-badge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  z-index: 2;
-}
-
-.farm-meta-item span {
-  display: inline;
-  white-space: nowrap;
 }
 
 #farmsList .farm-card {
@@ -569,126 +616,37 @@ html, body {
   overflow: hidden;
 }
 
-.create-farm-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-  color: #fff;
-  font-size: 1.08rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 22px;
-  margin-bottom: 18px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(46,204,113,0.08);
-  transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
-}
-.create-farm-btn:hover, .create-farm-btn:focus {
-  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-  box-shadow: 0 4px 16px rgba(46,204,113,0.18);
-  transform: translateY(-2px) scale(1.03);
-}
-.create-farm-btn i {
-  font-size: 1.15em;
-}
-
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+/* ==================== СТИЛИ ДЛЯ .edit-input (инлайн-редактирование) ==================== */
+.edit-input {
+  min-height: 36px;
   width: 100%;
-  height: 100%;
-  background: rgba(30, 60, 40, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
-}
-.modal[style*="display: none"] {
-  display: none !important;
-}
-.modal-content {
-  background: rgba(40, 60, 40, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(46,204,113,0.18);
-  padding: 32px 28px 24px 28px;
-  min-width: 320px;
-  max-width: 420px;
-  width: 100%;
-  color: #fff;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin: 0 auto;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.close-modal {
-  position: absolute;
-  top: 18px;
-  right: 22px;
-  font-size: 1.5rem;
-  color: #fff;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.18s;
-}
-.close-modal:hover { opacity: 1; }
-
-#createFarmForm label {
-  margin-top: 12px;
-  margin-bottom: 4px;
-  font-weight: 500;
-  color: #fff;
-  display: block;
-}
-#createFarmForm input[type="text"], #createFarmForm textarea {
-  width: 100%;
-  padding: 9px 14px;
-  border-radius: var(--border-radius-sm, 8px);
-  border: 1px solid rgba(255,255,255,0.3);
-  background: var(--backdrop-bg, rgba(255,255,255,0.1));
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color, #2ecc71);
+  background: rgba(46,204,113,0.10);
   color: #fff;
   font-size: 1rem;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-  transition: all 0.2s;
-  resize: none;
   font-family: inherit;
   line-height: 1.4;
-}
-#createFarmForm input[type="text"]:focus, #createFarmForm textarea:focus {
-  border: 1.5px solid var(--primary-color, #2ecc71);
-  background: var(--backdrop-bg-hover, rgba(255,255,255,0.2));
+  margin-bottom: 0;
+  margin-top: 0;
+  box-sizing: border-box;
   outline: none;
+  transition: border 0.18s, background 0.18s, box-shadow 0.18s;
+  resize: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+  display: block;
+}
+.edit-input:focus {
+  border: 2.5px solid var(--primary-color, #2ecc71);
+  background: rgba(46,204,113,0.18);
   box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
 }
-#createFarmForm textarea {
-  min-height: 80px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-#createFarmForm .submit-btn {
-  margin-top: 16px;
-  width: 100%;
-}
-#createFarmError {
-  margin-top: 10px;
-  color: #e74c3c;
-  font-size: 0.98rem;
-  text-align: center;
+.edit-input-error {
+  border: 2px solid #e74c3c !important;
+  background: rgba(231,76,60,0.08) !important;
 }
 
 

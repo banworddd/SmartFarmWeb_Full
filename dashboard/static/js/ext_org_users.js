@@ -160,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const fullName = `${user.user.first_name || ''} ${user.user.last_name || ''}`.trim();
         const isAdminOrManager = USER_ROLE === 'admin' || USER_ROLE === 'manager';
         const isEditing = editingUserId == user.id;
-        console.log('editingUserId:', editingUserId, 'user.id (membership):', user.id, 'user.user.id:', user.user.id);
         
         // --- Кнопка редактирования ---
         const editBtn = isAdminOrManager && !isEditing ? `
@@ -252,25 +251,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Обработка кликов по бейджам только внутри usersList
         if (usersList) {
-            console.log('Initializing badge click handlers for usersList');
-            
             // Удаляем старый обработчик, если он есть
             usersList.removeEventListener('click', handleBadgeClick);
             
             // Создаем отдельную функцию для обработчика
             function handleBadgeClick(e) {
-                console.log('Click event triggered');
-                console.log('Target element:', e.target);
-                
                 // Проверяем, кликнули ли мы по бейджу или его дочернему элементу
                 const badge = e.target.closest('.farm-role, .farm-status, .farm-type');
-                console.log('Found badge element:', badge);
                 
                 if (badge) {
                     e.preventDefault();
                     e.stopPropagation();
                     badge.classList.toggle('expanded');
-                    console.log('Toggled expanded class:', badge.classList.contains('expanded'));
                 }
             }
             
@@ -306,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const editBtn = e.target.closest('.edit-membership-btn');
         if (editBtn) {
             editingUserId = editBtn.dataset.userId;
-            console.log('Set editingUserId:', editingUserId);
             loadOrganizationUsers();
             return;
         }

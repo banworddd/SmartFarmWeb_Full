@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            document.title = `Организация ${data.name}`;
+            document.title = `${data.name}`;
             const orgTypeValue = document.getElementById('orgTypeValue');
             const orgTypeBadge = document.querySelector('.farm-type');
             if (orgTypeValue && orgTypeBadge) {

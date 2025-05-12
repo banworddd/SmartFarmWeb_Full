@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/external_organization.css' %}">
 <link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+<link rel="stylesheet" href="{% static 'css/ext_org.css' %}">
 <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
 {% endblock %}
 
@@ -24,90 +24,112 @@
 
         <div class="organization-details">
             <!-- Аватар и основная информация -->
-            <div class="detail-card">
+            <div class="org-block org-block-main">
                 <h2><i class="fas fa-user-circle"></i> Основная информация</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <div class="avatar-badge">
-                            <img id="profilePic" src="" alt="Аватар пользователя">
-                            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
-                            <button id="removeAvatarBtn" class="remove-avatar-btn" title="Удалить аватарку" type="button">&times;</button>
-                        </div>
+                <div class="org-field">
+                    <div class="avatar-badge">
+                        <img id="profilePic" src="" alt="Аватар пользователя">
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        <button id="removeAvatarBtn" class="remove-avatar-btn" title="Удалить аватарку" type="button">&times;</button>
                     </div>
-                    <div class="detail-item">
-                        <span class="detail-badge name-badge"><i class="fas fa-user"></i><span class="badge-label">Имя</span></span><div class="editable-container"><span id="firstName" class="editable-field" data-field="first_name">Загрузка...</span><button class="edit-btn" data-target="firstName"><i class="fas fa-pencil-alt"></i></button></div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge name-badge"><i class="fas fa-user"></i><span class="badge-label">Фамилия</span></span><div class="editable-container"><span id="lastName" class="editable-field" data-field="last_name">Загрузка...</span><button class="edit-btn" data-target="lastName"><i class="fas fa-pencil-alt"></i></button></div>
-                    </div>
+                </div>
+                <div class="org-field detail-item">
+                    <span class="farm-type badge-toggle" tabindex="0">
+                        <i class="fas fa-user"></i>
+                        <span class="type-label">Имя</span>
+                    </span>
+                    <span class="value" id="firstName">Загрузка...</span>
+                    <button class="org-field-edit edit-btn" data-target="firstName"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="org-field detail-item">
+                    <span class="farm-type badge-toggle" tabindex="0">
+                        <i class="fas fa-user"></i>
+                        <span class="type-label">Фамилия</span>
+                    </span>
+                    <span class="value" id="lastName">Загрузка...</span>
+                    <button class="org-field-edit edit-btn" data-target="lastName"><i class="fas fa-pencil-alt"></i></button>
                 </div>
             </div>
 
             <!-- Контактная информация -->
-            <div class="detail-card">
+            <div class="org-block org-block-contacts">
                 <h2><i class="fas fa-address-card"></i> Контактная информация</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge email-badge"><i class="fas fa-envelope"></i><span class="badge-label">Email</span></span><div class="editable-container"><span id="email" class="editable-field" data-field="email">Загрузка...</span><button class="edit-btn" data-target="email"><i class="fas fa-pencil-alt"></i></button></div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge phone-badge"><i class="fas fa-phone"></i><span class="badge-label">Телефон</span></span><div class="editable-container"><span id="phone" class="editable-field" data-field="phone_number">Загрузка...</span><button class="edit-btn" data-target="phone"><i class="fas fa-pencil-alt"></i></button></div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge password-badge"><i class="fas fa-key"></i><span class="badge-label">Пароль</span></span>
-                        <div class="editable-container">
-                            <span id="passwordPlaceholder" class="editable-field" data-field="password">********</span>
-                            <button id="changePasswordBtn" class="edit-btn" type="button" title="Сменить пароль">
-                                <i class="fas fa-key"></i>
-                            </button>
-                            <form id="changePasswordForm" class="editable-actions change-password-form" style="display: none; flex-direction: column; align-items: stretch; gap: 8px;">
-                                <input type="password" id="oldPassword" class="editable-input" placeholder="Старый пароль" required autocomplete="current-password">
-                                <div class="password-wrapper" style="position: relative;">
-                                    <input type="password" id="newPassword1" class="editable-input" placeholder="Новый пароль" required autocomplete="new-password">
-                                    <button type="button" class="toggle-password" tabindex="-1" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #888; cursor: pointer;"><i class="fas fa-eye"></i></button>
-                                </div>
-                                <div class="input-hint password-hint" style="font-size: 0.85em; color: #888; margin-bottom: 0; margin-top: -6px;">
-                                    Минимум 8 символов, цифры и буквы в разных регистрах
-                                </div>
-                                <div class="password-strength"><div class="strength-bar"></div></div>
-                                <div class="password-wrapper" style="position: relative;">
-                                    <input type="password" id="newPassword2" class="editable-input" placeholder="Подтвердите новый пароль" required autocomplete="new-password">
-                                    <button type="button" class="toggle-password" tabindex="-1" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #888; cursor: pointer;"><i class="fas fa-eye"></i></button>
-                                </div>
-                                <div style="display: flex; gap: 8px;">
-                                    <button type="submit" class="save-btn" title="Сохранить"><i class="fas fa-check"></i></button>
-                                    <button type="button" id="cancelChangePassword" class="cancel-btn" title="Отмена"><i class="fas fa-times"></i></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <div class="org-field detail-item">
+                    <span class="farm-type badge-toggle" tabindex="0">
+                        <i class="fas fa-envelope"></i>
+                        <span class="type-label">Email</span>
+                    </span>
+                    <span class="value" id="email">Загрузка...</span>
+                    <button class="org-field-edit edit-btn" data-target="email"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="org-field detail-item">
+                    <span class="farm-type badge-toggle" tabindex="0">
+                        <i class="fas fa-phone"></i>
+                        <span class="type-label">Телефон</span>
+                    </span>
+                    <span class="value" id="phone">Загрузка...</span>
+                    <button class="org-field-edit edit-btn" data-target="phone"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="org-field detail-item">
+                    <span class="farm-type badge-toggle" tabindex="0">
+                        <i class="fas fa-key"></i>
+                        <span class="type-label">Пароль</span>
+                    </span>
+                    <span class="value" id="passwordPlaceholder">********</span>
+                    <button id="changePasswordBtn" class="org-field-edit edit-btn" type="button" title="Сменить пароль">
+                        <i class="fas fa-key"></i>
+                    </button>
                 </div>
             </div>
 
             <!-- Мета информация -->
-            <div class="detail-card">
+            <div class="org-block org-block-meta">
                 <h2><i class="fas fa-history"></i> Мета информация</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge joined-badge">
-                            <i class="fas fa-calendar-plus"></i>
-                            <span class="badge-label">Дата регистрации</span>
-                        </span>
-                        <span id="dateJoined">Загрузка...</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge status-badge">
-                            <i class="fas fa-info-circle"></i>
-                            <span class="badge-label">Статус</span>
-                        </span>
-                        <span id="status">Загрузка...</span>
-                    </div>
+                <div class="org-field detail-item">
+                    <span class="detail-badge joined-badge">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span class="badge-label">Дата регистрации</span>
+                    </span>
+                    <span id="dateJoined">Загрузка...</span>
+                </div>
+                <div class="org-field detail-item">
+                    <span class="detail-badge status-badge">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="badge-label">Статус</span>
+                    </span>
+                    <span id="status">Загрузка...</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Модальное окно смены пароля -->
+<div id="changePasswordModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-modal" id="closeChangePasswordModal">&times;</span>
+    <h3>Сменить пароль</h3>
+    <form id="changePasswordForm" style="display:flex; flex-direction:column; gap:8px;">
+      <label>Старый пароль</label>
+      <input type="password" id="oldPassword" class="edit-input" placeholder="Старый пароль" required autocomplete="current-password">
+      <label>Новый пароль</label>
+      <input type="password" id="newPassword1" class="edit-input" placeholder="Новый пароль" required autocomplete="new-password">
+      <div class="input-hint password-hint" style="font-size: 0.85em; color: #888; margin-bottom: 0; margin-top: -6px;">
+        Минимум 8 символов, цифры и буквы в разных регистрах
+      </div>
+      <div class="password-strength"><div class="strength-bar"></div></div>
+      <label>Подтвердите новый пароль</label>
+      <input type="password" id="newPassword2" class="edit-input" placeholder="Подтвердите новый пароль" required autocomplete="new-password">
+      <div id="changePasswordError" class="edit-error-message" style="display:none;"></div>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button type="submit" class="save-edit save-edit-membership-btn" title="Сохранить"><i class="fas fa-check"></i></button>
+        <button type="button" id="cancelChangePassword" class="cancel-edit cancel-edit-membership-btn" title="Отмена"><i class="fas fa-times"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <body>
     <div class="global-error-toast" id="globalErrorToast"></div>
 </body>
-{% endblock %} 
+{% endblock %}

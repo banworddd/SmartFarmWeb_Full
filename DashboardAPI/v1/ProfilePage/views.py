@@ -1,4 +1,3 @@
-
 from rest_framework import status
 
 from rest_framework.generics import  RetrieveUpdateAPIView, UpdateAPIView
@@ -6,9 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import (
-
-    CustomUserProfileSerializer, CustomUserChangePasswordSerializer,
-
+    CustomUserProfileSerializer,
+    CustomUserChangePasswordSerializer
 )
 
 

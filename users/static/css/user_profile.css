@@ -54,3 +54,135 @@
     background: #c0392b;
     opacity: 1;
 }
+
+input.edit-input[type="password"],
+input.edit-input[type="text"],
+input.edit-input {
+  min-height: 36px;
+  width: 100%;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color, #2ecc71);
+  background: rgba(46,204,113,0.10);
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.4;
+  margin-bottom: 0;
+  margin-top: 0;
+  box-sizing: border-box;
+  outline: none;
+  transition: border 0.18s, background 0.18s, box-shadow 0.18s;
+  resize: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+  display: block;
+  height: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  border-width: 2px !important;
+}
+input.edit-input:focus {
+  border-width: 2px !important;
+  border: 2px solid var(--primary-color, #2ecc71);
+  background: rgba(46,204,113,0.18);
+  box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
+}
+input.edit-input.edit-input-error {
+  border-width: 2px !important;
+  border: 2px solid #e74c3c !important;
+  background: rgba(231,76,60,0.08) !important;
+}
+
+.password-strength {
+  height: 7px;
+  background: none;
+  border-radius: 6px;
+  margin: 8px 0 0 0;
+  width: 100%;
+}
+.strength-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.25s, background 0.25s;
+}
+
+.field-block {
+  width: 100%;
+  margin-bottom: 12px;
+}
+.field-block label {
+  margin-bottom: 2px;
+  display: block;
+}
+.field-block .edit-error-message {
+  min-height: 18px;
+  margin-bottom: 2px;
+  color: #e74c3c;
+  font-size: 0.85rem;
+  display: block;
+  background: none;
+  padding-left: 2px;
+  position: static;
+  width: 100%;
+  z-index: 1;
+  transition: min-height 0.2s;
+}
+.field-block .edit-error-message:empty {
+  min-height: 18px;
+  margin-bottom: 2px;
+  display: block;
+  content: '';
+}
+
+.password-wrapper {
+  position: relative;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.password-wrapper input.edit-input {
+  height: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding-right: 40px;
+}
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+  pointer-events: auto;
+}
+.password-wrapper .edit-error-message {
+  min-height: 18px;
+  margin-bottom: 2px;
+  color: #e74c3c;
+  font-size: 0.85rem;
+  display: block;
+  background: none;
+  padding-left: 2px;
+  position: static;
+  width: 100%;
+  z-index: 1;
+  transition: min-height 0.2s;
+}
+.password-wrapper .edit-error-message:empty {
+  min-height: 18px;
+  margin-bottom: 2px;
+  display: block;
+  content: '';
+}
