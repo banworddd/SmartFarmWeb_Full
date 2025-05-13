@@ -62,3 +62,6 @@ class FarmView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['slug'] = self.kwargs.get('slug')
         return context
+
+class DevicesView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/devices.html'
