@@ -2,41 +2,38 @@ class ZonesManager {
     constructor(orgSlug, farmSlug) {
         this.orgSlug = orgSlug;
         this.farmSlug = farmSlug;
-        this.zonesContainer = document.querySelector(`#farm-${farmSlug} .zones-container`);
+        this.zonesContainer = document.querySelector('.zones-container');
         this.loadZones();
     }
 
     async loadZones() {
         try {
-            const response = await fetch(`/api/v1/DevicesPage/org_farms_zones/?farm=${this.farmSlug}`);
+            const response = await fetch(`/api/v1/devices/org_farms_zones/?farm=${this.farmSlug}`);
             const zones = await response.json();
             
             // Создаем вкладки для зон
             this.zonesContainer.innerHTML = `
-                <ul class="nav nav-tabs" id="zonesTab-${this.farmSlug}" role="tablist">
+                <ul class="nav nav-tabs" role="tablist">
                     ${zones.map((zone, index) => `
                         <li class="nav-item">
                             <a class="nav-link ${index === 0 ? 'active' : ''}" 
-                               id="zone-${zone.id}-tab" 
                                data-bs-toggle="tab" 
-                               href="#zone-${zone.id}" 
+                               href="#zone-${zone.name}"
                                role="tab"
-                               data-zone-id="${zone.id}">
+                               data-zone-name="${zone.name}">
                                 ${zone.name}
                             </a>
                         </li>
                     `).join('')}
                 </ul>
-                <div class="tab-content" id="zonesTabContent-${this.farmSlug}">
+                <div class="tab-content">
                     ${zones.map((zone, index) => `
                         <div class="tab-pane fade ${index === 0 ? 'show active' : ''}" 
-                             id="zone-${zone.id}" 
+                             id="zone-${zone.name}"
                              role="tabpanel">
-                            <div class="mt-3">
-                                <div class="devices-container">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Загрузка устройств...</span>
-                                    </div>
+                            <div class="devices-container">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Загрузка устройств...</span>
                                 </div>
                             </div>
                         </div>
@@ -46,14 +43,14 @@ class ZonesManager {
 
             // Инициализируем менеджер устройств для первой зоны
             if (zones.length > 0) {
-                new DevicesManager(this.orgSlug, this.farmSlug, zones[0].id);
+                new DevicesManager(this.orgSlug, this.farmSlug, zones[0].name);
             }
 
             // Добавляем обработчики переключения вкладок
             zones.forEach(zone => {
-                const tab = document.querySelector(`#zone-${zone.id}-tab`);
+                const tab = this.zonesContainer.querySelector(`[data-zone-name="${zone.name}"]`);
                 tab.addEventListener('shown.bs.tab', () => {
-                    new DevicesManager(this.orgSlug, this.farmSlug, zone.id);
+                    new DevicesManager(this.orgSlug, this.farmSlug, zone.name);
                 });
             });
         } catch (error) {

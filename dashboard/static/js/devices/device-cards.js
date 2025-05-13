@@ -1,16 +1,16 @@
 class DevicesManager {
-    constructor(orgSlug, farmSlug, zoneId) {
+    constructor(orgSlug, farmSlug, zoneName) {
         this.orgSlug = orgSlug;
         this.farmSlug = farmSlug;
-        this.zoneId = zoneId;
-        this.devicesContainer = document.querySelector(`#zone-${zoneId} .devices-container`);
+        this.zoneName = zoneName;
+        this.devicesContainer = document.querySelector(`#zone-${zoneName} .devices-container`);
         this.deviceSockets = new Map();
         this.loadDevices();
     }
 
     async loadDevices() {
         try {
-            const response = await fetch(`/api/v1/DevicesPage/zones_devices/?zone=${this.zoneId}`);
+            const response = await fetch(`/api/v1/devices/zones_devices/?zone=${this.zoneName}`);
             const devices = await response.json();
             
             // Создаем карточки устройств

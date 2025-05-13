@@ -4,7 +4,8 @@
 {% block title %}Устройства{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/devices.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -45,6 +46,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/devices/organizations.js' %}"></script>
 <script src="{% static 'js/devices/farms.js' %}"></script>
 <script src="{% static 'js/devices/zones.js' %}"></script>
