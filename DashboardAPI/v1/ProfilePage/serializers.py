@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import CustomUser, Farm, FarmMembership, FarmGroup, ExternalOrganization, ExternalOrganizationMembership
+from users.models import CustomUser
 
 
 class CustomUserProfileSerializer(serializers.ModelSerializer):

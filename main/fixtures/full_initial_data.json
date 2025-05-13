@@ -1,0 +1,2862 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "phone_number": "9000000001",
+      "email": "user1@farm.com",
+      "first_name": "User1",
+      "last_name": "Admin",
+      "username": "9000000001",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "phone_number": "9000000002",
+      "email": "user2@farm.com",
+      "first_name": "User2",
+      "last_name": "Admin",
+      "username": "9000000002",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+      "phone_number": "9000000003",
+      "email": "user3@farm.com",
+      "first_name": "User3",
+      "last_name": "Admin",
+      "username": "9000000003",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 4,
+    "fields": {
+      "phone_number": "9000000004",
+      "email": "agronom1@farm.com",
+      "first_name": "Алексей",
+      "last_name": "Петров",
+      "username": "9000000004",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 5,
+    "fields": {
+      "phone_number": "9000000005",
+      "email": "agronom2@farm.com",
+      "first_name": "Мария",
+      "last_name": "Иванова",
+      "username": "9000000005",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 6,
+    "fields": {
+      "phone_number": "9000000006",
+      "email": "tech1@farm.com",
+      "first_name": "Иван",
+      "last_name": "Сидоров",
+      "username": "9000000006",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 7,
+    "fields": {
+      "phone_number": "9000000007",
+      "email": "tech2@farm.com",
+      "first_name": "Елена",
+      "last_name": "Козлова",
+      "username": "9000000007",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 8,
+    "fields": {
+      "phone_number": "9000000008",
+      "email": "worker1@farm.com",
+      "first_name": "Дмитрий",
+      "last_name": "Смирнов",
+      "username": "9000000008",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 9,
+    "fields": {
+      "phone_number": "9000000009",
+      "email": "worker2@farm.com",
+      "first_name": "Анна",
+      "last_name": "Кузнецова",
+      "username": "9000000009",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 10,
+    "fields": {
+      "phone_number": "9000000010",
+      "email": "worker3@farm.com",
+      "first_name": "Сергей",
+      "last_name": "Новиков",
+      "username": "9000000010",
+      "is_active": true,
+      "is_deleted": false,
+      "password": "pbkdf2_sha256$260000$mocked$hashedpasswordstring"
+    }
+  },
+  {
+    "model": "users.externalorganization",
+    "pk": 1,
+    "fields": {
+      "name": "AgroTech Supplier",
+      "type": "supplier",
+      "slug": "org-supplier",
+      "description": "Поставщик оборудования и сервисов для умных ферм",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganization",
+    "pk": 2,
+    "fields": {
+      "name": "GreenFarm Solutions",
+      "type": "supplier",
+      "slug": "org-greenfarm",
+      "description": "Поставщик экологически чистых решений для ферм",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganization",
+    "pk": 3,
+    "fields": {
+      "name": "SmartAgro Systems",
+      "type": "supplier",
+      "slug": "org-smartagro",
+      "description": "Поставщик умных систем управления фермами",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "organization": 1,
+      "role": "admin",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "organization": 1,
+      "role": "manager",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 8,
+    "fields": {
+      "user": 8,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 9,
+    "fields": {
+      "user": 9,
+      "organization": 1,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 10,
+    "fields": {
+      "user": 10,
+      "organization": 1,
+      "role": "guest",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "organization": 2,
+      "role": "admin",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 12,
+    "fields": {
+      "user": 2,
+      "organization": 2,
+      "role": "manager",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 13,
+    "fields": {
+      "user": 4,
+      "organization": 2,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 14,
+    "fields": {
+      "user": 6,
+      "organization": 2,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 15,
+    "fields": {
+      "user": 8,
+      "organization": 2,
+      "role": "guest",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 16,
+    "fields": {
+      "user": 1,
+      "organization": 3,
+      "role": "admin",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 17,
+    "fields": {
+      "user": 3,
+      "organization": 3,
+      "role": "manager",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 18,
+    "fields": {
+      "user": 5,
+      "organization": 3,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 19,
+    "fields": {
+      "user": 7,
+      "organization": 3,
+      "role": "member",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.externalorganizationmembership",
+    "pk": 20,
+    "fields": {
+      "user": 9,
+      "organization": 3,
+      "role": "guest",
+      "status": "approved",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farm",
+    "pk": 1,
+    "fields": {
+      "name": "Farm1",
+      "owner": 1,
+      "organization": 1,
+      "slug": "farm-1",
+      "description": "Ферма Farm1",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farm",
+    "pk": 2,
+    "fields": {
+      "name": "Farm2",
+      "owner": 1,
+      "organization": 1,
+      "slug": "farm-2",
+      "description": "Ферма Farm2",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farm",
+    "pk": 3,
+    "fields": {
+      "name": "Farm3",
+      "owner": 1,
+      "organization": 1,
+      "slug": "farm-3",
+      "description": "Ферма Farm3",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farm",
+    "pk": 4,
+    "fields": {
+      "name": "Farm4",
+      "owner": 1,
+      "organization": 1,
+      "slug": "farm-4",
+      "description": "Ферма Farm4",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farm",
+    "pk": 5,
+    "fields": {
+      "name": "Farm5",
+      "owner": 1,
+      "organization": 1,
+      "slug": "farm-5",
+      "description": "Ферма Farm5",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 1,
+    "fields": {
+      "name": "Zone1",
+      "farm": 1,
+      "zone_type": "greenhouse",
+      "description": "Зона Zone1 фермы 1",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 2,
+    "fields": {
+      "name": "Zone2",
+      "farm": 1,
+      "zone_type": "field",
+      "description": "Зона Zone2 фермы 1",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 3,
+    "fields": {
+      "name": "Zone3",
+      "farm": 2,
+      "zone_type": "greenhouse",
+      "description": "Зона Zone3 фермы 2",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 4,
+    "fields": {
+      "name": "Zone4",
+      "farm": 2,
+      "zone_type": "field",
+      "description": "Зона Zone4 фермы 2",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 5,
+    "fields": {
+      "name": "Zone5",
+      "farm": 3,
+      "zone_type": "greenhouse",
+      "description": "Зона Zone5 фермы 3",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 6,
+    "fields": {
+      "name": "Zone6",
+      "farm": 3,
+      "zone_type": "field",
+      "description": "Зона Zone6 фермы 3",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 7,
+    "fields": {
+      "name": "Zone7",
+      "farm": 4,
+      "zone_type": "greenhouse",
+      "description": "Зона Zone7 фермы 4",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 8,
+    "fields": {
+      "name": "Zone8",
+      "farm": 4,
+      "zone_type": "field",
+      "description": "Зона Zone8 фермы 4",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 9,
+    "fields": {
+      "name": "Zone9",
+      "farm": 5,
+      "zone_type": "greenhouse",
+      "description": "Зона Zone9 фермы 5",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.zone",
+    "pk": 10,
+    "fields": {
+      "name": "Zone10",
+      "farm": 5,
+      "zone_type": "field",
+      "description": "Зона Zone10 фермы 5",
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 1,
+    "fields": {
+      "name": "TempSensorX",
+      "manufacturer": "SensorCorp",
+      "device_type": "sensor",
+      "description": "sensor model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 2,
+    "fields": {
+      "name": "ValveActuatorY",
+      "manufacturer": "ActuatorInc",
+      "device_type": "actuator",
+      "description": "actuator model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 1,
+    "fields": {
+      "name": "Sensor1",
+      "farm": 1,
+      "model": 1,
+      "serial_number": "SN-1",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 2,
+    "fields": {
+      "name": "Actuator2",
+      "farm": 1,
+      "model": 2,
+      "serial_number": "SN-2",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 3,
+    "fields": {
+      "name": "Sensor3",
+      "farm": 2,
+      "model": 1,
+      "serial_number": "SN-3",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 4,
+    "fields": {
+      "name": "Actuator4",
+      "farm": 2,
+      "model": 2,
+      "serial_number": "SN-4",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 5,
+    "fields": {
+      "name": "Sensor5",
+      "farm": 3,
+      "model": 1,
+      "serial_number": "SN-5",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 6,
+    "fields": {
+      "name": "Actuator6",
+      "farm": 3,
+      "model": 2,
+      "serial_number": "SN-6",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 7,
+    "fields": {
+      "name": "Sensor7",
+      "farm": 4,
+      "model": 1,
+      "serial_number": "SN-7",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 8,
+    "fields": {
+      "name": "Actuator8",
+      "farm": 4,
+      "model": 2,
+      "serial_number": "SN-8",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 9,
+    "fields": {
+      "name": "Sensor9",
+      "farm": 5,
+      "model": 1,
+      "serial_number": "SN-9",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 10,
+    "fields": {
+      "name": "Actuator10",
+      "farm": 5,
+      "model": 2,
+      "serial_number": "SN-10",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 3,
+    "fields": {
+      "name": "SoilSensorZ",
+      "manufacturer": "GreenSensors",
+      "device_type": "sensor",
+      "description": "sensor model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 4,
+    "fields": {
+      "name": "IrrigationValvePro",
+      "manufacturer": "WaterFlow",
+      "device_type": "actuator",
+      "description": "actuator model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 5,
+    "fields": {
+      "name": "AgriCam360",
+      "manufacturer": "VisionTech",
+      "device_type": "camera",
+      "description": "camera model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 6,
+    "fields": {
+      "name": "FarmBotAlpha",
+      "manufacturer": "AgroRobotics",
+      "device_type": "robot",
+      "description": "robot model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 7,
+    "fields": {
+      "name": "EnvControllerV2",
+      "manufacturer": "ClimateCtrl",
+      "device_type": "controller",
+      "description": "controller model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicemodel",
+    "pk": 8,
+    "fields": {
+      "name": "LoRaGatewayOne",
+      "manufacturer": "NetBridge",
+      "device_type": "gateway",
+      "description": "gateway model",
+      "specifications": {},
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 11,
+    "fields": {
+      "name": "Device11",
+      "farm": 1,
+      "model": 4,
+      "serial_number": "SN-11",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 12,
+    "fields": {
+      "name": "Device12",
+      "farm": 1,
+      "model": 5,
+      "serial_number": "SN-12",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 13,
+    "fields": {
+      "name": "Device13",
+      "farm": 1,
+      "model": 6,
+      "serial_number": "SN-13",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 14,
+    "fields": {
+      "name": "Device14",
+      "farm": 1,
+      "model": 7,
+      "serial_number": "SN-14",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 15,
+    "fields": {
+      "name": "Device15",
+      "farm": 2,
+      "model": 8,
+      "serial_number": "SN-15",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 16,
+    "fields": {
+      "name": "Device16",
+      "farm": 2,
+      "model": 1,
+      "serial_number": "SN-16",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 17,
+    "fields": {
+      "name": "Device17",
+      "farm": 2,
+      "model": 2,
+      "serial_number": "SN-17",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 18,
+    "fields": {
+      "name": "Device18",
+      "farm": 2,
+      "model": 3,
+      "serial_number": "SN-18",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 19,
+    "fields": {
+      "name": "Device19",
+      "farm": 3,
+      "model": 4,
+      "serial_number": "SN-19",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 20,
+    "fields": {
+      "name": "Device20",
+      "farm": 3,
+      "model": 5,
+      "serial_number": "SN-20",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 21,
+    "fields": {
+      "name": "Device21",
+      "farm": 3,
+      "model": 6,
+      "serial_number": "SN-21",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 22,
+    "fields": {
+      "name": "Device22",
+      "farm": 3,
+      "model": 7,
+      "serial_number": "SN-22",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 23,
+    "fields": {
+      "name": "Device23",
+      "farm": 4,
+      "model": 8,
+      "serial_number": "SN-23",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 24,
+    "fields": {
+      "name": "Device24",
+      "farm": 4,
+      "model": 1,
+      "serial_number": "SN-24",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 25,
+    "fields": {
+      "name": "Device25",
+      "farm": 4,
+      "model": 2,
+      "serial_number": "SN-25",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 26,
+    "fields": {
+      "name": "Device26",
+      "farm": 4,
+      "model": 3,
+      "serial_number": "SN-26",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 27,
+    "fields": {
+      "name": "Device27",
+      "farm": 5,
+      "model": 4,
+      "serial_number": "SN-27",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 28,
+    "fields": {
+      "name": "Device28",
+      "farm": 5,
+      "model": 5,
+      "serial_number": "SN-28",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 29,
+    "fields": {
+      "name": "Device29",
+      "farm": 5,
+      "model": 6,
+      "serial_number": "SN-29",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.device",
+    "pk": 30,
+    "fields": {
+      "name": "Device30",
+      "farm": 5,
+      "model": 7,
+      "serial_number": "SN-30",
+      "connection_type": "wifi",
+      "is_active": true,
+      "created_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 1,
+    "fields": {
+      "device": 1,
+      "zone": 10,
+      "latitude": 50.937277,
+      "longitude": 36.96312,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 1,
+    "fields": {
+      "device": 1,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 21.95,
+      "humidity": 75.88,
+      "soil_moisture": 23.87,
+      "light_intensity": 597.53,
+      "ph_level": 6.61,
+      "battery_level": 98.03,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 1,
+    "fields": {
+      "device": 1,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 27.75,
+      "memory_usage": 51.41,
+      "disk_usage": 81.27,
+      "signal_strength": -64.43,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 1,
+    "fields": {
+      "device": 1,
+      "event_type": "alert",
+      "severity": "medium",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 1,
+    "fields": {
+      "device": 1,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 2,
+    "fields": {
+      "device": 2,
+      "zone": 8,
+      "latitude": 50.039686,
+      "longitude": 36.834623,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 2,
+    "fields": {
+      "device": 2,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 21.92,
+      "humidity": 47.24,
+      "soil_moisture": 20.72,
+      "light_intensity": 778.36,
+      "ph_level": 5.55,
+      "battery_level": 64.41,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 2,
+    "fields": {
+      "device": 2,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 84.52,
+      "memory_usage": 87.31,
+      "disk_usage": 45.64,
+      "signal_strength": -45.95,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 2,
+    "fields": {
+      "device": 2,
+      "event_type": "error",
+      "severity": "medium",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 2,
+    "fields": {
+      "device": 2,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 3,
+    "fields": {
+      "device": 3,
+      "zone": 4,
+      "latitude": 50.124737,
+      "longitude": 36.468265,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 3,
+    "fields": {
+      "device": 3,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 25.2,
+      "humidity": 72.33,
+      "soil_moisture": 56.32,
+      "light_intensity": 214.24,
+      "ph_level": 7.38,
+      "battery_level": 20.74,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 3,
+    "fields": {
+      "device": 3,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 12.53,
+      "memory_usage": 23.41,
+      "disk_usage": 84.19,
+      "signal_strength": -30.2,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 3,
+    "fields": {
+      "device": 3,
+      "event_type": "alert",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 3,
+    "fields": {
+      "device": 3,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 4,
+    "fields": {
+      "device": 4,
+      "zone": 10,
+      "latitude": 50.600948,
+      "longitude": 36.426009,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 4,
+    "fields": {
+      "device": 4,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 25.54,
+      "humidity": 77.55,
+      "soil_moisture": 11.78,
+      "light_intensity": 850.76,
+      "ph_level": 6.44,
+      "battery_level": 86.04,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 4,
+    "fields": {
+      "device": 4,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 14.33,
+      "memory_usage": 35.94,
+      "disk_usage": 85.88,
+      "signal_strength": -89.72,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 4,
+    "fields": {
+      "device": 4,
+      "event_type": "warning",
+      "severity": "high",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 4,
+    "fields": {
+      "device": 4,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 5,
+    "fields": {
+      "device": 5,
+      "zone": 8,
+      "latitude": 50.865713,
+      "longitude": 36.727328,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 5,
+    "fields": {
+      "device": 5,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 26.68,
+      "humidity": 48.95,
+      "soil_moisture": 12.4,
+      "light_intensity": 180.67,
+      "ph_level": 6.03,
+      "battery_level": 68.55,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 5,
+    "fields": {
+      "device": 5,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 19.12,
+      "memory_usage": 76.34,
+      "disk_usage": 94.84,
+      "signal_strength": -67.47,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 5,
+    "fields": {
+      "device": 5,
+      "event_type": "warning",
+      "severity": "high",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 5,
+    "fields": {
+      "device": 5,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 6,
+    "fields": {
+      "device": 6,
+      "zone": 3,
+      "latitude": 50.114614,
+      "longitude": 36.608674,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 6,
+    "fields": {
+      "device": 6,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 27.37,
+      "humidity": 56.79,
+      "soil_moisture": 46.5,
+      "light_intensity": 435.24,
+      "ph_level": 7.42,
+      "battery_level": 36.74,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 6,
+    "fields": {
+      "device": 6,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 48.88,
+      "memory_usage": 40.93,
+      "disk_usage": 89.09,
+      "signal_strength": -40.91,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 6,
+    "fields": {
+      "device": 6,
+      "event_type": "warning",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 6,
+    "fields": {
+      "device": 6,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 7,
+    "fields": {
+      "device": 7,
+      "zone": 4,
+      "latitude": 50.558437,
+      "longitude": 36.050033,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 7,
+    "fields": {
+      "device": 7,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 22.58,
+      "humidity": 44.57,
+      "soil_moisture": 29.34,
+      "light_intensity": 946.12,
+      "ph_level": 6.64,
+      "battery_level": 43.86,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 7,
+    "fields": {
+      "device": 7,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 70.95,
+      "memory_usage": 44.69,
+      "disk_usage": 34.89,
+      "signal_strength": -65.41,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 7,
+    "fields": {
+      "device": 7,
+      "event_type": "warning",
+      "severity": "critical",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 7,
+    "fields": {
+      "device": 7,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 8,
+    "fields": {
+      "device": 8,
+      "zone": 8,
+      "latitude": 50.442436,
+      "longitude": 36.636178,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 8,
+    "fields": {
+      "device": 8,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 20.26,
+      "humidity": 72.73,
+      "soil_moisture": 51.39,
+      "light_intensity": 862.98,
+      "ph_level": 6.21,
+      "battery_level": 55.72,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 8,
+    "fields": {
+      "device": 8,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 65.92,
+      "memory_usage": 34.85,
+      "disk_usage": 62.77,
+      "signal_strength": -95.7,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 8,
+    "fields": {
+      "device": 8,
+      "event_type": "warning",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 8,
+    "fields": {
+      "device": 8,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 9,
+    "fields": {
+      "device": 9,
+      "zone": 4,
+      "latitude": 50.293372,
+      "longitude": 36.647661,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 9,
+    "fields": {
+      "device": 9,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 29.85,
+      "humidity": 44.64,
+      "soil_moisture": 41.43,
+      "light_intensity": 226.25,
+      "ph_level": 5.55,
+      "battery_level": 96.59,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 9,
+    "fields": {
+      "device": 9,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 28.32,
+      "memory_usage": 93.28,
+      "disk_usage": 48.5,
+      "signal_strength": -80.8,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 9,
+    "fields": {
+      "device": 9,
+      "event_type": "error",
+      "severity": "medium",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 9,
+    "fields": {
+      "device": 9,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 10,
+    "fields": {
+      "device": 10,
+      "zone": 10,
+      "latitude": 50.894548,
+      "longitude": 36.556145,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 10,
+    "fields": {
+      "device": 10,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 21.17,
+      "humidity": 47.41,
+      "soil_moisture": 58.66,
+      "light_intensity": 408.7,
+      "ph_level": 5.69,
+      "battery_level": 87.28,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 10,
+    "fields": {
+      "device": 10,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 10.64,
+      "memory_usage": 17.8,
+      "disk_usage": 90.36,
+      "signal_strength": -42.94,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 10,
+    "fields": {
+      "device": 10,
+      "event_type": "maintenance",
+      "severity": "medium",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 10,
+    "fields": {
+      "device": 10,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 11,
+    "fields": {
+      "device": 11,
+      "zone": 4,
+      "latitude": 50.487006,
+      "longitude": 36.740199,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 11,
+    "fields": {
+      "device": 11,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 27.02,
+      "humidity": 56.24,
+      "soil_moisture": 49.62,
+      "light_intensity": 572.32,
+      "ph_level": 6.58,
+      "battery_level": 97.74,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 11,
+    "fields": {
+      "device": 11,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 61.98,
+      "memory_usage": 19.22,
+      "disk_usage": 53.7,
+      "signal_strength": -72.21,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 11,
+    "fields": {
+      "device": 11,
+      "event_type": "info",
+      "severity": "critical",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 11,
+    "fields": {
+      "device": 11,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 12,
+    "fields": {
+      "device": 12,
+      "zone": 4,
+      "latitude": 50.628627,
+      "longitude": 36.110301,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 12,
+    "fields": {
+      "device": 12,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 26.47,
+      "humidity": 55.16,
+      "soil_moisture": 34.66,
+      "light_intensity": 331.81,
+      "ph_level": 7.42,
+      "battery_level": 23.02,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 12,
+    "fields": {
+      "device": 12,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 77.23,
+      "memory_usage": 78.61,
+      "disk_usage": 41.28,
+      "signal_strength": -83.27,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 12,
+    "fields": {
+      "device": 12,
+      "event_type": "warning",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 12,
+    "fields": {
+      "device": 12,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 13,
+    "fields": {
+      "device": 13,
+      "zone": 9,
+      "latitude": 50.39913,
+      "longitude": 36.495953,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 13,
+    "fields": {
+      "device": 13,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 18.99,
+      "humidity": 58.94,
+      "soil_moisture": 26.47,
+      "light_intensity": 967.53,
+      "ph_level": 7.29,
+      "battery_level": 33.83,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 13,
+    "fields": {
+      "device": 13,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 88.33,
+      "memory_usage": 57.13,
+      "disk_usage": 62.38,
+      "signal_strength": -49.74,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 13,
+    "fields": {
+      "device": 13,
+      "event_type": "info",
+      "severity": "medium",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 13,
+    "fields": {
+      "device": 13,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 14,
+    "fields": {
+      "device": 14,
+      "zone": 4,
+      "latitude": 50.798539,
+      "longitude": 36.857021,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 14,
+    "fields": {
+      "device": 14,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 27.69,
+      "humidity": 48.89,
+      "soil_moisture": 15.31,
+      "light_intensity": 380.7,
+      "ph_level": 7.33,
+      "battery_level": 36.75,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 14,
+    "fields": {
+      "device": 14,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 55.84,
+      "memory_usage": 63.6,
+      "disk_usage": 61.33,
+      "signal_strength": -33.9,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 14,
+    "fields": {
+      "device": 14,
+      "event_type": "info",
+      "severity": "high",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 14,
+    "fields": {
+      "device": 14,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 15,
+    "fields": {
+      "device": 15,
+      "zone": 8,
+      "latitude": 50.864763,
+      "longitude": 36.319566,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 15,
+    "fields": {
+      "device": 15,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 24.79,
+      "humidity": 70.35,
+      "soil_moisture": 30.45,
+      "light_intensity": 541.56,
+      "ph_level": 6.7,
+      "battery_level": 60.62,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 15,
+    "fields": {
+      "device": 15,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 6.19,
+      "memory_usage": 44.79,
+      "disk_usage": 44.0,
+      "signal_strength": -42.49,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 15,
+    "fields": {
+      "device": 15,
+      "event_type": "warning",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 15,
+    "fields": {
+      "device": 15,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 16,
+    "fields": {
+      "device": 16,
+      "zone": 4,
+      "latitude": 50.228966,
+      "longitude": 36.208261,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 16,
+    "fields": {
+      "device": 16,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 22.6,
+      "humidity": 74.47,
+      "soil_moisture": 39.67,
+      "light_intensity": 423.19,
+      "ph_level": 5.99,
+      "battery_level": 49.24,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 16,
+    "fields": {
+      "device": 16,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 43.54,
+      "memory_usage": 63.59,
+      "disk_usage": 62.65,
+      "signal_strength": -88.43,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 16,
+    "fields": {
+      "device": 16,
+      "event_type": "info",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 16,
+    "fields": {
+      "device": 16,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 17,
+    "fields": {
+      "device": 17,
+      "zone": 8,
+      "latitude": 50.432179,
+      "longitude": 36.633358,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 17,
+    "fields": {
+      "device": 17,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 24.61,
+      "humidity": 45.9,
+      "soil_moisture": 49.32,
+      "light_intensity": 229.54,
+      "ph_level": 6.05,
+      "battery_level": 73.76,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 17,
+    "fields": {
+      "device": 17,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 30.39,
+      "memory_usage": 87.41,
+      "disk_usage": 32.2,
+      "signal_strength": -74.06,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 17,
+    "fields": {
+      "device": 17,
+      "event_type": "error",
+      "severity": "high",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 17,
+    "fields": {
+      "device": 17,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 18,
+    "fields": {
+      "device": 18,
+      "zone": 6,
+      "latitude": 50.115477,
+      "longitude": 36.261079,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 18,
+    "fields": {
+      "device": 18,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 23.57,
+      "humidity": 50.75,
+      "soil_moisture": 41.03,
+      "light_intensity": 600.81,
+      "ph_level": 7.14,
+      "battery_level": 43.69,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 18,
+    "fields": {
+      "device": 18,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 22.59,
+      "memory_usage": 32.37,
+      "disk_usage": 84.02,
+      "signal_strength": -47.84,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 18,
+    "fields": {
+      "device": 18,
+      "event_type": "warning",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 18,
+    "fields": {
+      "device": 18,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 2,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 19,
+    "fields": {
+      "device": 19,
+      "zone": 2,
+      "latitude": 50.965185,
+      "longitude": 36.59975,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 19,
+    "fields": {
+      "device": 19,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 20.27,
+      "humidity": 55.52,
+      "soil_moisture": 59.57,
+      "light_intensity": 370.3,
+      "ph_level": 6.56,
+      "battery_level": 35.54,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 19,
+    "fields": {
+      "device": 19,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": false,
+      "cpu_usage": 89.58,
+      "memory_usage": 1.85,
+      "disk_usage": 80.07,
+      "signal_strength": -45.23,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 19,
+    "fields": {
+      "device": 19,
+      "event_type": "alert",
+      "severity": "low",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 19,
+    "fields": {
+      "device": 19,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 3,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "dashboard.devicelocation",
+    "pk": 20,
+    "fields": {
+      "device": 20,
+      "zone": 10,
+      "latitude": 50.649857,
+      "longitude": 36.53921,
+      "installation_notes": "Установлено в углу зоны",
+      "last_updated": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "dashboard.sensordata",
+    "pk": 20,
+    "fields": {
+      "device": 20,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "temperature": 20.98,
+      "humidity": 57.15,
+      "soil_moisture": 21.16,
+      "light_intensity": 414.33,
+      "ph_level": 7.04,
+      "battery_level": 77.61,
+      "additional_data": {}
+    }
+  },
+  {
+    "model": "dashboard.devicestatus",
+    "pk": 20,
+    "fields": {
+      "device": 20,
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "online": true,
+      "cpu_usage": 2.62,
+      "memory_usage": 52.67,
+      "disk_usage": 94.28,
+      "signal_strength": -79.69,
+      "additional_info": {}
+    }
+  },
+  {
+    "model": "dashboard.deviceevent",
+    "pk": 20,
+    "fields": {
+      "device": 20,
+      "event_type": "error",
+      "severity": "critical",
+      "timestamp": "2025-05-13T06:38:00.325713",
+      "message": "Пример события устройства",
+      "data": {},
+      "resolved": false,
+      "resolved_at": null,
+      "resolved_by": null
+    }
+  },
+  {
+    "model": "dashboard.devicecommand",
+    "pk": 20,
+    "fields": {
+      "device": 20,
+      "command": "reboot",
+      "parameters": {
+        "delay": 5
+      },
+      "issued_at": "2025-05-13T06:38:00.325713",
+      "executed_at": null,
+      "status": "pending",
+      "issued_by": 1,
+      "response": null,
+      "timeout": 30
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "farm": 1,
+      "role": "owner",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "farm": 1,
+      "role": "admin",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "farm": 1,
+      "role": "manager",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "farm": 1,
+      "role": "technician",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "farm": 1,
+      "role": "viewer",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 6,
+    "fields": {
+      "user": 1,
+      "farm": 2,
+      "role": "owner",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 7,
+    "fields": {
+      "user": 2,
+      "farm": 2,
+      "role": "admin",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 8,
+    "fields": {
+      "user": 3,
+      "farm": 2,
+      "role": "manager",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 9,
+    "fields": {
+      "user": 4,
+      "farm": 2,
+      "role": "technician",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 10,
+    "fields": {
+      "user": 5,
+      "farm": 2,
+      "role": "viewer",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "farm": 3,
+      "role": "owner",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 12,
+    "fields": {
+      "user": 2,
+      "farm": 3,
+      "role": "admin",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 13,
+    "fields": {
+      "user": 3,
+      "farm": 3,
+      "role": "manager",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 14,
+    "fields": {
+      "user": 4,
+      "farm": 3,
+      "role": "technician",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 15,
+    "fields": {
+      "user": 5,
+      "farm": 3,
+      "role": "viewer",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 16,
+    "fields": {
+      "user": 1,
+      "farm": 4,
+      "role": "owner",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 17,
+    "fields": {
+      "user": 2,
+      "farm": 4,
+      "role": "admin",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 18,
+    "fields": {
+      "user": 3,
+      "farm": 4,
+      "role": "manager",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 19,
+    "fields": {
+      "user": 4,
+      "farm": 4,
+      "role": "technician",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 20,
+    "fields": {
+      "user": 5,
+      "farm": 4,
+      "role": "viewer",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 21,
+    "fields": {
+      "user": 1,
+      "farm": 5,
+      "role": "owner",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 22,
+    "fields": {
+      "user": 2,
+      "farm": 5,
+      "role": "admin",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 23,
+    "fields": {
+      "user": 3,
+      "farm": 5,
+      "role": "manager",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 24,
+    "fields": {
+      "user": 4,
+      "farm": 5,
+      "role": "technician",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  },
+  {
+    "model": "users.farmmembership",
+    "pk": 25,
+    "fields": {
+      "user": 5,
+      "farm": 5,
+      "role": "viewer",
+      "joined_at": "2025-05-13T06:38:00.325713",
+      "updated_at": "2025-05-13T06:38:00.325713"
+    }
+  }
+]
