@@ -5,11 +5,19 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
-<link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+<link rel="stylesheet" href="{% static 'css/devices.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/devices_orgs.js' %}"></script>
+<script src="{% static 'js/devices_farms.js' %}"></script>
+<script src="{% static 'js/devices_zones.js' %}"></script>
+<script src="{% static 'js/devices_data.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="farms-page">
+    <!-- Заголовок -->
     <div class="content-wrapper">
         <div class="header-card">
             <div class="farms-header">
@@ -17,38 +25,40 @@
             </div>
         </div>
 
-        <div class="detail-card">
-            <!-- Вкладки организаций -->
-            <ul class="nav nav-tabs" id="organizationsTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="loading-tab" data-bs-toggle="tab" href="#loading" role="tab">
-                        Загрузка...
-                    </a>
-                </li>
-            </ul>
+        <!-- Вкладки организаций -->
+        <div class="org-tabs">
+            <div class="org-tabs-list" id="orgTabsList">
+                <!-- Вкладки будут добавлены через JavaScript -->
+            </div>
+        </div>
 
-            <!-- Контент вкладок -->
-            <div class="tab-content" id="organizationsTabContent">
-                <!-- Вкладка загрузки -->
-                <div class="tab-pane fade show active" id="loading" role="tabpanel">
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Загрузка...</span>
-                        </div>
+        <!-- Контент выбранной организации -->
+        <div class="org-content">
+            <div class="detail-card">
+                <div id="orgDescription" class="org-description">
+                    <!-- Описание организации будет добавлено через JavaScript -->
+                </div>
+                
+                <!-- Вкладки ферм -->
+                <div class="farm-tabs">
+                    <div class="farm-tabs-list" id="farmTabsList">
+                        <!-- Вкладки ферм будут добавлены через JavaScript -->
                     </div>
                 </div>
 
-                <!-- Здесь будут динамически добавляться вкладки ферм и зон -->
+                <!-- Вкладки зон -->
+                <div class="zone-tabs">
+                    <div class="zone-tabs-list" id="zoneTabsList">
+                        <!-- Вкладки зон будут добавлены через JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Карточки устройств -->
+                <div class="devices-container" id="devicesContainer">
+                    <!-- Карточки устройств будут добавлены через JavaScript -->
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'js/devices/organizations.js' %}"></script>
-<script src="{% static 'js/devices/farms.js' %}"></script>
-<script src="{% static 'js/devices/zones.js' %}"></script>
-<script src="{% static 'js/devices/device-cards.js' %}"></script>
-{% endblock %} 

@@ -1,163 +1,406 @@
-/* Стили для страницы устройств */
-.farms-page {
-    padding: 20px;
-}
-
-.content-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.header-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* ==================== ВКЛАДКИ ОРГАНИЗАЦИЙ ==================== */
+.org-tabs {
     margin-bottom: 20px;
+    background: var(--backdrop-bg);
+    border-radius: var(--border-radius);
     padding: 20px;
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    backdrop-filter: var(--backdrop-blur);
 }
 
-.farms-header {
+.org-tabs-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.org-tabs-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.org-tabs-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.org-tab {
+    padding: 12px 20px;
+    background: var(--backdrop-bg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.org-tab:hover {
+    background: var(--backdrop-bg-hover);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.org-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.org-tab i {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+.org-tab.active i {
+    color: white;
+}
+
+/* ==================== КОНТЕНТ ОРГАНИЗАЦИИ ==================== */
+.org-content {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.org-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 1rem;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==================== ВКЛАДКИ ФЕРМ ==================== */
+.farm-tabs {
+    padding: 0 20px 20px;
+}
+
+.farm-tabs-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.farm-tabs-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.farm-tabs-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.farm-tab {
+    padding: 10px 16px;
+    background: var(--backdrop-bg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.farm-tab:hover {
+    background: var(--backdrop-bg-hover);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.farm-tab.active {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+}
+
+.farm-tab i {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.farm-tab.active i {
+    color: white;
+}
+
+/* ==================== ВКЛАДКИ ЗОН ==================== */
+.zone-tabs {
+    padding: 0 20px 20px;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.zone-tabs-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.zone-tabs-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.zone-tabs-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.zone-tab {
+    padding: 10px 16px;
+    background: var(--backdrop-bg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.zone-tab:hover {
+    background: var(--backdrop-bg-hover);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.zone-tab.active {
+    background: var(--warning-color);
+    border-color: var(--warning-color);
+    color: white;
+}
+
+.zone-tab i {
+    font-size: 0.9rem;
+    color: var(--warning-color);
+}
+
+.zone-tab.active i {
+    color: white;
+}
+
+/* ==================== АДАПТИВНОСТЬ ==================== */
+@media (max-width: 768px) {
+    .org-tabs {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .org-tab {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .org-description {
+        padding: 15px;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
+    .farm-tabs {
+        padding: 0 15px 15px;
+    }
+
+    .farm-tab {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .zone-tabs {
+        padding: 0 15px 15px;
+        margin-top: 15px;
+    }
+
+    .zone-tab {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ==================== КАРТОЧКИ УСТРОЙСТВ ==================== */
+.devices-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.device-card {
+    background: var(--backdrop-bg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    transition: all var(--transition-speed) ease;
+}
+
+.device-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.device-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.device-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.device-title {
+    flex: 1;
+}
+
+.device-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.device-type {
+    font-size: 0.9rem;
+    color: var(--text-color-secondary);
+    margin: 0;
+}
+
+.device-info {
+    display: grid;
+    gap: 10px;
+}
+
+.device-info-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.farms-title {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
+.device-info-label {
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
 }
 
-.detail-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 20px;
+.device-info-value {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    text-align: right;
 }
 
-/* Стили для вкладок */
-.nav-tabs {
-    border-bottom: 2px solid #dee2e6;
-    margin-bottom: 20px;
-}
-
-.nav-tabs .nav-link {
-    border: none;
-    color: #6c757d;
-    padding: 10px 20px;
-    margin-right: 5px;
-    border-radius: 4px 4px 0 0;
-    transition: all 0.3s ease;
-}
-
-.nav-tabs .nav-link:hover {
-    color: #495057;
-    background-color: #f8f9fa;
-}
-
-.nav-tabs .nav-link.active {
-    color: #007bff;
-    background-color: #fff;
-    border-bottom: 2px solid #007bff;
-}
-
-/* Стили для карточек устройств */
-.devices-container .card {
-    transition: transform 0.2s ease;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.devices-container .card:hover {
-    transform: translateY(-5px);
-}
-
-.card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eee;
-}
-
-.card-title {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.sensor-data {
+.device-model {
     margin-top: 15px;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
 }
 
-.sensor-value {
-    margin-bottom: 5px;
-    font-size: 14px;
+.model-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-speed) ease;
 }
 
-.sensor-value strong {
-    color: #495057;
+.model-header:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* Стили для кнопок */
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+.model-title {
+    font-size: 0.9rem;
+    color: var(--text-color-secondary);
+    margin: 0;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+.model-toggle {
+    color: var(--text-color-secondary);
+    transition: transform var(--transition-speed) ease;
 }
 
-.btn-primary:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
+.model-toggle.expanded {
+    transform: rotate(180deg);
 }
 
-/* Стили для спиннеров */
-.spinner-border {
-    width: 2rem;
-    height: 2rem;
-    border-width: 0.2em;
-}
-
-.spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
-    border-width: 0.15em;
-}
-
-/* Стили для сообщений об ошибках */
-.alert {
-    border-radius: 4px;
+.model-details {
+    display: none;
     padding: 15px;
-    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-sm);
+    margin-top: 10px;
 }
 
-.alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+.model-details.expanded {
+    display: block;
+}
+
+.model-info {
+    display: grid;
+    gap: 8px;
+}
+
+.model-info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.model-info-label {
+    color: var(--text-color-secondary);
+}
+
+.model-info-value {
+    color: var(--text-color);
+    text-align: right;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .farms-page {
-        padding: 10px;
+    .devices-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
     }
 
-    .content-wrapper {
-        padding: 0;
+    .device-card {
+        padding: 15px;
     }
 
-    .nav-tabs .nav-link {
-        padding: 8px 12px;
-        font-size: 14px;
+    .device-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
     }
 
-    .card-title {
-        font-size: 16px;
+    .device-name {
+        font-size: 1rem;
     }
 } 
