@@ -96,12 +96,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!zones.length) {
                 if (zoneTabsList) {
                     zoneTabsList.innerHTML = `
-                        <div class="empty-state-container">
-                            <div class="no-zones">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <h3>Нет доступных зон</h3>
-                                <p>В этой ферме нет зон</p>
+                        <div class="zone-tab no-zones-tab">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <div class="main-text">Нет доступных зон</div>
+                                <div class="sub-text">В этой ферме нет зон</div>
                             </div>
+                        </div>
+                    `;
+                }
+                // Очищаем устройства
+                const devicesContainer = document.getElementById('devicesContainer');
+                if (devicesContainer) {
+                    devicesContainer.innerHTML = `
+                        <div class="device-card empty-device-card">
+                            <i class="fas fa-microchip"></i>
+                            <div class="main-text">Нет доступных устройств</div>
+                            <div class="sub-text">В этой зоне нет устройств</div>
                         </div>
                     `;
                 }
@@ -122,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (zones.length > 0) {
                     switchZone(zones[0]);
                 }
+                if (window.enableTabsDragScroll) window.enableTabsDragScroll();
             }
         } catch (error) {
             console.error('Error:', error);
@@ -142,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Обработка событий ===
     document.addEventListener('farmChanged', (event) => {
         const farmSlug = event.detail.slug;
+        if (zoneTabsList) zoneTabsList.innerHTML = '';
         if (farmSlug) {
             loadFarmZones(farmSlug);
         }
@@ -150,15 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Очищаем зоны при смене организации
     document.addEventListener('orgChanged', () => {
         if (zoneTabsList) {
-            zoneTabsList.innerHTML = `
-                <div class="empty-state-container">
-                    <div class="no-zones">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h3>Выберите ферму</h3>
-                        <p>Для просмотра зон выберите ферму выше</p>
-                    </div>
-                </div>
-            `;
+            zoneTabsList.innerHTML = '';
+        }
+        currentZoneId = null;
+    });
+
+    // Очищаем зоны если нет ферм
+    document.addEventListener('noFarmsInOrg', () => {
+        if (zoneTabsList) {
+            zoneTabsList.innerHTML = '';
         }
         currentZoneId = null;
     });

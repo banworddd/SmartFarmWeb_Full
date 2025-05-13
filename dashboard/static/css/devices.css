@@ -1,13 +1,4 @@
 /* ==================== ВКЛАДКИ ОРГАНИЗАЦИЙ ==================== */
-.org-tabs {
-    margin-bottom: 20px;
-    background: var(--backdrop-bg);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    -webkit-backdrop-filter: var(--backdrop-blur);
-    backdrop-filter: var(--backdrop-blur);
-}
-
 .org-tabs-list {
     display: flex;
     gap: 10px;
@@ -15,10 +6,19 @@
     padding-bottom: 5px;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
 }
 
 .org-tabs-list::-webkit-scrollbar {
     height: 4px;
+    display: none;
 }
 
 .org-tabs-list::-webkit-scrollbar-thumb {
@@ -42,9 +42,7 @@
 }
 
 .org-tab:hover {
-    background: var(--backdrop-bg-hover);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    transform: scale(1.03);
 }
 
 .org-tab.active {
@@ -62,43 +60,73 @@
     color: white;
 }
 
-/* ==================== КОНТЕНТ ОРГАНИЗАЦИИ ==================== */
-.org-content {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-.org-description {
-    color: var(--text-color);
-    line-height: 1.6;
-    font-size: 1rem;
+/* === Групповой блок всех вкладок === */
+.all-tabs {
+    background: var(--backdrop-bg);
+    border-radius: var(--border-radius);
     padding: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    backdrop-filter: var(--backdrop-blur);
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    height: 190px;
+    min-height: 120px;
+    max-height: 220px;
+    transition: max-height 0.4s cubic-bezier(.4,0,.2,1), min-height 0.4s cubic-bezier(.4,0,.2,1);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-/* ==================== ВКЛАДКИ ФЕРМ ==================== */
-.farm-tabs {
-    padding: 0 20px 20px;
-}
-
-.farm-tabs-list {
+/* Все списки вкладок одинаковой ширины и выравнивание */
+.org-tabs-list,
+.farm-tabs-list,
+.zone-tabs-list {
     display: flex;
     gap: 10px;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 5px;
+    padding-right: 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    justify-content: flex-start;
+    cursor: grab;
+    user-select: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
 }
 
-.farm-tabs-list::-webkit-scrollbar {
+.org-tabs-list::-webkit-scrollbar,
+.farm-tabs-list::-webkit-scrollbar,
+.zone-tabs-list::-webkit-scrollbar {
     height: 4px;
+    display: none;
 }
 
-.farm-tabs-list::-webkit-scrollbar-thumb {
+.org-tabs-list::-webkit-scrollbar-thumb,
+.farm-tabs-list::-webkit-scrollbar-thumb,
+.zone-tabs-list::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 2px;
 }
 
+.org-tabs-list.dragging,
+.farm-tabs-list.dragging,
+.zone-tabs-list.dragging {
+    cursor: grabbing;
+}
+
+/* ==================== ВКЛАДКИ ФЕРМ ==================== */
 .farm-tab {
     padding: 10px 16px;
     background: var(--backdrop-bg);
@@ -115,9 +143,7 @@
 }
 
 .farm-tab:hover {
-    background: var(--backdrop-bg-hover);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    transform: scale(1.03);
 }
 
 .farm-tab.active {
@@ -136,30 +162,6 @@
 }
 
 /* ==================== ВКЛАДКИ ЗОН ==================== */
-.zone-tabs {
-    padding: 0 20px 20px;
-    margin-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.zone-tabs-list {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 5px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-}
-
-.zone-tabs-list::-webkit-scrollbar {
-    height: 4px;
-}
-
-.zone-tabs-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-}
-
 .zone-tab {
     padding: 10px 16px;
     background: var(--backdrop-bg);
@@ -176,9 +178,7 @@
 }
 
 .zone-tab:hover {
-    background: var(--backdrop-bg-hover);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    transform: scale(1.03);
 }
 
 .zone-tab.active {
@@ -194,44 +194,6 @@
 
 .zone-tab.active i {
     color: white;
-}
-
-/* ==================== АДАПТИВНОСТЬ ==================== */
-@media (max-width: 768px) {
-    .org-tabs {
-        padding: 10px;
-        margin-bottom: 15px;
-    }
-
-    .org-tab {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-    }
-
-    .org-description {
-        padding: 15px;
-        font-size: 0.95rem;
-        margin-bottom: 15px;
-    }
-
-    .farm-tabs {
-        padding: 0 15px 15px;
-    }
-
-    .farm-tab {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-    }
-
-    .zone-tabs {
-        padding: 0 15px 15px;
-        margin-top: 15px;
-    }
-
-    .zone-tab {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-    }
 }
 
 /* ==================== КАРТОЧКИ УСТРОЙСТВ ==================== */
@@ -382,25 +344,120 @@
     text-align: right;
 }
 
+/* Вспомогательные состояния */
+.empty-state-container,
+.error-state,
+.no-orgs,
+.no-farms,
+.no-zones,
+.no-devices {
+    text-align: center;
+    color: var(--text-color-secondary);
+    padding: 24px 0 8px 0;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
+    .all-tabs {
+        height: 120px;
+        min-height: 90px;
+        max-height: 180px;
+    }
+    .org-tabs-list,
+    .farm-tabs-list,
+    .zone-tabs-list {
+        gap: 6px;
+    }
     .devices-container {
         grid-template-columns: 1fr;
         padding: 15px;
         gap: 15px;
     }
-
     .device-card {
         padding: 15px;
     }
-
     .device-icon {
         width: 35px;
         height: 35px;
         font-size: 1rem;
     }
-
     .device-name {
         font-size: 1rem;
     }
-} 
+}
+
+.no-farms-tab, .no-zones-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--backdrop-bg);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-color-secondary);
+    cursor: default;
+    pointer-events: none;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 1rem;
+    padding: 10px 16px;
+    gap: 8px;
+    margin: 0;
+    min-height: unset;
+    height: 40px;
+    opacity: 1;
+    line-height: 1.1;
+}
+.no-farms-tab i, .no-zones-tab i {
+    font-size: 1.1rem;
+    color: inherit;
+    opacity: 0.7;
+    margin-right: 8px;
+}
+.no-farms-tab > div, .no-zones-tab > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+.no-farms-tab .main-text, .no-zones-tab .main-text {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 0;
+    line-height: 1.1;
+}
+.no-farms-tab .sub-text, .no-zones-tab .sub-text {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-bottom: 0;
+    line-height: 1.1;
+    margin-left: 8px;
+}
+
+.empty-device-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-secondary);
+    text-align: center;
+    gap: 12px;
+    min-height: 120px;
+}
+.empty-device-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    opacity: 0.7;
+}
+.empty-device-card .main-text {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 0;
+}
+.empty-device-card .sub-text {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-bottom: 0;
+}

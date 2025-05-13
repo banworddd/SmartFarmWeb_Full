@@ -187,17 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const devices = await response.json();
             
             if (!devices.length) {
-                if (devicesContainer) {
-                    devicesContainer.innerHTML = `
-                        <div class="empty-state-container">
-                            <div class="no-devices">
-                                <i class="fas fa-microchip"></i>
-                                <h3>Нет доступных устройств</h3>
-                                <p>В этой зоне нет устройств</p>
-                            </div>
-                        </div>
-                    `;
-                }
+                // Оставляем пустую карточку, ничего не меняем
                 return;
             }
 
@@ -228,25 +218,39 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // === Обработка событий ===
+    const showEmptyDeviceCard = () => {
+        if (devicesContainer) {
+            devicesContainer.innerHTML = `
+                <div class="device-card empty-device-card">
+                    <i class="fas fa-microchip"></i>
+                    <div class="main-text">Нет доступных устройств</div>
+                    <div class="sub-text">В этой зоне нет устройств</div>
+                </div>
+            `;
+        }
+    };
+
     document.addEventListener('zoneChanged', (event) => {
         const zoneName = event.detail.name;
+        showEmptyDeviceCard();
         if (zoneName) {
             currentZoneName = zoneName;
             loadZoneDevices(zoneName);
         }
     });
 
+    document.addEventListener('orgChanged', () => {
+        showEmptyDeviceCard();
+        currentZoneName = null;
+    });
+
+    document.addEventListener('noFarmsInOrg', () => {
+        if (devicesContainer) {
+            devicesContainer.innerHTML = '';
+        }
+        currentZoneName = null;
+    });
+
     // === Инициализация ===
-    if (devicesContainer) {
-        // Очищаем контейнер при первой загрузке
-        devicesContainer.innerHTML = `
-            <div class="empty-state-container">
-                <div class="no-devices">
-                    <i class="fas fa-microchip"></i>
-                    <h3>Выберите зону</h3>
-                    <p>Для просмотра устройств выберите зону выше</p>
-                </div>
-            </div>
-        `;
-    }
+    showEmptyDeviceCard();
 });

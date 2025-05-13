@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // === Переключение организации ===
-    const switchOrg = (org) => {
+    const switchOrg = async (org) => {
         if (currentOrgId === org.organization.id) return;
         
         // Обновляем активную вкладку
@@ -69,6 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: org.organization.name
             }
         }));
+
+        // Загружаем фермы и только если они есть, продолжаем дальше
+        const farmsLoaded = await window.loadOrganizationFarms(org.organization.slug);
+        if (!farmsLoaded) {
+            // Если нет ферм, очищаем зоны и устройства
+            document.getElementById('zoneTabsList').innerHTML = '';
+            document.getElementById('devicesContainer').innerHTML = '';
+            return;
+        }
     };
 
     // === Загрузка организаций ===
@@ -98,6 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 }
+                // Очищаем фермы, зоны, устройства
+                document.getElementById('farmTabsList').innerHTML = '';
+                document.getElementById('zoneTabsList').innerHTML = '';
+                document.getElementById('devicesContainer').innerHTML = '';
                 return;
             }
 
@@ -115,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (organizations.length > 0) {
                     switchOrg(organizations[0]);
                 }
+                if (window.enableTabsDragScroll) window.enableTabsDragScroll();
             }
         } catch (error) {
             console.error('Error:', error);
@@ -129,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }
+            document.getElementById('farmTabsList').innerHTML = '';
+            document.getElementById('zoneTabsList').innerHTML = '';
+            document.getElementById('devicesContainer').innerHTML = '';
         }
     };
 

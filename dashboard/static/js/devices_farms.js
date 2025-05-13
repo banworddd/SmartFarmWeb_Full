@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Загрузка ферм организации ===
     const loadOrganizationFarms = async (orgSlug) => {
+        currentFarmId = null; // сбрасываем выбранную ферму при смене организации
+        if (farmTabsList) farmTabsList.innerHTML = '';
         try {
             const response = await fetch(`/api/v1/devices/org_farms/?organization=${orgSlug}`, {
                 headers: {
@@ -74,16 +76,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!farms.length) {
                 if (farmTabsList) {
                     farmTabsList.innerHTML = `
-                        <div class="empty-state-container">
-                            <div class="no-farms">
-                                <i class="fas fa-tractor"></i>
-                                <h3>Нет доступных ферм</h3>
-                                <p>В этой организации нет ферм</p>
+                        <div class="farm-tab no-farms-tab">
+                            <i class="fas fa-tractor"></i>
+                            <div>
+                                <div class="main-text">Нет доступных ферм</div>
+                                <div class="sub-text">В этой организации нет ферм</div>
                             </div>
                         </div>
                     `;
                 }
-                return;
+                // Очищаем зоны и устройства
+                document.dispatchEvent(new CustomEvent('noFarmsInOrg'));
+                const devicesContainer = document.getElementById('devicesContainer');
+                if (devicesContainer) {
+                    devicesContainer.innerHTML = `
+                        <div class="device-card empty-device-card">
+                            <i class="fas fa-microchip"></i>
+                            <div class="main-text">Нет доступных устройств</div>
+                            <div class="sub-text">В этой зоне нет устройств</div>
+                        </div>
+                    `;
+                }
+                return false;
             }
 
             // Очищаем список вкладок
@@ -100,7 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (farms.length > 0) {
                     switchFarm(farms[0]);
                 }
+                if (window.enableTabsDragScroll) window.enableTabsDragScroll();
             }
+            return true;
         } catch (error) {
             console.error('Error:', error);
             if (farmTabsList) {
@@ -114,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }
+            document.dispatchEvent(new CustomEvent('noFarmsInOrg'));
+            return false;
         }
     };
 
