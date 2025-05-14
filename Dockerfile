@@ -13,4 +13,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "/wait-for-it.sh db:5432 --timeout=30 --strict -- python manage.py migrate && uvicorn FarmIoTCore.asgi:application --host 0.0.0.0 --port 8000"]
+CMD sh -c "/wait-for-it.sh db:5432 --timeout=30 --strict -- \
+    && python manage.py migrate \
+    && uvicorn FarmIoTCore.asgi:application --host 0.0.0.0 --port 8000"

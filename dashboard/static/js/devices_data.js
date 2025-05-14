@@ -10,6 +10,102 @@ document.addEventListener('DOMContentLoaded', () => {
     // === DOM элементы ===
     const devicesContainer = document.getElementById('devicesContainer');
     let currentZoneName = null;
+    const deviceWebSockets = new Map();
+
+    // === WebSocket функции ===
+    const connectToDeviceWebSocket = (deviceId) => {
+        // Если уже есть подключение, закрываем его
+        if (deviceWebSockets.has(deviceId)) {
+            deviceWebSockets.get(deviceId).close();
+            deviceWebSockets.delete(deviceId);
+        }
+
+        // Создаем новое подключение
+        const ws = new WebSocket(`ws://${window.location.host}/ws/sensor/${deviceId}/`);
+        
+        ws.onopen = () => {
+            console.log(`WebSocket подключен для устройства ${deviceId}`);
+            updateDeviceStatus(deviceId, true);
+        };
+
+        ws.onclose = () => {
+            console.log(`WebSocket отключен для устройства ${deviceId}`);
+            updateDeviceStatus(deviceId, false);
+            // Пробуем переподключиться через 5 секунд
+            setTimeout(() => connectToDeviceWebSocket(deviceId), 5000);
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            updateDeviceSensorData(deviceId, data);
+        };
+
+        deviceWebSockets.set(deviceId, ws);
+    };
+
+    const updateDeviceStatus = (deviceId, isConnected) => {
+        const deviceCard = document.querySelector(`[data-device-id="${deviceId}"]`);
+        if (!deviceCard) return;
+
+        const statusElement = deviceCard.querySelector('.sensor-data-status');
+        if (statusElement) {
+            statusElement.className = `sensor-data-status ${isConnected ? 'connected' : 'disconnected'}`;
+            statusElement.innerHTML = `
+                <i class="fas fa-${isConnected ? 'wifi' : 'wifi-slash'}"></i>
+                ${isConnected ? 'Подключено' : 'Отключено'}
+            `;
+        }
+    };
+
+    const updateDeviceSensorData = (deviceId, data) => {
+        const deviceCard = document.querySelector(`[data-device-id="${deviceId}"]`);
+        if (!deviceCard) return;
+
+        let sensorDataContainer = deviceCard.querySelector('.sensor-data');
+        if (!sensorDataContainer) {
+            sensorDataContainer = document.createElement('div');
+            sensorDataContainer.className = 'sensor-data';
+            sensorDataContainer.innerHTML = `
+                <div class="sensor-data-header">
+                    <h4 class="sensor-data-title">Данные сенсора</h4>
+                    <span class="sensor-data-status disconnected">
+                        <i class="fas fa-wifi-slash"></i>
+                        Отключено
+                    </span>
+                </div>
+                <div class="sensor-data-content"></div>
+            `;
+            deviceCard.appendChild(sensorDataContainer);
+        }
+
+        const contentContainer = sensorDataContainer.querySelector('.sensor-data-content');
+        contentContainer.innerHTML = '';
+
+        // Обрабатываем все поля из данных сенсора
+        Object.entries(data).forEach(([key, value]) => {
+            const item = document.createElement('div');
+            item.className = 'sensor-data-item';
+            item.innerHTML = `
+                <span class="sensor-data-label">${formatSensorLabel(key)}</span>
+                <span class="sensor-data-value">${formatSensorValue(value)}</span>
+            `;
+            contentContainer.appendChild(item);
+        });
+    };
+
+    const formatSensorLabel = (key) => {
+        return key
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
+    const formatSensorValue = (value) => {
+        if (typeof value === 'number') {
+            return value.toFixed(2);
+        }
+        return value;
+    };
 
     // === Вспомогательные функции ===
     const getCookie = name => {
@@ -43,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createDeviceCard = (device) => {
         const card = document.createElement('div');
         card.className = 'device-card';
+        card.dataset.deviceId = device.id; // Добавляем ID устройства для WebSocket
 
         // Заголовок карточки
         const header = document.createElement('div');
@@ -168,6 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(info);
         card.appendChild(model);
 
+        // Подключаемся к WebSocket после создания карточки
+        connectToDeviceWebSocket(device.id);
+
         return card;
     };
 
@@ -187,12 +287,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const devices = await response.json();
             
             if (!devices.length) {
-                // Оставляем пустую карточку, ничего не меняем
+                // Очищаем все WebSocket подключения
+                deviceWebSockets.forEach(ws => ws.close());
+                deviceWebSockets.clear();
                 return;
             }
 
-            // Очищаем контейнер
+            // Очищаем контейнер и существующие WebSocket подключения
             if (devicesContainer) {
+                deviceWebSockets.forEach(ws => ws.close());
+                deviceWebSockets.clear();
                 devicesContainer.innerHTML = '';
                 
                 // Добавляем карточки устройств
@@ -203,6 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error:', error);
+            // Очищаем WebSocket подключения при ошибке
+            deviceWebSockets.forEach(ws => ws.close());
+            deviceWebSockets.clear();
             if (devicesContainer) {
                 devicesContainer.innerHTML = `
                     <div class="empty-state-container">
@@ -219,6 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Обработка событий ===
     const showEmptyDeviceCard = () => {
+        // Очищаем WebSocket подключения
+        deviceWebSockets.forEach(ws => ws.close());
+        deviceWebSockets.clear();
+
         if (devicesContainer) {
             devicesContainer.innerHTML = `
                 <div class="device-card empty-device-card">

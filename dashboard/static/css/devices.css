@@ -344,6 +344,69 @@
     text-align: right;
 }
 
+/* Добавляем стили для блока с данными сенсора */
+.sensor-data {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sensor-data-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.sensor-data-title {
+    font-size: 0.9rem;
+    color: var(--text-color-secondary);
+    margin: 0;
+}
+
+.sensor-data-content {
+    display: grid;
+    gap: 8px;
+}
+
+.sensor-data-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-sm);
+}
+
+.sensor-data-label {
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+}
+
+.sensor-data-value {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.sensor-data-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+.sensor-data-status.connected {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.sensor-data-status.disconnected {
+    background: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
 /* Вспомогательные состояния */
 .empty-state-container,
 .error-state,
