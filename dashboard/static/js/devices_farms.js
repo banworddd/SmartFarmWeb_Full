@@ -135,6 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Экспортируем функцию в глобальный объект window
+    window.loadOrganizationFarms = loadOrganizationFarms;
+
     // === Обработка событий ===
     document.addEventListener('orgChanged', (event) => {
         const orgSlug = event.detail.slug;

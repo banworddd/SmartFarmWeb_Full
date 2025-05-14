@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import status
 
 from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView, RetrieveAPIView, ListAPIView
@@ -7,7 +8,7 @@ from rest_framework.views import APIView
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-from dashboard.models import DeviceModel, Device
+from dashboard.models import DeviceModel, Device, SensorData
 from .serializers import (
     DeviceModelSerializer,
     DeviceSerializer
@@ -48,6 +49,28 @@ class SensorDataSend(APIView):
                     'data': data
                 }
             )
+
+            if data['humidity']:
+                humidity = data['humidity']
+                SensorData.objects.create(timestamp=timezone.now(), humidity=humidity, device_id=device_id,
+                                          battery_level=data['battery_level'] if 'battery_level' in data else None)
+            if data['temperature']:
+                temperature = data['temperature']
+                SensorData.objects.create(timestamp=timezone.now(), temperature=temperature, device_id=device_id,
+                                          battery_level=data['battery_level'] if 'battery_level' in data else None)
+            if data['soil_moisture']:
+                soil_moisture = data['soil_moisture']
+                SensorData.objects.create(timestamp=timezone.now(), temperature=soil_moisture, device_id=device_id,
+                                          battery_level=data['battery_level'] if 'battery_level' in data else None)
+            if data['light_intensity']:
+                light_intensity = data['light_intensity']
+                SensorData.objects.create(timestamp=timezone.now(), temperature=light_intensity, device_id=device_id,
+                                          battery_level=data['battery_level'] if 'battery_level' in data else None)
+            if data['ph_level']:
+                ph_level = data['ph_level']
+                SensorData.objects.create(timestamp=timezone.now(), temperature=ph_level, device_id=device_id,
+                                          battery_level=data['battery_level'] if 'battery_level' in data else None)
+
             return Response({"status": "sent"})
         except Exception as e:
             print("Exception:", e)
