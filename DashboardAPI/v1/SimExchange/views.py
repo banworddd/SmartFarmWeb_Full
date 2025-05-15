@@ -36,8 +36,7 @@ class DevicesAPIView(ListAPIView):
 
 
 class SensorDataSend(APIView):
-    def post(self, request):
-        print('POST received:', request.data)  # <--- лог
+    def post(self, request):  # <--- лог
         try:
             device_id = request.data['device_id']
             data = request.data['data']
@@ -50,23 +49,23 @@ class SensorDataSend(APIView):
                 }
             )
 
-            if data['humidity']:
+            if 'humidity' in data:
                 humidity = data['humidity']
                 SensorData.objects.create(timestamp=timezone.now(), humidity=humidity, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
-            if data['temperature']:
+            elif 'temperature' in data:
                 temperature = data['temperature']
                 SensorData.objects.create(timestamp=timezone.now(), temperature=temperature, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
-            if data['soil_moisture']:
+            elif 'soil_moisture' in data:
                 soil_moisture = data['soil_moisture']
                 SensorData.objects.create(timestamp=timezone.now(), temperature=soil_moisture, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
-            if data['light_intensity']:
+            elif 'light_intensity' in data:
                 light_intensity = data['light_intensity']
                 SensorData.objects.create(timestamp=timezone.now(), temperature=light_intensity, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
-            if data['ph_level']:
+            elif 'ph_level' in data:
                 ph_level = data['ph_level']
                 SensorData.objects.create(timestamp=timezone.now(), temperature=ph_level, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
@@ -77,10 +76,29 @@ class SensorDataSend(APIView):
             return Response({"error": str(e)}, status=500)
 
 
+class DeviceStatusSend(APIView):
+    def post(self, request):
+        print('POST received:', request.data)  # <--- лог
+        try:
+            device_id = request.data['device_id']
+            data = request.data['data']
 
+            if not device_id or not data:
+                return Response({"error": "device_id and data are required"}, status=400)
 
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f'device_{device_id}',
+                {
+                    'type': 'device_status_data',
+                    'data': data
+                }
+            )
 
-
+            return Response({"status": "sent"})
+        except Exception as e:
+            print("Exception:", e)
+            return Response({"error": str(e)}, status=500)
 
 
 

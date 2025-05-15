@@ -3,10 +3,12 @@ import django
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
-import dashboard.routing
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FarmIoTCore.settings')
 django.setup()
+
+import dashboard.routing
 
 application = ProtocolTypeRouter({
     # HTTP запросы будут обрабатываться как обычно
