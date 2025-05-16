@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-from dashboard.models import DeviceModel, Device, SensorData
+from dashboard.models import DeviceModel, Device, SensorData, DeviceStatus
 from .serializers import (
     DeviceModelSerializer,
     DeviceSerializer
@@ -51,23 +51,23 @@ class SensorDataSend(APIView):
 
             if 'humidity' in data:
                 humidity = data['humidity']
-                SensorData.objects.create(timestamp=timezone.now(), humidity=humidity, device_id=device_id,
+                SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), humidity=humidity, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
             elif 'temperature' in data:
                 temperature = data['temperature']
-                SensorData.objects.create(timestamp=timezone.now(), temperature=temperature, device_id=device_id,
+                SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), temperature=temperature, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
             elif 'soil_moisture' in data:
                 soil_moisture = data['soil_moisture']
-                SensorData.objects.create(timestamp=timezone.now(), temperature=soil_moisture, device_id=device_id,
+                SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), temperature=soil_moisture, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
             elif 'light_intensity' in data:
                 light_intensity = data['light_intensity']
-                SensorData.objects.create(timestamp=timezone.now(), temperature=light_intensity, device_id=device_id,
+                SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), temperature=light_intensity, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
             elif 'ph_level' in data:
                 ph_level = data['ph_level']
-                SensorData.objects.create(timestamp=timezone.now(), temperature=ph_level, device_id=device_id,
+                SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), temperature=ph_level, device_id=device_id,
                                           battery_level=data['battery_level'] if 'battery_level' in data else None)
 
             return Response({"status": "sent"})
@@ -78,7 +78,6 @@ class SensorDataSend(APIView):
 
 class DeviceStatusSend(APIView):
     def post(self, request):
-        print('POST received:', request.data)  # <--- лог
         try:
             device_id = request.data['device_id']
             data = request.data['data']
@@ -95,6 +94,14 @@ class DeviceStatusSend(APIView):
                 }
             )
 
+            DeviceStatus.objects.create(timestamp = data['timestamp'] if 'timestamp' in data else timezone.now(),
+                                        device_id=device_id, online = data['online'] if 'online' in data else False,
+                                        cpu_usage=data['cpu_usage'] if 'cpu_usage' in data else None,
+                                        memory_usage=data['memory_usage'] if 'memory_usage' in data else None,
+                                        disk_usage=data['disk_usage'] if 'disk_usage' in data else None,
+                                        signal_strength=data['signal_strength'] if 'signal_strength' in data else None,
+                                        additional_info=data['additional_info'] if 'additional_info' in data else None
+                                        )
             return Response({"status": "sent"})
         except Exception as e:
             print("Exception:", e)

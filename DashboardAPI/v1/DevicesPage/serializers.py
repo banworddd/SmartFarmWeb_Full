@@ -22,13 +22,16 @@ class OrgFarmZonesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DeviceModelSerializer(serializers.ModelSerializer):
+    created_at =serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
     class Meta:
         model = DeviceModel
         fields = '__all__'
 
 class ZoneDevicesSerializer(serializers.ModelSerializer):
     model = DeviceModelSerializer()
-
+    created_at =serializers.DateTimeField(format="%d.%m.%Y %H:%M")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
     class Meta:
         model = Device
         fields = '__all__'
