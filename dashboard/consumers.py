@@ -108,6 +108,20 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
             "data" : event['data']
         }))
 
+    async def device_actuator_data(self, event):
+        timestamp = event['data']['timestamp']
+
+        if timestamp:
+            ts_clean = timestamp.split('+')[0].split('Z')[0]
+            dt = datetime.fromisoformat(ts_clean)
+            formatted_timestamp = dt.strftime("%d.%m.%Y %H:%M:%S")
+            event['data']['timestamp'] = formatted_timestamp
+
+        await self.send(text_data=json.dumps({
+            "type": "device_actuator_data",
+            "data" : event['data']
+        }))
+
     @sync_to_async
     def get_latest_sensor_data(self, device_id):
         sensor_data = SensorData.objects.filter(device_id=device_id).order_by("-timestamp").first()

@@ -107,6 +107,27 @@ class DeviceStatusSend(APIView):
             print("Exception:", e)
             return Response({"error": str(e)}, status=500)
 
+class ActuatorDataSend(APIView):
+    def post(self, request):
+        try:
+            device_id = request.data['device_id']
+            data = request.data['data']
+
+            if not device_id or not data:
+                return Response({"error": "device_id and data are required"}, status=400)
+
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f'device_{device_id}',
+                {
+                    'type': 'device_actuator_data',
+                    'data': data
+                }
+            )
+            return Response({"status": "sent"})
+
+        except Exception as e:
+            print("Exception:", e)
 
 
 

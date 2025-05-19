@@ -439,6 +439,75 @@ class SensorData(models.Model):
         return f"Data from {self.device.name} at {self.timestamp}"
 
 
+
+class ActuatorData(models.Model):
+    """
+    Модель данных актуаторов.
+
+    Эта модель хранит записи о действиях и состоянии актуаторов различных типов на умной ферме,
+    включая информацию о выполняемых действиях, длительности, интенсивности и дополнительные параметры.
+
+    Атрибуты:
+        - actuator (ForeignKey): Актуатор, к которому относятся данные.
+        - timestamp (datetime): Временная метка записи данных.
+        - action (str): Тип действия, например, "open", "close", "on", "off".
+        - duration (timedelta): Длительность выполнения действия (если применимо).
+        - intensity (float): Уровень интенсивности или мощности (например, % яркости).
+        - additional_info (JSONField): Дополнительные параметры действия в формате JSON.
+
+    Методы:
+        - __str__(): Возвращает строковое представление записи данных с указанием актуатора и времени.
+    """
+
+    actuator = models.ForeignKey(
+        'Device',
+        on_delete=models.CASCADE,
+        related_name='actuator_data',
+        verbose_name=_("Актуатор"),
+    )
+    timestamp = models.DateTimeField(
+        _("Временная метка"),
+        auto_now_add=True
+    )
+    action = models.CharField(
+        _("Действие"),
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text=_("Тип действия, например 'open', 'close', 'on', 'off', 'start', 'stop'")
+    )
+    duration = models.DurationField(
+        _("Длительность"),
+        blank=True,
+        null=True,
+        help_text=_("Длительность действия, если применимо")
+    )
+    intensity = models.FloatField(
+        _("Интенсивность"),
+        blank=True,
+        null=True,
+        help_text=_("Уровень мощности или интенсивности, например, % яркости")
+    )
+    additional_info = models.JSONField(
+        _("Дополнительная информация"),
+        default=dict,
+        blank=True,
+        help_text=_("Любые дополнительные параметры в формате JSON")
+    )
+
+    class Meta:
+        verbose_name = _("Данные актуатора")
+        verbose_name_plural = _("Данные актуаторов")
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['-timestamp']),
+            models.Index(fields=['actuator']),
+        ]
+
+    def __str__(self):
+        return f"Data from {self.actuator} at {self.timestamp}"
+
+
 class DeviceStatus(models.Model):
     """
     Модель статуса устройства на ферме.
