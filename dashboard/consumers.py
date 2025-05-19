@@ -58,8 +58,8 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
                     data["disk_usage"] = latest_status.disk_usage
                 if latest_status.signal_strength is not None:
                     data["signal_strength"] = latest_status.signal_strength
-                if latest_data.timestamp is not None:
-                    ts_clean = latest_data.timestamp.isoformat().split('+')[0].split('Z')[0]
+                if latest_status.timestamp is not None:
+                    ts_clean = latest_status.timestamp.isoformat().split('+')[0].split('Z')[0]
                     dt = datetime.fromisoformat(ts_clean)
                     data["timestamp"] = dt.strftime("%d.%m.%Y %H:%M:%S")
 
@@ -116,4 +116,6 @@ class SensorDataConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def get_latest_device_status(self, device_id):
         sensor_data = DeviceStatus.objects.filter(device_id=device_id).order_by("-timestamp").first()
+        if sensor_data.device_id == 9:
+            print (sensor_data.timestamp)
         return sensor_data
