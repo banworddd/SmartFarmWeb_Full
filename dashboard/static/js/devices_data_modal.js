@@ -18,7 +18,7 @@ function translateSensorKey(key) {
 
 let currentModal = null;
 
-export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onlineStatus = false, onDataUpdate = null) {
+export function showDeviceModal(device, sensorData = {}, actuatorData = {}, deviceStatus = {}, onlineStatus = false, onDataUpdate = null) {
     // Удалить старую модалку, если есть
     const oldModal = document.getElementById('device-modal');
     if (oldModal) oldModal.remove();
@@ -112,46 +112,102 @@ export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onli
 
     // Правая колонка: два отдельных блока
     // 1. Статус устройства
-    const status = document.createElement('div');
-    status.className = 'device-modal-block device-modal-status';
-    status.innerHTML = `<div class="device-modal-status-title">Статус устройства</div>`;
-    const statusItems = [
+    const statusFields = [
         { key: 'cpu_usage', label: 'Загрузка CPU', value: deviceStatus.cpu_usage, unit: '%' },
         { key: 'memory_usage', label: 'Использование памяти', value: deviceStatus.memory_usage, unit: '%' },
         { key: 'disk_usage', label: 'Использование диска', value: deviceStatus.disk_usage, unit: '%' },
         { key: 'signal_strength', label: 'Уровень сигнала', value: deviceStatus.signal_strength, unit: 'dBm' },
         { key: 'timestamp', label: 'Время обновления', value: deviceStatus.timestamp }
     ];
-    status.innerHTML += statusItems.some(item => item.value !== undefined)
-        ? statusItems.filter(item => item.value !== undefined).map(item => `
-            <div class="device-modal-status-item">
-                <span class="device-modal-status-label">${item.label}</span>
-                <span class="device-modal-status-value">
-                    ${item.value}${item.unit ? item.unit : ''}
-                </span>
+    const hasStatusData = statusFields.some(item => item.value !== undefined && item.value !== null && item.value !== '');
+    let status = null;
+    if (hasStatusData) {
+        status = document.createElement('div');
+        status.className = 'device-modal-block device-modal-status';
+        status.innerHTML = `<div class=\"device-modal-status-title\">Статус устройства</div>`;
+        status.innerHTML += statusFields.filter(item => item.value !== undefined && item.value !== null && item.value !== '').map(item => `
+            <div class=\"device-modal-status-item\">
+                <span class=\"device-modal-status-label\">${item.label}</span>
+                <span class=\"device-modal-status-value\">${item.value}${item.unit ? item.unit : ''}</span>
             </div>
-        `).join('')
-        : '<div class="device-modal-status-empty">Нет данных о статусе</div>';
+        `).join('');
+    }
 
     // 2. Данные сенсора (и время)
-    const sensor = document.createElement('div');
-    sensor.className = 'device-modal-block device-modal-sensor';
-    sensor.innerHTML = `<div class="device-modal-sensor-title">Данные сенсора</div>`;
-    const sensorDataNoTimestamp = {...sensorData};
-    delete sensorDataNoTimestamp.timestamp;
-    sensor.innerHTML += Object.keys(sensorDataNoTimestamp).length
-        ? Object.entries(sensorDataNoTimestamp).map(([k, v]) => `
-            <div class="device-modal-sensor-item">
-                <span class="device-modal-sensor-label">${translateSensorKey(k)}</span>
-                <span class="device-modal-sensor-value">${v}</span>
-            </div>
-        `).join('')
-        : '<div class="device-modal-sensor-empty">Нет данных</div>';
-    if (sensorData.timestamp) {
-        sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
-            <span class=\"device-modal-sensor-label\">${translateSensorKey('timestamp')}</span>
-            <span class=\"device-modal-sensor-value\">${sensorData.timestamp}</span>
-        </div>`;
+    let hasSensorData = Object.keys(sensorData || {}).filter(k => !['timestamp','sensor_timestamp','actuator_timestamp','action','intensity','duration'].includes(k)).length > 0;
+    if (sensorData.sensor_timestamp) hasSensorData = true;
+    if (sensorData.timestamp && !(sensorData.action || sensorData.intensity || sensorData.duration)) hasSensorData = true;
+    let sensor = null;
+    if (hasSensorData) {
+        sensor = document.createElement('div');
+        sensor.className = 'device-modal-block device-modal-sensor';
+        sensor.innerHTML = `<div class=\"device-modal-sensor-title\">Данные сенсора</div>`;
+        // Исключаем поля актуатора из данных сенсора
+        const sensorDataNoTimestamp = {...sensorData};
+        delete sensorDataNoTimestamp.timestamp;
+        delete sensorDataNoTimestamp.sensor_timestamp;
+        delete sensorDataNoTimestamp.actuator_timestamp;
+        delete sensorDataNoTimestamp.action;
+        delete sensorDataNoTimestamp.intensity;
+        delete sensorDataNoTimestamp.duration;
+        sensor.innerHTML += Object.keys(sensorDataNoTimestamp).length
+            ? Object.entries(sensorDataNoTimestamp).map(([k, v]) => `
+                <div class=\"device-modal-sensor-item\">
+                    <span class=\"device-modal-sensor-label\">${translateSensorKey(k)}</span>
+                    <span class=\"device-modal-sensor-value\">${v}</span>
+                </div>
+            `).join('')
+            : '';
+        // Показываем только свой timestamp
+        if (sensorData.sensor_timestamp) {
+            sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
+                <span class=\"device-modal-sensor-label\">Время обновления</span>
+                <span class=\"device-modal-sensor-value\">${sensorData.sensor_timestamp}</span>
+            </div>`;
+        } else if (sensorData.timestamp && !(sensorData.action || sensorData.intensity || sensorData.duration)) {
+            sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
+                <span class=\"device-modal-sensor-label\">Время обновления</span>
+                <span class=\"device-modal-sensor-value\">${sensorData.timestamp}</span>
+            </div>`;
+        }
+    }
+
+    // 3. Данные актуатора (если есть)
+    const actuator = document.createElement('div');
+    actuator.className = 'device-modal-block device-modal-actuator';
+    actuator.innerHTML = `<div class="device-modal-sensor-title">Данные актуатора</div>`;
+    // Проверяем наличие данных актуатора
+    const hasActuatorData = actuatorData.action || actuatorData.intensity || actuatorData.duration;
+    if (hasActuatorData) {
+        const actuatorItems = [
+            { key: 'action', label: 'Действие', value: actuatorData.action },
+            { key: 'intensity', label: 'Интенсивность', value: actuatorData.intensity, unit: '%' },
+            { key: 'duration', label: 'Длительность', value: actuatorData.duration }
+        ];
+        actuator.innerHTML += actuatorItems
+            .filter(item => item.value !== undefined)
+            .map(item => `
+                <div class="device-modal-sensor-item">
+                    <span class="device-modal-sensor-label">${item.label}</span>
+                    <span class="device-modal-sensor-value">
+                        ${item.value}${item.unit ? item.unit : ''}
+                    </span>
+                </div>
+            `).join('');
+        // Показываем только свой timestamp
+        if (actuatorData.actuator_timestamp) {
+            actuator.innerHTML += `<div class=\"device-modal-sensor-item\">
+                <span class=\"device-modal-sensor-label\">Время обновления</span>
+                <span class=\"device-modal-sensor-value\">${actuatorData.actuator_timestamp}</span>
+            </div>`;
+        } else if (actuatorData.timestamp) {
+            actuator.innerHTML += `<div class=\"device-modal-sensor-item\">
+                <span class=\"device-modal-sensor-label\">Время обновления</span>
+                <span class=\"device-modal-sensor-value\">${actuatorData.timestamp}</span>
+            </div>`;
+        }
+    } else {
+        actuator.innerHTML += '<div class="device-modal-sensor-empty">Нет данных актуатора</div>';
     }
 
     // Layout: две колонки
@@ -163,8 +219,11 @@ export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onli
     colLeft.appendChild(modelBlock);
     const colRight = document.createElement('div');
     colRight.className = 'device-modal-col-right';
-    colRight.appendChild(status);
-    colRight.appendChild(sensor);
+    if (hasStatusData && status) colRight.appendChild(status);
+    if (hasSensorData && sensor) colRight.appendChild(sensor);
+    if (hasActuatorData) {
+        colRight.appendChild(actuator);
+    }
     columns.appendChild(colLeft);
     columns.appendChild(colRight);
 
@@ -180,8 +239,9 @@ export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onli
         modal,
         status,
         sensor,
+        actuator,
         powerBtn,
-        updateData: (newSensorData, newDeviceStatus, newOnlineStatus) => {
+        updateData: (newSensorData, newActuatorData, newDeviceStatus, newOnlineStatus) => {
             // Обновляем статус онлайн/оффлайн
             powerBtn.className = 'device-modal-power-btn' + (newOnlineStatus ? ' online' : ' offline');
             powerBtn.title = newOnlineStatus ? 'Устройство онлайн' : 'Устройство оффлайн';
@@ -194,35 +254,105 @@ export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onli
                 { key: 'signal_strength', label: 'Уровень сигнала', value: newDeviceStatus.signal_strength, unit: 'dBm' },
                 { key: 'timestamp', label: 'Время обновления', value: newDeviceStatus.timestamp }
             ];
-            status.innerHTML = `<div class="device-modal-status-title">Статус устройства</div>`;
-            status.innerHTML += statusItems.some(item => item.value !== undefined)
-                ? statusItems.filter(item => item.value !== undefined).map(item => `
-                    <div class="device-modal-status-item">
-                        <span class="device-modal-status-label">${item.label}</span>
-                        <span class="device-modal-status-value">
-                            ${item.value}${item.unit ? item.unit : ''}
-                        </span>
+            const hasNewStatusData = statusItems.some(item => item.value !== undefined && item.value !== null && item.value !== '');
+            if (hasNewStatusData) {
+                status.innerHTML = `<div class=\"device-modal-status-title\">Статус устройства</div>`;
+                status.innerHTML += statusItems.filter(item => item.value !== undefined && item.value !== null && item.value !== '').map(item => `
+                    <div class=\"device-modal-status-item\">
+                        <span class=\"device-modal-status-label\">${item.label}</span>
+                        <span class=\"device-modal-status-value\">${item.value}${item.unit ? item.unit : ''}</span>
                     </div>
-                `).join('')
-                : '<div class="device-modal-status-empty">Нет данных о статусе</div>';
+                `).join('');
+                if (!colRight.contains(status)) {
+                    colRight.insertBefore(status, sensor || actuator);
+                }
+            } else {
+                if (colRight.contains(status)) {
+                    status.remove();
+                }
+            }
 
             // Обновляем данные сенсора
-            const sensorDataNoTimestamp = {...newSensorData};
-            delete sensorDataNoTimestamp.timestamp;
-            sensor.innerHTML = `<div class="device-modal-sensor-title">Данные сенсора</div>`;
-            sensor.innerHTML += Object.keys(sensorDataNoTimestamp).length
-                ? Object.entries(sensorDataNoTimestamp).map(([k, v]) => `
-                    <div class="device-modal-sensor-item">
-                        <span class="device-modal-sensor-label">${translateSensorKey(k)}</span>
-                        <span class="device-modal-sensor-value">${v}</span>
-                    </div>
-                `).join('')
-                : '<div class="device-modal-sensor-empty">Нет данных</div>';
-            if (newSensorData.timestamp) {
-                sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
-                    <span class=\"device-modal-sensor-label\">${translateSensorKey('timestamp')}</span>
-                    <span class=\"device-modal-sensor-value\">${newSensorData.timestamp}</span>
-                </div>`;
+            let hasNewSensorData = Object.keys(newSensorData || {}).filter(k => !['timestamp','sensor_timestamp','actuator_timestamp','action','intensity','duration'].includes(k)).length > 0;
+            if (newSensorData.sensor_timestamp) hasNewSensorData = true;
+            if (newSensorData.timestamp && !(newSensorData.action || newSensorData.intensity || newSensorData.duration)) hasNewSensorData = true;
+            if (hasNewSensorData) {
+                sensor.innerHTML = `<div class=\"device-modal-sensor-title\">Данные сенсора</div>`;
+                const sensorDataNoTimestamp = {...newSensorData};
+                delete sensorDataNoTimestamp.timestamp;
+                delete sensorDataNoTimestamp.sensor_timestamp;
+                delete sensorDataNoTimestamp.actuator_timestamp;
+                delete sensorDataNoTimestamp.action;
+                delete sensorDataNoTimestamp.intensity;
+                delete sensorDataNoTimestamp.duration;
+                sensor.innerHTML += Object.keys(sensorDataNoTimestamp).length
+                    ? Object.entries(sensorDataNoTimestamp).map(([k, v]) => `
+                        <div class=\"device-modal-sensor-item\">
+                            <span class=\"device-modal-sensor-label\">${translateSensorKey(k)}</span>
+                            <span class=\"device-modal-sensor-value\">${v}</span>
+                        </div>
+                    `).join('')
+                    : '';
+                if (newSensorData.sensor_timestamp) {
+                    sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
+                        <span class=\"device-modal-sensor-label\">Время обновления</span>
+                        <span class=\"device-modal-sensor-value\">${newSensorData.sensor_timestamp}</span>
+                    </div>`;
+                } else if (newSensorData.timestamp && !(newSensorData.action || newSensorData.intensity || newSensorData.duration)) {
+                    sensor.innerHTML += `<div class=\"device-modal-sensor-item\">
+                        <span class=\"device-modal-sensor-label\">Время обновления</span>
+                        <span class=\"device-modal-sensor-value\">${newSensorData.timestamp}</span>
+                    </div>`;
+                }
+                if (!colRight.contains(sensor)) {
+                    colRight.insertBefore(sensor, actuator);
+                }
+            } else {
+                if (colRight.contains(sensor)) {
+                    sensor.remove();
+                }
+            }
+
+            // Обновляем данные актуатора
+            const hasNewActuatorData = newActuatorData.action || newActuatorData.intensity || newActuatorData.duration;
+            if (hasNewActuatorData) {
+                const actuatorItems = [
+                    { key: 'action', label: 'Действие', value: newActuatorData.action },
+                    { key: 'intensity', label: 'Интенсивность', value: newActuatorData.intensity, unit: '%' },
+                    { key: 'duration', label: 'Длительность', value: newActuatorData.duration }
+                ];
+                actuator.innerHTML = `<div class="device-modal-sensor-title">Данные актуатора</div>`;
+                actuator.innerHTML += actuatorItems
+                    .filter(item => item.value !== undefined)
+                    .map(item => `
+                        <div class="device-modal-sensor-item">
+                            <span class="device-modal-sensor-label">${item.label}</span>
+                            <span class="device-modal-sensor-value">
+                                ${item.value}${item.unit ? item.unit : ''}
+                            </span>
+                        </div>
+                    `).join('');
+                // Показываем только свой timestamp
+                if (newActuatorData.actuator_timestamp) {
+                    actuator.innerHTML += `<div class=\"device-modal-sensor-item\">
+                        <span class=\"device-modal-sensor-label\">Время обновления</span>
+                        <span class=\"device-modal-sensor-value\">${newActuatorData.actuator_timestamp}</span>
+                    </div>`;
+                } else if (newActuatorData.timestamp) {
+                    actuator.innerHTML += `<div class=\"device-modal-sensor-item\">
+                        <span class=\"device-modal-sensor-label\">Время обновления</span>
+                        <span class=\"device-modal-sensor-value\">${newActuatorData.timestamp}</span>
+                    </div>`;
+                }
+                // Показываем блок актуатора, если его еще нет
+                if (!colRight.contains(actuator)) {
+                    colRight.appendChild(actuator);
+                }
+            } else {
+                // Скрываем блок актуатора, если данных нет
+                if (colRight.contains(actuator)) {
+                    actuator.remove();
+                }
             }
         }
     };
@@ -236,10 +366,10 @@ export function showDeviceModal(device, sensorData = {}, deviceStatus = {}, onli
     });
 
     // Если есть функция обновления данных, передаем ей функцию обновления модального окна
-    if (onDataUpdate) {
-        onDataUpdate((sensorData, deviceStatus, onlineStatus) => {
+    if (typeof onDataUpdate === 'function') {
+        onDataUpdate((sensorData, actuatorData, deviceStatus, onlineStatus) => {
             if (currentModal) {
-                currentModal.updateData(sensorData, deviceStatus, onlineStatus);
+                currentModal.updateData(sensorData, actuatorData, deviceStatus, onlineStatus);
             }
         });
     }

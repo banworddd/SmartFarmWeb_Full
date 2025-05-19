@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-from dashboard.models import DeviceModel, Device, SensorData, DeviceStatus
+from dashboard.models import DeviceModel, Device, SensorData, DeviceStatus, ActuatorData
 from .serializers import (
     DeviceModelSerializer,
     DeviceSerializer
@@ -120,10 +120,17 @@ class ActuatorDataSend(APIView):
             async_to_sync(channel_layer.group_send)(
                 f'device_{device_id}',
                 {
-                    'type': 'device_actuator_data',
+                    'type': 'send_actuator_data',
                     'data': data
                 }
             )
+
+            ActuatorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(),
+                                        actuator_id=device_id, action=data['action'] if 'action' in data else False,
+                                        duration=data['duration'] if 'duration' in data else None,
+                                        intensity=data['intensity'] if 'intensity' in data else None,
+                                        additional_info=data['additional_info'] if 'additional_info' in data else None
+                                        )
             return Response({"status": "sent"})
 
         except Exception as e:

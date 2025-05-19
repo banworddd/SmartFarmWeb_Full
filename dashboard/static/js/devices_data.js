@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
         disk_usage: { label: 'Использование диска', unit: '%', icon: 'fa-hdd' },
         signal_strength: { label: 'Уровень сигнала', unit: 'дБм', icon: 'fa-signal' },
         online: { label: 'Онлайн', unit: '', icon: 'fa-wifi' },
+        action: { label: 'Действие', unit: '', icon: 'fa-play' },
+        intensity: { label: 'Интенсивность', unit: '%', icon: 'fa-tachometer-alt' },
+        duration: { label: 'Длительность', unit: '', icon: 'fa-hourglass-half' }
     };
     const translateSensorKey = (key) => sensorKeyDict[key]?.label || key;
     const getSensorUnit = (key) => sensorKeyDict[key]?.unit || '';
@@ -43,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deviceWebSockets.delete(deviceId);
         }
         let currentSensorData = {};
+        let currentActuatorData = {};
         let currentDeviceStatus = {};
         let currentOnlineStatus = false;
         const ws = new WebSocket(`ws://${window.location.host}/ws/sensor/${deviceId}/`);
@@ -55,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (zoneSessionId !== currentZoneSessionId) return;
             updateDeviceOnlineStatus(deviceId, false);
             currentOnlineStatus = false;
-            if (onDataUpdate) onDataUpdate(currentSensorData, currentDeviceStatus, currentOnlineStatus);
+            if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
             setTimeout(() => connectToDeviceWebSocket(deviceId, onDataUpdate, zoneSessionId), 5000);
         };
         ws.onmessage = (event) => {
@@ -64,11 +68,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'send_sensor_data':
                     updateDeviceSensorData(deviceId, data.data);
                     currentSensorData = data.data;
-                    if (onDataUpdate) onDataUpdate(currentSensorData, currentDeviceStatus, currentOnlineStatus);
+                    if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                     // Обновляем модальное окно, если оно открыто
                     const wsObj = deviceWebSockets.get(deviceId);
                     if (wsObj && wsObj.updateCallback) {
-                        wsObj.updateCallback(currentSensorData, currentDeviceStatus, currentOnlineStatus);
+                        wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
+                    }
+                    break;
+                case 'send_actuator_data':
+                    // Преобразуем данные актуатора в формат, аналогичный данным сенсора
+                    const actuatorData = {
+                        action: data.data.action,
+                        intensity: data.data.intensity,
+                        duration: data.data.duration,
+                        timestamp: data.data.timestamp
+                    };
+                    updateDeviceSensorData(deviceId, actuatorData);
+                    currentActuatorData = actuatorData;
+                    if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
+                    // Обновляем модальное окно, если оно открыто
+                    {
+                        const wsObj = deviceWebSockets.get(deviceId);
+                        if (wsObj && wsObj.updateCallback) {
+                            wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
+                        }
                     }
                     break;
                 case 'device_status_data':
@@ -76,11 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateDeviceOnlineStatus(deviceId, !!data.data.online);
                         currentOnlineStatus = !!data.data.online;
                         currentDeviceStatus = data.data;
-                        if (onDataUpdate) onDataUpdate(currentSensorData, currentDeviceStatus, currentOnlineStatus);
+                        if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                         // Обновляем модальное окно, если оно открыто
                         const wsObj = deviceWebSockets.get(deviceId);
                         if (wsObj && wsObj.updateCallback) {
-                            wsObj.updateCallback(currentSensorData, currentDeviceStatus, currentOnlineStatus);
+                            wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                         }
                     }
                     break;
@@ -108,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!sensorDataBlock) return;
         const entries = Object.entries(data || {});
         const validEntries = entries.filter(([_, v]) => isValidSensorValue(v));
-        console.log('updateDeviceSensorData', { deviceId, data, entries, validEntries });
         sensorDataBlock.innerHTML = '';
         if (!validEntries.length) {
             // Для диагностики: если entries не пустой, покажем их все
@@ -146,16 +168,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof value === 'number') {
             return value.toFixed(2);
         }
+        // Форматирование длительности
+        if (typeof value === 'string' && value.match(/^\d+:\d+:\d+$/)) {
+            return value;
+        }
+        // Для действия актуатора
+        if (typeof value === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(value.toLowerCase())) {
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
         return value;
     };
 
     // === Проверка валидности значения сенсора ===
-    const isValidSensorValue = v =>
-        v !== null &&
-        v !== undefined &&
-        v !== '' &&
-        !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0) &&
-        !(Array.isArray(v) && v.length === 0);
+    const isValidSensorValue = v => {
+        // Проверяем, является ли значение строкой действия актуатора
+        if (typeof v === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(v.toLowerCase())) {
+            return true;
+        }
+        // Проверяем, является ли значение длительностью
+        if (typeof v === 'string' && v.match(/^\d+:\d+:\d+$/)) {
+            return true;
+        }
+        // Стандартные проверки
+        return v !== null &&
+            v !== undefined &&
+            v !== '' &&
+            !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0) &&
+            !(Array.isArray(v) && v.length === 0);
+    };
 
     // === Вспомогательные функции ===
     const getCookie = name => {
@@ -234,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Для хранения последних данных
         let lastSensorData = {};
+        let lastActuatorData = {};
         let lastDeviceStatus = {};
         let lastOnlineStatus = false;
 
@@ -244,13 +285,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 !e.target.classList.contains('device-modal-power-btn') &&
                 !e.target.closest('.device-modal-power-btn')
             ) {
-                showDeviceModal(device, lastSensorData, lastDeviceStatus, lastOnlineStatus, (updateCallback) => {
+                showDeviceModal(device, lastSensorData, lastActuatorData, lastDeviceStatus, lastOnlineStatus, (updateCallback) => {
                     // Сохраняем callback для обновления модального окна
-                    const wsUpdateCallback = (sensorData, deviceStatus, onlineStatus) => {
+                    const wsUpdateCallback = (sensorData, actuatorData, deviceStatus, onlineStatus) => {
                         lastSensorData = sensorData;
+                        lastActuatorData = actuatorData;
                         lastDeviceStatus = deviceStatus;
                         lastOnlineStatus = onlineStatus;
-                        updateCallback(sensorData, deviceStatus, onlineStatus);
+                        updateCallback(sensorData, actuatorData, deviceStatus, onlineStatus);
                     };
                     // Обновляем callback в WebSocket
                     const wsObj = deviceWebSockets.get(device.id);
@@ -262,8 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Подключаемся к WebSocket после создания карточки
-        connectToDeviceWebSocket(device.id, (sensorData, deviceStatus, onlineStatus) => {
+        connectToDeviceWebSocket(device.id, (sensorData, actuatorData, deviceStatus, onlineStatus) => {
             lastSensorData = sensorData;
+            lastActuatorData = actuatorData;
             lastDeviceStatus = deviceStatus;
             lastOnlineStatus = onlineStatus;
         }, currentZoneSessionId);
