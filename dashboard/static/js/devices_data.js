@@ -1,16 +1,18 @@
 import { showDeviceModal } from './devices_data_modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // === Константы и сопоставления ===
-    const deviceTypeIcons = {
-        'sensor': 'fas fa-microchip',
-        'actuator': 'fas fa-cogs',
-        'gateway': 'fas fa-network-wired',
-        'other': 'fas fa-device'
+    // =====================
+    // Константы и маппинги
+    // =====================
+    const DEVICE_TYPE_ICONS = {
+        sensor: 'fas fa-microchip',
+        actuator: 'fas fa-cogs',
+        gateway: 'fas fa-network-wired',
+        other: 'fas fa-device'
     };
 
-    // === Переводчик, единицы измерения и иконки для сенсоров ===
-    const sensorKeyDict = {
+    // --- Маппинг сенсоров ---
+    const SENSOR_KEY_DICT = {
         humidity: { label: 'Влажность', unit: '%', icon: 'fa-tint' },
         temperature: { label: 'Температура', unit: '°C', icon: 'fa-thermometer-half' },
         soil_moisture: { label: 'Влажность почвы', unit: '%', icon: 'fa-water' },
@@ -27,17 +29,63 @@ document.addEventListener('DOMContentLoaded', () => {
         intensity: { label: 'Интенсивность', unit: '%', icon: 'fa-tachometer-alt' },
         duration: { label: 'Длительность', unit: '', icon: 'fa-hourglass-half' }
     };
-    const translateSensorKey = (key) => sensorKeyDict[key]?.label || key;
-    const getSensorUnit = (key) => sensorKeyDict[key]?.unit || '';
-    const getSensorIcon = (key) => sensorKeyDict[key]?.icon || '';
 
-    // === DOM элементы ===
+    // =====================
+    // Утилиты
+    // =====================
+    const getCookie = name => {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return null;
+    };
+
+    const translateSensorKey = key => SENSOR_KEY_DICT[key]?.label || key;
+    const getSensorUnit = key => SENSOR_KEY_DICT[key]?.unit || '';
+    const getSensorIcon = key => SENSOR_KEY_DICT[key]?.icon || '';
+
+    const formatSensorValue = value => {
+        if (typeof value === 'number') return value.toFixed(2);
+        if (typeof value === 'string' && value.match(/^[0-9]+:[0-9]+:[0-9]+$/)) return value;
+        if (typeof value === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(value.toLowerCase())) {
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+        return value;
+    };
+
+    const isValidSensorValue = v => {
+        if (typeof v === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(v.toLowerCase())) return true;
+        if (typeof v === 'string' && v.match(/^[0-9]+:[0-9]+:[0-9]+$/)) return true;
+        return v !== null && v !== undefined && v !== '' &&
+            !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0) &&
+            !(Array.isArray(v) && v.length === 0);
+    };
+
+    const formatDate = dateString => {
+        if (!dateString) return '';
+        if (dateString.match(/^[0-9]{2}\.[0-9]{2}\.[0-9]{4} [0-9]{2}:[0-9]{2}$/)) return dateString;
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Некорректная дата';
+        return date.toLocaleDateString('ru-RU', {
+            day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+    };
+
+    // =====================
+    // Глобальные переменные
+    // =====================
     const devicesContainer = document.getElementById('devicesContainer');
     let currentZoneName = null;
     let currentZoneSessionId = null;
     const deviceWebSockets = new Map();
 
-    // === WebSocket функции ===
+    // =====================
+    // WebSocket функции
+    // =====================
     const connectToDeviceWebSocket = (deviceId, onDataUpdate, zoneSessionId) => {
         if (deviceWebSockets.has(deviceId)) {
             const wsObj = deviceWebSockets.get(deviceId);
@@ -51,9 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentOnlineStatus = false;
         const ws = new WebSocket(`ws://${window.location.host}/ws/sensor/${deviceId}/`);
         ws._manuallyClosed = false;
-        ws.onopen = () => {
-            // ничего не делаем
-        };
+        ws.onopen = () => {};
         ws.onclose = () => {
             if (ws._manuallyClosed) return;
             if (zoneSessionId !== currentZoneSessionId) return;
@@ -69,14 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateDeviceSensorData(deviceId, data.data);
                     currentSensorData = data.data;
                     if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
-                    // Обновляем модальное окно, если оно открыто
-                    const wsObj = deviceWebSockets.get(deviceId);
-                    if (wsObj && wsObj.updateCallback) {
-                        wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
+                    {
+                        const wsObj = deviceWebSockets.get(deviceId);
+                        if (wsObj && wsObj.updateCallback) wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                     }
                     break;
                 case 'send_actuator_data':
-                    // Преобразуем данные актуатора в формат, аналогичный данным сенсора
                     const actuatorData = {
                         action: data.data.action,
                         intensity: data.data.intensity,
@@ -86,12 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateDeviceSensorData(deviceId, actuatorData);
                     currentActuatorData = actuatorData;
                     if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
-                    // Обновляем модальное окно, если оно открыто
                     {
                         const wsObj = deviceWebSockets.get(deviceId);
-                        if (wsObj && wsObj.updateCallback) {
-                            wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
-                        }
+                        if (wsObj && wsObj.updateCallback) wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                     }
                     break;
                 case 'device_status_data':
@@ -100,11 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         currentOnlineStatus = !!data.data.online;
                         currentDeviceStatus = data.data;
                         if (onDataUpdate) onDataUpdate(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
-                        // Обновляем модальное окно, если оно открыто
                         const wsObj = deviceWebSockets.get(deviceId);
-                        if (wsObj && wsObj.updateCallback) {
-                            wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
-                        }
+                        if (wsObj && wsObj.updateCallback) wsObj.updateCallback(currentSensorData, currentActuatorData, currentDeviceStatus, currentOnlineStatus);
                     }
                     break;
                 default:
@@ -133,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const validEntries = entries.filter(([_, v]) => isValidSensorValue(v));
         sensorDataBlock.innerHTML = '';
         if (!validEntries.length) {
-            // Для диагностики: если entries не пустой, покажем их все
             if (entries.length) {
                 sensorDataBlock.innerHTML = '<div style="color: orange;">DEBUG: ' + JSON.stringify(entries) + '</div>';
             } else {
@@ -157,128 +194,51 @@ document.addEventListener('DOMContentLoaded', () => {
         sensorDataBlock.appendChild(contentContainer);
     };
 
-    const formatSensorLabel = (key) => {
-        return key
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-    };
-
-    const formatSensorValue = (value) => {
-        if (typeof value === 'number') {
-            return value.toFixed(2);
-        }
-        // Форматирование длительности
-        if (typeof value === 'string' && value.match(/^\d+:\d+:\d+$/)) {
-            return value;
-        }
-        // Для действия актуатора
-        if (typeof value === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(value.toLowerCase())) {
-            return value.charAt(0).toUpperCase() + value.slice(1);
-        }
-        return value;
-    };
-
-    // === Проверка валидности значения сенсора ===
-    const isValidSensorValue = v => {
-        // Проверяем, является ли значение строкой действия актуатора
-        if (typeof v === 'string' && ['open', 'close', 'on', 'off', 'start', 'stop'].includes(v.toLowerCase())) {
-            return true;
-        }
-        // Проверяем, является ли значение длительностью
-        if (typeof v === 'string' && v.match(/^\d+:\d+:\d+$/)) {
-            return true;
-        }
-        // Стандартные проверки
-        return v !== null &&
-            v !== undefined &&
-            v !== '' &&
-            !(typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0) &&
-            !(Array.isArray(v) && v.length === 0);
-    };
-
-    // === Вспомогательные функции ===
-    const getCookie = name => {
-        const cookies = document.cookie.split(';');
-        for (let cookie of cookies) {
-            cookie = cookie.trim();
-            if (cookie.startsWith(name + '=')) {
-                return decodeURIComponent(cookie.substring(name.length + 1));
-            }
-        }
-        return null;
-    };
-
-    const formatDate = dateString => {
-        if (!dateString) return '';
-        if (dateString.match(/^\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}$/)) {
-            return dateString;
-        }
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return 'Некорректная дата';
-        return date.toLocaleDateString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-
-    // === Создание карточки устройства ===
+    // =====================
+    // Создание карточки устройства
+    // =====================
     const createDeviceCard = (device) => {
         const card = document.createElement('div');
         card.className = 'device-card';
         card.dataset.deviceId = device.id;
 
-        // Заголовок карточки
+        // --- Заголовок ---
         const header = document.createElement('div');
         header.className = 'device-header';
-
         const icon = document.createElement('div');
         icon.className = 'device-icon';
-        icon.innerHTML = `<i class="${deviceTypeIcons[device.model.device_type] || deviceTypeIcons.other}"></i>`;
-
+        icon.innerHTML = `<i class="${DEVICE_TYPE_ICONS[device.model.device_type] || DEVICE_TYPE_ICONS.other}"></i>`;
         const title = document.createElement('div');
         title.className = 'device-title';
-
         const name = document.createElement('h3');
         name.className = 'device-name';
         name.textContent = device.name;
-
-        // Новый блок: производитель
         const manufacturer = document.createElement('p');
         manufacturer.className = 'device-manufacturer';
         manufacturer.textContent = device.model.manufacturer;
-
         title.appendChild(name);
         title.appendChild(manufacturer);
         header.appendChild(icon);
         header.appendChild(title);
-
-        // Статус онлайн/оффлайн (будет обновляться через WebSocket)
+        // --- Статус онлайн/оффлайн ---
         const onlineStatus = document.createElement('button');
         onlineStatus.className = 'device-modal-power-btn offline';
         onlineStatus.title = 'Устройство оффлайн';
         onlineStatus.innerHTML = `<i class='fa fa-power-off'></i>`;
         header.appendChild(onlineStatus);
-
-        // Блок данных сенсора (будет обновляться через WebSocket)
+        // --- Блок данных сенсора ---
         const sensorDataContainer = document.createElement('div');
         sensorDataContainer.className = 'sensor-data';
         sensorDataContainer.innerHTML = `<div class="sensor-data-content"></div>`;
-
-        // Собираем карточку
+        // --- Собираем карточку ---
         card.appendChild(header);
         card.appendChild(sensorDataContainer);
-
-        // Для хранения последних данных
+        // --- Для хранения последних данных ---
         let lastSensorData = {};
         let lastActuatorData = {};
         let lastDeviceStatus = {};
         let lastOnlineStatus = false;
-
-        // Клик по карточке — открыть модальное окно с полной инфой
+        // --- Клик по карточке — открыть модальное окно ---
         card.addEventListener('click', (e) => {
             if (
                 !e.target.classList.contains('model-toggle') &&
@@ -286,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 !e.target.closest('.device-modal-power-btn')
             ) {
                 showDeviceModal(device, lastSensorData, lastActuatorData, lastDeviceStatus, lastOnlineStatus, (updateCallback) => {
-                    // Сохраняем callback для обновления модального окна
                     const wsUpdateCallback = (sensorData, actuatorData, deviceStatus, onlineStatus) => {
                         lastSensorData = sensorData;
                         lastActuatorData = actuatorData;
@@ -294,37 +253,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         lastOnlineStatus = onlineStatus;
                         updateCallback(sensorData, actuatorData, deviceStatus, onlineStatus);
                     };
-                    // Обновляем callback в WebSocket
                     const wsObj = deviceWebSockets.get(device.id);
-                    if (wsObj) {
-                        wsObj.updateCallback = wsUpdateCallback;
-                    }
+                    if (wsObj) wsObj.updateCallback = wsUpdateCallback;
                 });
             }
         });
-
-        // Подключаемся к WebSocket после создания карточки
+        // --- Подключаемся к WebSocket ---
         connectToDeviceWebSocket(device.id, (sensorData, actuatorData, deviceStatus, onlineStatus) => {
             lastSensorData = sensorData;
             lastActuatorData = actuatorData;
             lastDeviceStatus = deviceStatus;
             lastOnlineStatus = onlineStatus;
         }, currentZoneSessionId);
-
         return card;
     };
 
+    // =====================
+    // Управление WebSocket
+    // =====================
     function closeAllDeviceWebSockets() {
         deviceWebSockets.forEach(obj => {
-            try {
-                obj._manuallyClosed = true;
-                obj.ws.close();
-            } catch {}
+            try { obj._manuallyClosed = true; obj.ws.close(); } catch {}
         });
         deviceWebSockets.clear();
     }
 
-    // === Загрузка устройств зоны ===
+    // =====================
+    // Загрузка устройств зоны
+    // =====================
     const loadZoneDevices = async (zoneName) => {
         currentZoneSessionId = Date.now();
         closeAllDeviceWebSockets();
@@ -338,16 +294,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 credentials: 'include'
             });
-
             if (!response.ok) throw new Error('Ошибка загрузки устройств');
-
             const devices = await response.json();
-            
             if (!devices.length) {
                 closeAllDeviceWebSockets();
                 return;
             }
-
             if (devicesContainer) {
                 closeAllDeviceWebSockets();
                 devicesContainer.innerHTML = '';
@@ -374,7 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === Обработка событий ===
+    // =====================
+    // Служебные функции для UI
+    // =====================
     const showEmptyDeviceCard = () => {
         closeAllDeviceWebSockets();
         if (devicesContainer) {
@@ -388,6 +342,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // =====================
+    // Обработчики событий
+    // =====================
     document.addEventListener('zoneChanged', (event) => {
         const zoneName = event.detail.name;
         showEmptyDeviceCard();
@@ -403,12 +360,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('noFarmsInOrg', () => {
-        if (devicesContainer) {
-            devicesContainer.innerHTML = '';
-        }
+        if (devicesContainer) devicesContainer.innerHTML = '';
         currentZoneName = null;
     });
 
-    // === Инициализация ===
+    // =====================
+    // Инициализация
+    // =====================
     showEmptyDeviceCard();
 });

@@ -18,7 +18,7 @@ class UserFarmsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Farm
-        fields = ['name', 'description', 'owner_full_name', 'organization_name']
+        fields = ['id', 'name', 'description', 'owner_full_name', 'organization_name']
 
     @staticmethod
     def get_owner_full_name(obj: Farm) -> str:

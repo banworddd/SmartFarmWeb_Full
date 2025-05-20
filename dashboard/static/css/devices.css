@@ -601,10 +601,10 @@
     to { opacity: 1; }
 }
 .device-modal-window {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
     border-radius: var(--border-radius);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    border: 1px solid rgba(255,255,255,0.3);
     padding: 32px 28px 24px 28px;
     max-width: 1000px;
     min-width: 400px;
@@ -612,21 +612,35 @@
     position: relative;
     animation: modalPop 0.2s;
     color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.13);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.13);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    min-height: 70vh;
-    max-height: 98vh;
+    max-height: 90vh;
     height: auto;
     word-break: break-word;
     box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 @keyframes modalPop {
     from { transform: scale(0.96); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+.device-modal-window::-webkit-scrollbar {
+    width: 8px;
+}
+.device-modal-window::-webkit-scrollbar-track {
+    background: transparent;
+}
+.device-modal-window::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+.device-modal-window::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
 }
 .device-modal-window,
 .device-modal-window * {
@@ -652,10 +666,10 @@
     margin-bottom: 18px;
 }
 .device-modal-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    margin-bottom: 2px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0;
 }
 .device-modal-type {
     font-size: 1rem;
@@ -961,4 +975,323 @@
     margin-left: auto;
     margin-right: 0;
     margin-top: 0;
+}
+
+/* Стили для блока добавления устройства */
+.add-device-block {
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.add-device-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: #fff;
+    font-size: 1.08rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    margin-bottom: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(46,204,113,0.08);
+    transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
+}
+.add-device-btn:hover, .add-device-btn:focus {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    box-shadow: 0 4px 16px rgba(46,204,113,0.18);
+    transform: translateY(-2px) scale(1.03);
+}
+.add-device-btn i {
+    font-size: 1.15em;
+}
+
+/* Стили для формы добавления устройства */
+.add-device-form {
+    padding: 20px;
+    color: #fff;
+    flex: 1;
+    overflow-y: auto;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.form-group .input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #fff;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.15);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="date"]::placeholder,
+.form-group input[type="number"]::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.form-group select option {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 8px;
+}
+
+.form-group select option:checked,
+.form-group select option:hover,
+.form-group select option:focus {
+    background: #4CAF50 !important;
+    color: #fff !important;
+}
+
+.form-group input[type="checkbox"] {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.form-group input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-group input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.form-group input[type="checkbox"] + label {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0;
+    cursor: pointer;
+    width: auto;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.submit-btn,
+.cancel-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.submit-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.submit-btn:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.cancel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Form error styles */
+.error-input {
+    border-color: #ff4444 !important;
+    background-color: rgba(255, 68, 68, 0.05) !important;
+}
+
+.field-error {
+    color: #ff4444 !important;
+    font-size: 0.85em;
+    margin-bottom: 4px;
+    min-height: 0;
+    line-height: 1.2;
+}
+
+.field-error:empty {
+    margin-bottom: 0;
+}
+
+/* Form field icons */
+.form-group i.field-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2ecc71;
+    font-size: 1.2rem;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Remove white background from number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    display: none;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+input[type="number"]::-ms-input-spinner {
+    background: transparent !important;
+    color: inherit;
+    border: none !important;
+}
+
+/* --- Стили для редактирования полей в модальном окне --- */
+.edit-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--primary-color, #2ecc71);
+    background: var(--backdrop-bg, rgba(255,255,255,0.1));
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    transition: all 0.2s;
+    outline: none;
+    font-family: inherit;
+}
+.edit-input:focus {
+    border-color: var(--primary-dark, #27ae60);
+    background: var(--backdrop-bg-hover, rgba(255,255,255,0.2));
+    box-shadow: 0 0 0 2px rgba(46,204,113,0.18);
+}
+.device-modal-info-value.editing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.edit-field-btn, .confirm-edit-btn, .cancel-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--primary-color, #2ecc71);
+    border-radius: 6px;
+    padding: 4px;
+    transition: background 0.18s, color 0.18s, transform 0.15s;
+}
+.edit-field-btn:hover {
+    background: none;
+    color: var(--primary-dark, #27ae60);
+    transform: scale(1.15);
+}
+.cancel-edit-btn {
+    color: #e74c3c;
+}
+.cancel-edit-btn:hover {
+    background: rgba(231,76,60,0.12);
+    color: #c0392b;
+    transform: scale(1.15);
+}
+
+.device-modal-info-value.zone-selection-required {
+    border-color: #ff4444 !important;
+    background-color: rgba(255, 68, 68, 0.05) !important;
+}
+
+.device-modal-info-value.zone-selection-required .edit-input {
+    border-color: #ff4444 !important;
+    background-color: rgba(255, 68, 68, 0.05) !important;
 }

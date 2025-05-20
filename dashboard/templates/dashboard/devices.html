@@ -15,6 +15,7 @@
 <script type="module" src="/static/js/devices_data_modal.js"></script>
 <script type="module" src="/static/js/devices_data.js"></script>
 <script src="{% static 'js/tabs_drag_scroll.js' %}"></script>
+<script src="{% static 'js/devices_add_device.js' %}"></script>
 
 {% endblock %}
 
@@ -39,6 +40,13 @@
             <div class="zone-tabs-list" id="zoneTabsList">
                 <!-- Вкладки зон будут добавлены через JavaScript -->
             </div>
+        </div>
+
+        <!-- Кнопка добавления устройства -->
+        <div class="add-device-block">
+            <button id="addDeviceBtn" class="add-device-btn">
+                <i class="fa fa-plus"></i> Добавить устройство
+            </button>
         </div>
 
         <!-- Карточки устройств -->

@@ -315,7 +315,6 @@ class DeviceLocation(models.Model):
         null=True,
         blank=True,
         verbose_name=_("Зона"),
-        limit_choices_to={'owner': models.F('device__owner')}
     )
     latitude = models.DecimalField(
         _("Широта"),

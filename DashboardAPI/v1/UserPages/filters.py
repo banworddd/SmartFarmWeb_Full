@@ -7,9 +7,13 @@ class FarmMembershipFilterBackend(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         # Фильтрация по роли
-        role = request.query_params.get('role')
-        if role:
-            queryset = queryset.filter(role=role)
+        roles = request.query_params.getlist('role', [])
+        if not roles:
+            role_param = request.query_params.get('role', '')
+            roles = [r.strip() for r in role_param.split(',') if r.strip()]
+
+        if roles:
+            queryset = queryset.filter(role__in=roles)
 
         # Фильтрация по названию фермы (регистронезависимый поиск)
         farm_name = request.query_params.get('farm_name')
