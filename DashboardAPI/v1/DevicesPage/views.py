@@ -1,12 +1,13 @@
 from rest_framework import status
 
-from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from dashboard.models import DeviceModel, Device, Zone, DeviceLocation
 from users.models import Farm, ExternalOrganization, ExternalOrganizationMembership, FarmMembership
-from .serializers import OrgFarmsSerializer, OrgFarmZonesSerializer, ZoneDevicesSerializer
+from .serializers import OrgFarmsSerializer, OrgFarmZonesSerializer, ZoneDevicesSerializer, DeviceModelSerializer
 
 
 class OrgFarmsListView(ListAPIView):
@@ -36,6 +37,16 @@ class FarmZonesDevicesAPIView(ListAPIView):
     def get_queryset(self):
         print(Zone.objects.filter(name=self.request.query_params.get('zone')).first())
         return Device.objects.filter(location__zone = Zone.objects.filter(name=self.request.query_params.get('zone')).first())
+
+
+class DeviceModelsAPIView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DeviceModelSerializer
+    queryset = DeviceModel.objects.all()
+
+class AddDeviceAPIView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ZoneDevicesSerializer
 
 
 
