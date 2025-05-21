@@ -544,14 +544,32 @@ function addEditHandlers(info, device, overlay) {
         const valueSpan = itemDiv.querySelector('.device-modal-info-value');
         const oldHtml = valueSpan.innerHTML;
         valueSpan.classList.add('editing');
-        valueSpan.innerHTML = `${inputHtml}
+        // Добавим div для ошибки
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error';
+        errorDiv.style.marginBottom = '6px';
+        valueSpan.innerHTML = '';
+        valueSpan.appendChild(errorDiv);
+        // Добавляем input и кнопки после errorDiv
+        const inputFragment = document.createElement('span');
+        inputFragment.innerHTML = `${inputHtml}
             <i class="fa fa-check confirm-edit-btn" title="Сохранить"></i>
             <i class="fa fa-times cancel-edit-btn" title="Отмена"></i>`;
+        Array.from(inputFragment.childNodes).forEach(node => valueSpan.appendChild(node));
+        // Если model — подгружаем список
         if (isModel) {
             const select = valueSpan.querySelector('select.edit-input');
             select.innerHTML = '<option value="">Загрузка...</option>';
             const models = await fetchDeviceModels();
             select.innerHTML = models.map(m => `<option value="${m.id}" ${device.model && m.id === device.model.id ? 'selected' : ''}>${m.name}</option>`).join('');
+        }
+        // --- Сброс ошибки при вводе ---
+        const editInput = valueSpan.querySelector('.edit-input');
+        if (editInput) {
+            editInput.addEventListener('input', () => {
+                errorDiv.textContent = '';
+                editInput.classList.remove('error-input');
+            });
         }
         valueSpan.querySelector('.cancel-edit-btn').onclick = () => {
             valueSpan.classList.remove('editing');
@@ -583,7 +601,35 @@ function addEditHandlers(info, device, overlay) {
                     },
                     body: JSON.stringify(patchData)
                 });
-                if (!resp.ok) throw new Error('Ошибка обновления');
+                if (!resp.ok) {
+                    let errorMsg = 'Ошибка обновления';
+                    try {
+                        const contentType = resp.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            const errJson = await resp.json();
+                            console.error('PATCH error JSON:', errJson);
+                            if (errJson && errJson[field]) {
+                                if (Array.isArray(errJson[field])) {
+                                    errorMsg = errJson[field].join('\n');
+                                } else {
+                                    errorMsg = errJson[field];
+                                }
+                            } else if (typeof errJson === 'string') {
+                                errorMsg = errJson;
+                            }
+                        } else {
+                            const errText = await resp.text();
+                            console.error('PATCH error text:', errText);
+                            if (errText) errorMsg = errText;
+                        }
+                    } catch (e) {
+                        // fallback
+                    }
+                    errorDiv.textContent = errorMsg;
+                    editInput && editInput.classList.add('error-input');
+                    return;
+                }
+                // Обновить значение в UI
                 if (isModel) {
                     const selectedModel = (await fetchDeviceModels()).find(m => m.id === parseInt(newValue));
                     device.model = selectedModel;
@@ -597,9 +643,8 @@ function addEditHandlers(info, device, overlay) {
                 }
                 valueSpan.classList.remove('editing');
             } catch {
-                valueSpan.innerHTML = oldHtml;
-                valueSpan.classList.remove('editing');
-                alert('Ошибка обновления');
+                errorDiv.textContent = 'Ошибка обновления';
+                editInput && editInput.classList.add('error-input');
             }
         };
     });
