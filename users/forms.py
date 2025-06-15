@@ -37,7 +37,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         label='Организация',
         required=False,
         empty_label='Выберите организацию',
-        help_text='Выберите организацию, к которой вы принадлежите (необязательно)'
+        help_text='Выберите организацию, к которой вы принадлежите '
     )
 
     class Meta:
@@ -45,7 +45,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'phone_number', 'email', 'password', 'organization')
         labels = {
             'phone_number': 'Номер телефона',
-            'email': 'Email (необязательно)'
+            'email': 'Email '
         }
         help_texts = {
             'phone_number': 'Формат: 9876543210 (10 цифр)',
@@ -210,32 +210,18 @@ class CustomUserConfirmationForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     def clean(self):
-        """
-        Валидация кода подтверждения.
-
-        Возвращает:
-            dict: Очищенные данные.
-
-        Исключения:
-            ValidationError: Если код подтверждения неверен или сессия истекла.
-        """
         cleaned_data = super().clean()
         user_input_code = cleaned_data.get('confirmation_code')
-
         session_code = self.request.session.get('confirmation_code')
         session_code_time = self.request.session.get('confirmation_code_time')
-
         if not session_code:
             raise forms.ValidationError('Срок действия кода истёк, запросите новый')
-
         if (time.time() - session_code_time > 300) and session_code:
             self.request.session.pop('confirmation_code', None)
             self.request.session.pop('confirmation_code_time', None)
             raise forms.ValidationError('Срок действия кода истёк, запросите новый')
-
         if session_code != user_input_code:
             raise forms.ValidationError('Неверный код подтверждения')
-
         return cleaned_data
 
 class CustomUserLoginForm(forms.Form):

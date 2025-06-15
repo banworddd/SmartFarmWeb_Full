@@ -59,19 +59,12 @@ class UserFarmMembershipsSerializer(serializers.ModelSerializer):
 
 
 class UserExternalOrganizationSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор для отображения информации о внешней организации.
-    """
     class Meta:
         model = ExternalOrganization
         fields = ['id', 'name', 'address', 'description', 'type', 'slug']
 
 
 class UserExternalOrganizationMembershipsSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор для отображения членства пользователя во внешней организации,
-    включая информацию об организации, роли, статусе и дате обновления.
-    """
     organization = UserExternalOrganizationSerializer()
     updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M")
 

@@ -14,30 +14,12 @@ import time
 
 
 class CustomUserRegisterView(LogoutRequiredMixin, CreateView):
-    """
-    Представление для обработки регистрации пользователя.
-
-    Атрибуты:
-        model (CustomUser): Модель, используемая для регистрации пользователя.
-        form_class (CustomUserRegistrationForm): Форма, используемая для регистрации пользователя.
-        template_name (str): Шаблон, используемый для отображения страницы регистрации.
-        success_url (str): URL для перенаправления после успешной регистрации.
-    """
     model = CustomUser
     form_class = CustomUserRegistrationForm
     template_name = 'users/reg.html'
     success_url = 'confirm'
 
-    def form_valid(self, form: CustomUserRegistrationForm) -> redirect:
-        """
-        Обработка валидной формы регистрации.
-
-        Аргументы:
-            form (CustomUserRegistrationForm): Экземпляр формы с валидными данными.
-
-        Возвращает:
-            redirect: Перенаправление на URL успеха после обработки формы.
-        """
+    def form_valid(self, form: CustomUserRegistrationForm):
         form.save()
         self.request.session['phone_number'] = form.cleaned_data['phone_number']
         generate_and_send_confirmation_code(self.request)

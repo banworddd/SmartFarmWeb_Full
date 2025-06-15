@@ -36,7 +36,7 @@ class DevicesAPIView(ListAPIView):
 
 
 class SensorDataSend(APIView):
-    def post(self, request):  # <--- лог
+    def post(self, request):
         try:
             device_id = request.data['device_id']
             data = request.data['data']
@@ -48,7 +48,6 @@ class SensorDataSend(APIView):
                     'data': data
                 }
             )
-
             if 'humidity' in data:
                 humidity = data['humidity']
                 SensorData.objects.create(timestamp=data['timestamp'] if 'timestamp' in data else timezone.now(), humidity=humidity, device_id=device_id,

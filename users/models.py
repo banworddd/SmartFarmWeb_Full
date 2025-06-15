@@ -192,65 +192,30 @@ class ExternalOrganization(models.Model):
         return f"{self.name} ({self.get_type_display()})"
 
 
-class ExternalOrganizationMembership(models.Model):
-    """
-    Модель для связи пользователя и организации с дополнительными атрибутами.
-    Определяет роль, статус подтверждения и другие метаданные.
-    """
 
+class ExternalOrganizationMembership(models.Model):
     class Role(models.TextChoices):
         ADMIN = 'admin', _('Администратор')
         MANAGER = 'manager', _('Менеджер')
         MEMBER = 'member', _('Сотрудник')
         GUEST = 'guest', _('Гость')
-
     class Status(models.TextChoices):
         APPROVED = 'approved', _('Подтверждено')
         PENDING = 'pending', _('Ожидает подтверждения')
         REJECTED = 'rejected', _('Отклонено')
-
-    user = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        verbose_name=_('Пользователь'),
-        related_name='organization_memberships'
-    )
-
-    organization = models.ForeignKey(
-        ExternalOrganization,
-        on_delete=models.CASCADE,
-        verbose_name=_('Организация'),
-        related_name='user_memberships'
-    )
-
-    role = models.CharField(
-        _('Роль'),
-        max_length=20,
-        choices=Role.choices,
-        default=Role.MEMBER
-    )
-
-    status = models.CharField(
-        _('Статус'),
-        max_length=20,
-        choices=Status.choices,
-        default=Status.PENDING
-    )
-
-    joined_at = models.DateTimeField(
-        _('Дата вступления'),
-        auto_now_add=True
-    )
-
-    updated_at = models.DateTimeField(
-        _('Дата обновления'),
-        auto_now=True
-    )
-
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_('Пользователь'),
+                             related_name='organization_memberships')
+    organization = models.ForeignKey(ExternalOrganization, on_delete=models.CASCADE,
+                                     verbose_name=_('Организация'), related_name='user_memberships')
+    role = models.CharField(_('Роль'), max_length=20, choices=Role.choices, default=Role.MEMBER)
+    status = models.CharField(_('Статус'), max_length=20, choices=Status.choices, default=Status.PENDING)
+    joined_at = models.DateTimeField(_('Дата вступления'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Дата обновления'), auto_now=True)
     class Meta:
         verbose_name = _('Членство в организации')
         verbose_name_plural = _('Членства в организациях')
-        unique_together = ('user', 'organization')  # Один пользователь — одна организация
+        unique_together = ('user', 'organization')
+
 
 
 

@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Загрузка ферм организации ===
     const loadOrganizationFarms = async (orgSlug) => {
-        currentFarmId = null; // сбрасываем выбранную ферму при смене организации
+        currentFarmId = null; 
         if (farmTabsList) farmTabsList.innerHTML = '';
         try {
             const response = await fetch(`/api/v1/devices/org_farms/?organization=${orgSlug}`, {

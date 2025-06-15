@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from main.mixins import LoginRequiredMixin
-from users.models import FarmMembership, ExternalOrganization, ExternalOrganizationMembership
+from users.models import FarmMembership, ExternalOrganization, ExternalOrganizationMembership, Farm
 
 
 class UserFarmsView(LoginRequiredMixin, TemplateView):
@@ -61,6 +61,9 @@ class FarmView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['slug'] = self.kwargs.get('slug')
+        farm = Farm.objects.get(slug=context['slug'])
+        membership = FarmMembership.objects.filter(farm = farm, user = self.request.user).first()
+        context['role'] = membership.role if membership else None
         return context
 
 class DevicesView(LoginRequiredMixin, TemplateView):

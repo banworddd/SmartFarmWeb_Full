@@ -3,14 +3,19 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/user_farms.css' %}">
-<link rel="stylesheet" href="{% static 'css/external_organization.css' %}">
+<link rel="stylesheet" href="{% static 'css/ext_org.css' %}">
+<link rel="stylesheet" href="{% static 'css/devices.css' %}">
 {% endblock %}
 
 {% block extra_js %}
 <script>
     const FARM_SLUG = '{{ slug }}';
+    const USER_ROLE = '{{ role }}';
 </script>
-<script src="{% static 'js/farm.js' %}"></script>
+<script src="{% static 'js/farm_data.js' %}"></script>
+<script src="{% static 'js/farm_ext_org.js' %}"></script>
+<script src="{% static 'js/farm_users.js' %}"></script>
+<script src="{% static 'js/farm_zones.js' %}"></script>
 {% endblock %}
 
 {% block title %}Ферма{% endblock %}
@@ -22,7 +27,8 @@
         <div class="header-card">
             <div class="farms-header">
                 <h1 class="farms-title">
-                    <span id="farmName" class="editable-field" data-field="name">Загрузка...</span>
+                    <span id="farmNameValue">{{ farm_name }}</span>
+                    <button class="org-field-edit edit-btn" data-target="farmNameValue"><i class="fas fa-pencil-alt"></i></button>
                 </h1>
             </div>
         </div>
@@ -30,145 +36,376 @@
         <!-- Основная информация о ферме -->
         <div class="organization-details">
             <!-- Основная информация -->
-            <div class="detail-card">
+            <div class="org-block org-block-main detail-card">
                 <h2><i class="fas fa-info-circle"></i> Основная информация</h2>
                 <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge description-badge">
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
+                            <i class="fas fa-link"></i>
+                            <span class="type-label">Slug</span>
+                        </span>
+                        <span class="value" id="farmSlugValue">Загрузка...</span>
+                        <button class="org-field-edit edit-btn" data-target="farmSlugValue"><i class="fas fa-pencil-alt"></i></button>
+                    </div>
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
                             <i class="fas fa-file-alt"></i>
-                            <span class="badge-label">Описание</span>
+                            <span class="type-label">Описание</span>
                         </span>
-                        <div class="editable-container">
-                            <span id="farmDescription" class="editable-field" data-field="description">Загрузка...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Родительская организация -->
-            <div class="detail-card">
-                <h2><i class="fas fa-building"></i> Родительская организация</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge org-name-badge">
-                            <i class="fas fa-building"></i>
-                            <span class="badge-label">Название</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="orgName" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge org-description-badge">
-                            <i class="fas fa-file-alt"></i>
-                            <span class="badge-label">Описание</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="orgDescription" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge org-address-badge">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="badge-label">Адрес</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="orgAddress" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge org-type-badge">
-                            <i class="fas fa-tag"></i>
-                            <span class="badge-label">Тип</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="orgType" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Пользователи фермы -->
-            <div class="detail-card">
-                <h2><i class="fas fa-users"></i> Пользователи фермы</h2>
-                <div class="detail-content">
-                    <div id="farmUsersList" class="users-list">
-                        <!-- Здесь будут карточки пользователей -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Контактная информация -->
-            <div class="detail-card">
-                <h2><i class="fas fa-address-card"></i> Контактная информация</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge address-badge">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="badge-label">Адрес</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="farmAddress" class="editable-field" data-field="address">Загрузка...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Информация о владельце -->
-            <div class="detail-card">
-                <h2><i class="fas fa-user"></i> Информация о владельце</h2>
-                <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge owner-badge">
-                            <i class="fas fa-user"></i>
-                            <span class="badge-label">ФИО</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="farmOwnerName" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge phone-badge">
-                            <i class="fas fa-phone"></i>
-                            <span class="badge-label">Телефон</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="farmOwnerPhone" class="editable-field">Загрузка...</span>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-badge email-badge">
-                            <i class="fas fa-envelope"></i>
-                            <span class="badge-label">Email</span>
-                        </span>
-                        <div class="editable-container">
-                            <span id="farmOwnerEmail" class="editable-field">Загрузка...</span>
-                        </div>
+                        <span class="value" id="farmDescriptionValue">Загрузка...</span>
+                        <button class="org-field-edit edit-btn" data-target="farmDescriptionValue"><i class="fas fa-pencil-alt"></i></button>
                     </div>
                 </div>
             </div>
 
             <!-- Мета информация -->
-            <div class="detail-card">
+            <div class="org-block org-block-meta detail-card">
                 <h2><i class="fas fa-history"></i> Мета информация</h2>
                 <div class="detail-content">
-                    <div class="detail-item">
-                        <span class="detail-badge created-badge">
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
                             <i class="fas fa-calendar-plus"></i>
-                            <span class="badge-label">Дата создания</span>
+                            <span class="type-label">Дата создания</span>
                         </span>
-                        <span id="farmCreatedAt">Загрузка...</span>
+                        <span class="value" id="farmCreatedAtValue">Загрузка...</span>
                     </div>
-                    <div class="detail-item">
-                        <span class="detail-badge updated-badge">
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
                             <i class="fas fa-calendar-check"></i>
-                            <span class="badge-label">Дата обновления</span>
+                            <span class="type-label">Дата обновления</span>
                         </span>
-                        <span id="farmUpdatedAt">Загрузка...</span>
+                        <span class="value" id="farmUpdatedAtValue">Загрузка...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Информация об организации -->
+            <div class="org-block org-block-main detail-card">
+                <h2><i class="fas fa-building"></i> Организация</h2>
+                <div class="detail-content">
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
+                            <i class="fas fa-building"></i>
+                            <span class="type-label">Название</span>
+                        </span>
+                        <span class="value" id="orgNameValue">Загрузка...</span>
+                    </div>
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="type-label">Адрес</span>
+                        </span>
+                        <span class="value" id="orgAddressValue">Загрузка...</span>
+                    </div>
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
+                            <i class="fas fa-file-alt"></i>
+                            <span class="type-label">Описание</span>
+                        </span>
+                        <span class="value" id="orgDescriptionValue">Загрузка...</span>
+                    </div>
+                    <div class="org-field detail-item">
+                        <span class="farm-type badge-toggle" tabindex="0" role="button" aria-expanded="false">
+                            <i class="fas fa-tag"></i>
+                            <span class="type-label">Тип</span>
+                        </span>
+                        <span class="value" id="orgTypeValue">Загрузка...</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- === Блок: Пользователи фермы === -->
+    <div class="content-wrapper">
+        <div class="detail-card">
+            <h2><i class="fas fa-users"> </i> Пользователи фермы</h2>
+            
+            <!-- Фильтры и сортировка -->
+            <div class="filters-panel">
+                <div class="filters-fields">
+                    <div class="filter-group">
+                        <label for="userNameFilter">
+                            <i class="fas fa-search"></i> Поиск
+                        </label>
+                        <div class="filter-field">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="userNameFilter" class="filter-input" placeholder="Поиск по имени...">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="userRoleFilter">
+                            <i class="fas fa-user-tag"></i> Роль
+                        </label>
+                        <div class="filter-field">
+                            <i class="fas fa-user-tag"></i>
+                            <select id="userRoleFilter" class="filter-select">
+                                <option value="">Все роли</option>
+                                <option value="owner">Владелец</option>
+                                <option value="admin">Администратор</option>
+                                <option value="manager">Менеджер</option>
+                                <option value="technician">Техник</option>
+                                <option value="viewer">Наблюдатель</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="sort-fields">
+                  <div class="filter-group">
+                    <div class="sort-buttons">
+                      <div class="sort-badge" data-sort="role">
+                        <i class="fas fa-user-tag"></i>
+                        <span class="sort-label">По роли</span>
+                        <div class="sort-arrows">
+                          <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                            <i class="fas fa-arrow-up"></i>
+                          </button>
+                          <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                            <i class="fas fa-arrow-down"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="sort-badge" data-sort="user__last_name">
+                        <i class="fas fa-user"></i>
+                        <span class="sort-label">По фамилии</span>
+                        <div class="sort-arrows">
+                          <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                            <i class="fas fa-arrow-up"></i>
+                          </button>
+                          <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                            <i class="fas fa-arrow-down"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="sort-badge" data-sort="updated_at">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="sort-label">По дате</span>
+                        <div class="sort-arrows">
+                          <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                            <i class="fas fa-arrow-up"></i>
+                          </button>
+                          <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                            <i class="fas fa-arrow-down"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Кнопка добавления пользователя -->
+            <div class="add-device-block">
+                <button class="add-device-btn" id="addUserBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Добавить пользователя
+                </button>
+            </div>
+
+            <!-- Модальное окно добавления пользователя -->
+            <div id="addUserModal" class="device-modal-overlay" style="display: none;">
+                <div class="device-modal-window">
+                    <button class="device-modal-close" id="closeAddUserModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div class="device-modal-header">
+                        <h2 class="device-modal-title">Добавить пользователя</h2>
+                    </div>
+                    <form id="addUserForm" class="add-device-form">
+                        <div class="form-group">
+                            <label for="userSelect">
+                                Пользователь
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user field-icon"></i>
+                                <select id="userSelect" name="user" required>
+                                    <option value="">Выберите пользователя</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleSelect">
+                                Роль
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user-tag field-icon"></i>
+                                <select id="roleSelect" name="role" required>
+                                    <option value="">Выберите роль</option>
+                                    <option value="admin">Администратор</option>
+                                    <option value="manager">Менеджер</option>
+                                    <option value="technician">Техник</option>
+                                    <option value="viewer">Наблюдатель</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn" id="cancelAddUser">
+                                <i class="fas fa-times"></i>
+                                Отмена
+                            </button>
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-check"></i>
+                                Добавить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Список пользователей -->
+            <div id="usersList" class="farms-grid">
+                <!-- Пользователи будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- === Блок: Зоны фермы === -->
+    <div class="content-wrapper">
+        <div class="detail-card">
+            <h2><i class="fas fa-map-marked-alt"> </i> Зоны фермы</h2>
+
+            <!-- Фильтры и сортировка для зон -->
+            <div class="filters-panel">
+                <div class="filters-fields">
+                    <div class="filter-group">
+                        <label for="zoneNameFilter">
+                            <i class="fas fa-search"></i> Поиск
+                        </label>
+                        <div class="filter-field">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="zoneNameFilter" class="filter-input" placeholder="Поиск по названию...">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="zoneTypeFilter">
+                            <i class="fas fa-tag"></i> Тип зоны
+                        </label>
+                        <div class="filter-field">
+                            <i class="fas fa-tag"></i>
+                            <select id="zoneTypeFilter" class="filter-select">
+                                <option value="">Все типы</option>
+                                <option value="greenhouse">Теплица</option>
+                                <option value="field">Поле</option>
+                                <option value="storage">Склад</option>
+                                <option value="livestock">Животноводческий комплекс</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                 <div class="sort-fields">
+                  <div class="filter-group">
+                    <div class="sort-buttons">
+                      <div class="sort-badge" data-sort="name">
+                        <i class="fas fa-signature"></i>
+                        <span class="sort-label">По названию</span>
+                        <div class="sort-arrows">
+                          <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                            <i class="fas fa-arrow-up"></i>
+                          </button>
+                          <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                            <i class="fas fa-arrow-down"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="sort-badge" data-sort="created_at">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="sort-label">По дате создания</span>
+                        <div class="sort-arrows">
+                          <button class="sort-arrow" data-direction="asc" aria-label="Сортировать по возрастанию">
+                            <i class="fas fa-arrow-up"></i>
+                          </button>
+                          <button class="sort-arrow" data-direction="desc" aria-label="Сортировать по убыванию">
+                            <i class="fas fa-arrow-down"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Кнопка добавления зоны -->
+            <div class="add-device-block">
+                <button class="add-device-btn" id="addZoneBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    Добавить зону
+                </button>
+            </div>
+
+            <!-- Список зон -->
+            <div id="zonesList" class="farms-grid">
+                <!-- Зоны будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления зоны -->
+    <div id="addZoneModal" class="device-modal-overlay" style="display: none;">
+        <div class="device-modal-window">
+            <button class="device-modal-close" id="closeAddZoneModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="device-modal-header">
+                <h2 class="device-modal-title">Добавить зону</h2>
+            </div>
+            <form id="addZoneForm" class="add-device-form">
+                <div class="form-group">
+                    <label for="zoneNameInput">
+                        Название зоны
+                    </label>
+                    <div class="input-wrapper">
+                         <i class="fas fa-signature field-icon"></i>
+                         <input type="text" id="zoneNameInput" name="name" required placeholder="Название" class="edit-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label for="zoneTypeSelect">
+                        Тип зоны
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-tag field-icon"></i>
+                        <select id="zoneTypeSelect" name="zone_type" required class="edit-input">
+                            <option value="">Выберите тип</option>
+                            <option value="greenhouse">Теплица</option>
+                            <option value="field">Поле</option>
+                            <option value="storage">Склад</option>
+                            <option value="livestock">Животноводческий комплекс</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="form-group">
+                     <label for="zoneAreaInput">
+                        Площадь (кв.м.)
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-chart-area field-icon"></i>
+                        <input type="number" id="zoneAreaInput" name="area" placeholder="Площадь (необязательно)" step="0.01" class="edit-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label for="zoneDescriptionInput">
+                        Описание
+                    </label>
+                     <div class="input-wrapper">
+                         <i class="fas fa-file-alt field-icon"></i>
+                         <textarea id="zoneDescriptionInput" name="description" placeholder="Описание (необязательно)" class="edit-input"></textarea>
+                     </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelAddZone">
+                        <i class="fas fa-times"></i>
+                        Отмена
+                    </button>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check"></i>
+                        Добавить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 {% endblock %} 
