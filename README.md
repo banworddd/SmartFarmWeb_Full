@@ -54,7 +54,29 @@ docker-compose exec web python manage.py createsuperuser
 - **main/** — базовые страницы и шаблоны
 
 ---
+## Примеры интерфейса
 
+<img width="1441" height="809" alt="1" src="https://github.com/user-attachments/assets/764577d9-217f-492d-b3ae-2b7a34e5aca1" />
+
+Начальная страница
+
+<img width="1435" height="807" alt="2" src="https://github.com/user-attachments/assets/e0fcdd20-5af9-42a4-93d2-ad519a8d9a3f" />
+
+Страница регистрация
+
+<img width="1437" height="806" alt="5" src="https://github.com/user-attachments/assets/9713408b-9802-4d25-bc75-1aebd3279e39" />
+
+Страница профиля
+
+<img width="1439" height="809" alt="4" src="https://github.com/user-attachments/assets/7a2d41c0-9bdc-49ef-9e10-4b8d2cc8c581" />
+
+Страница организаций
+
+<img width="1441" height="809" alt="3" src="https://github.com/user-attachments/assets/0f5a914c-7c20-404b-baf4-539cc5bca531" />
+
+Страница устройств
+
+---
 
 ## Лицензия
 
